@@ -1,0 +1,585 @@
+{
+  "metadata": {
+    "source": "RVTrader.com",
+    "extractedAt": "2026-01-16",
+    "searchZip": "60616",
+    "totalListingsOnSite": 225571
+  },
+
+  "listPageResponse": {
+    "url": "https://www.rvtrader.com/rvs-for-sale?zip=60616",
+    "jsonld": {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": "RVs",
+      "offers": {
+        "@type": "AggregateOffer",
+        "offerCount": null,
+        "lowPrice": "8995.00",
+        "highPrice": "497961.00",
+        "priceCurrency": "USD",
+        "offers": [
+          {
+            "@type": "Offer",
+            "url": "https://www.rvtrader.com/listing/2026-Forest+River+Rv-Cherokee+Timberwolf+39AL-5037070155",
+            "itemOffered": {
+              "@type": "Thing",
+              "name": "2026 Forest River Rv Cherokee Timberwolf 39AL",
+              "description": "",
+              "itemCondition": "New",
+              "priceCurrency": "USD",
+              "price": "51495.00"
+            }
+          },
+          {
+            "@type": "Offer",
+            "url": "https://www.rvtrader.com/listing/2026-Forest+River+Rv-Cherokee+Wolf+Pup+14RKW-5038346185",
+            "itemOffered": {
+              "@type": "Thing",
+              "name": "2026 Forest River Rv Cherokee Wolf Pup 14RKW",
+              "description": "",
+              "itemCondition": "New",
+              "priceCurrency": "USD",
+              "price": "14995.00"
+            }
+          },
+          {
+            "@type": "Offer",
+            "url": "https://www.rvtrader.com/listing/2026-Forest+River+Rv-R+Pod+RP-207-5039029147",
+            "itemOffered": {
+              "@type": "Thing",
+              "name": "2026 Forest River Rv R Pod RP-207",
+              "description": "",
+              "itemCondition": "New",
+              "priceCurrency": "USD",
+              "price": "28490.00"
+            }
+          },
+          {
+            "@type": "Offer",
+            "url": "https://www.rvtrader.com/listing/2026-Forest+River+Rv-Sandpiper+4002FB-5037643875",
+            "itemOffered": {
+              "@type": "Thing",
+              "name": "2026 Forest River Rv Sandpiper 4002FB",
+              "description": "",
+              "itemCondition": "New",
+              "priceCurrency": "USD",
+              "price": "71960.00"
+            }
+          },
+          {
+            "@type": "Offer",
+            "url": "https://www.rvtrader.com/listing/2017-Forest+River+Rv-Rockwood+Roo+233S-5038800792",
+            "itemOffered": {
+              "@type": "Thing",
+              "name": "2017 Forest River Rv Rockwood Roo 233S",
+              "description": "",
+              "itemCondition": "Used",
+              "priceCurrency": "USD",
+              "price": "12895.00"
+            }
+          },
+          {
+            "@type": "Offer",
+            "url": "https://www.rvtrader.com/listing/2026-Thor-EDDIE+BAUER+18EB-5038119827",
+            "itemOffered": {
+              "@type": "Thing",
+              "name": "2026 Thor EDDIE BAUER 18EB",
+              "description": "",
+              "itemCondition": "New",
+              "priceCurrency": "USD",
+              "price": "100999.00"
+            }
+          },
+          {
+            "@type": "Offer",
+            "url": "https://www.rvtrader.com/listing/2018-Jayco-Jay+Flight+SLX+195RB-5038144169",
+            "itemOffered": {
+              "@type": "Thing",
+              "name": "2018 Jayco Jay Flight SLX 195RB",
+              "description": "",
+              "itemCondition": "Used",
+              "priceCurrency": "USD",
+              "price": "8995.00"
+            }
+          },
+          {
+            "@type": "Offer",
+            "url": "https://www.rvtrader.com/listing/2026-Forest+River-SALEM+31KQBTS-5038748356",
+            "itemOffered": {
+              "@type": "Thing",
+              "name": "2026 Forest River SALEM 31KQBTS",
+              "description": "",
+              "itemCondition": "New",
+              "priceCurrency": "USD",
+              "price": "44999.00"
+            }
+          },
+          {
+            "@type": "Offer",
+            "url": "https://www.rvtrader.com/listing/2024-Gulf+Stream+Rv-Vintage+Cruiser+17SCD-5035024505",
+            "itemOffered": {
+              "@type": "Thing",
+              "name": "2024 Gulf Stream Rv Vintage Cruiser 17SCD",
+              "description": "",
+              "itemCondition": "New",
+              "priceCurrency": "USD",
+              "price": "17946.00"
+            }
+          },
+          {
+            "@type": "Offer",
+            "url": "https://www.rvtrader.com/listing/2024-Forest+River+Rv-Cherokee+Wolf+Pup+16BHSW-5036020920",
+            "itemOffered": {
+              "@type": "Thing",
+              "name": "2024 Forest River Rv Cherokee Wolf Pup 16BHSW",
+              "description": "",
+              "itemCondition": "Used",
+              "priceCurrency": "USD",
+              "price": "21785.00"
+            }
+          },
+          {
+            "@type": "Offer",
+            "url": "https://www.rvtrader.com/listing/2026-Keystone-COLEMAN+LEGACY+2400REX-5038653755",
+            "itemOffered": {
+              "@type": "Thing",
+              "name": "2026 Keystone COLEMAN LEGACY 2400REX",
+              "description": "",
+              "itemCondition": "New",
+              "priceCurrency": "USD",
+              "price": "45199.00"
+            }
+          },
+          {
+            "@type": "Offer",
+            "url": "https://www.rvtrader.com/listing/1998-Fleetwood-PACE+ARROW+VISION+SERIES+36B-5038107135",
+            "itemOffered": {
+              "@type": "Thing",
+              "name": "1998 Fleetwood PACE ARROW VISION SERIES 36B",
+              "description": "",
+              "itemCondition": "Used",
+              "priceCurrency": "USD",
+              "price": "9975.00"
+            }
+          },
+          {
+            "@type": "Offer",
+            "url": "https://www.rvtrader.com/listing/2026-Grand+Design-SOLITUDE-I+3003RL-5039040429",
+            "itemOffered": {
+              "@type": "Thing",
+              "name": "2026 Grand Design SOLITUDE-I 3003RL",
+              "description": "",
+              "itemCondition": "New",
+              "priceCurrency": "USD",
+              "price": "97595.00"
+            }
+          },
+          {
+            "@type": "Offer",
+            "url": "https://www.rvtrader.com/listing/2026-Keystone-COLEMAN+LEGACY+2950RL-5036969839",
+            "itemOffered": {
+              "@type": "Thing",
+              "name": "2026 Keystone COLEMAN LEGACY 2950RL",
+              "description": "",
+              "itemCondition": "New",
+              "priceCurrency": "USD",
+              "price": "42999.00"
+            }
+          },
+          {
+            "@type": "Offer",
+            "url": "https://www.rvtrader.com/listing/2026-Aliner-Ranger+12-5038347949",
+            "itemOffered": {
+              "@type": "Thing",
+              "name": "2026 Aliner Ranger 12",
+              "description": "",
+              "itemCondition": "New",
+              "priceCurrency": "USD",
+              "price": "18607.00"
+            }
+          },
+          {
+            "@type": "Offer",
+            "url": "https://www.rvtrader.com/listing/2026-Forest+River-CAMPSITE+RESERVE+39JD-5036778790",
+            "itemOffered": {
+              "@type": "Thing",
+              "name": "2026 Forest River CAMPSITE RESERVE 39JD",
+              "description": "",
+              "itemCondition": "New",
+              "priceCurrency": "USD",
+              "price": "58999.00"
+            }
+          },
+          {
+            "@type": "Offer",
+            "url": "https://www.rvtrader.com/listing/2026-Jayco-Jay+Flight+SLX+263BHS-5038846162",
+            "itemOffered": {
+              "@type": "Thing",
+              "name": "2026 Jayco Jay Flight SLX 263BHS",
+              "description": "",
+              "itemCondition": "New",
+              "priceCurrency": "USD",
+              "price": "29495.00"
+            }
+          },
+          {
+            "@type": "Offer",
+            "url": "https://www.rvtrader.com/listing/2026-Forest+River+Rv-Cherokee+Wolf+Pup+16FQW-5037478957",
+            "itemOffered": {
+              "@type": "Thing",
+              "name": "2026 Forest River Rv Cherokee Wolf Pup 16FQW",
+              "description": "",
+              "itemCondition": "New",
+              "priceCurrency": "USD",
+              "price": "17890.00"
+            }
+          },
+          {
+            "@type": "Offer",
+            "url": "https://www.rvtrader.com/listing/2026-Winnebago-Access+18DBH-5038996882",
+            "itemOffered": {
+              "@type": "Thing",
+              "name": "2026 Winnebago Access 18DBH",
+              "description": "",
+              "itemCondition": "New",
+              "priceCurrency": "USD",
+              "price": "19995.00"
+            }
+          },
+          {
+            "@type": "Offer",
+            "url": "https://www.rvtrader.com/listing/2026-Coachmen-Catalina+Summit+Series+7+134RDX-5037563543",
+            "itemOffered": {
+              "@type": "Thing",
+              "name": "2026 Coachmen Catalina Summit Series 7 134RDX",
+              "description": "",
+              "itemCondition": "New",
+              "priceCurrency": "USD",
+              "price": "12495.00"
+            }
+          },
+          {
+            "@type": "Offer",
+            "url": "https://www.rvtrader.com/listing/2021-Gulf+Stream-Envision+SVT+Series+19FMB-5035967148",
+            "itemOffered": {
+              "@type": "Thing",
+              "name": "2021 Gulf Stream Envision SVT Series 19FMB",
+              "description": "",
+              "itemCondition": "Used",
+              "priceCurrency": "USD",
+              "price": "13975.00"
+            }
+          },
+          {
+            "@type": "Offer",
+            "url": "https://www.rvtrader.com/listing/2025-Airstream-Globetrotter+25FB-5038791341",
+            "itemOffered": {
+              "@type": "Thing",
+              "name": "2025 Airstream Globetrotter 25FB",
+              "description": "",
+              "itemCondition": "New",
+              "priceCurrency": "USD",
+              "price": "106428.00"
+            }
+          },
+          {
+            "@type": "Offer",
+            "url": "https://www.rvtrader.com/listing/2026-Forest+River+Rv-Impression+301ML-5038897846",
+            "itemOffered": {
+              "@type": "Thing",
+              "name": "2026 Forest River Rv Impression 301ML",
+              "description": "",
+              "itemCondition": "New",
+              "priceCurrency": "USD",
+              "price": "64988.00"
+            }
+          },
+          {
+            "@type": "Offer",
+            "url": "https://www.rvtrader.com/listing/2026-Keystone-MONTANA+3123RL-5038832069",
+            "itemOffered": {
+              "@type": "Thing",
+              "name": "2026 Keystone MONTANA 3123RL",
+              "description": "",
+              "itemCondition": "New",
+              "priceCurrency": "USD",
+              "price": "86900.00"
+            }
+          },
+          {
+            "@type": "Offer",
+            "url": "https://www.rvtrader.com/listing/2026-Grand+Design-Imagine+2970RL-5038087299",
+            "itemOffered": {
+              "@type": "Thing",
+              "name": "2026 Grand Design Imagine 2970RL",
+              "description": "",
+              "itemCondition": "New",
+              "priceCurrency": "USD",
+              "price": "58995.00"
+            }
+          },
+          {
+            "@type": "Offer",
+            "url": "https://www.rvtrader.com/listing/2026-Kz-Connect+C282FKK-5038809926",
+            "itemOffered": {
+              "@type": "Thing",
+              "name": "2026 Kz Connect C282FKK",
+              "description": "",
+              "itemCondition": "New",
+              "priceCurrency": "USD",
+              "price": "40499.00"
+            }
+          },
+          {
+            "@type": "Offer",
+            "url": "https://www.rvtrader.com/listing/2026-Forest+River+Rv-Cherokee+Timberwolf+Black+Label+39DLBL-5037972149",
+            "itemOffered": {
+              "@type": "Thing",
+              "name": "2026 Forest River Rv Cherokee Timberwolf Black Label 39DLBL",
+              "description": "",
+              "itemCondition": "New",
+              "priceCurrency": "USD",
+              "price": "55495.00"
+            }
+          },
+          {
+            "@type": "Offer",
+            "url": "https://www.rvtrader.com/listing/2002-Roadtrek-190+Popular-5038690020",
+            "itemOffered": {
+              "@type": "Thing",
+              "name": "2002 Roadtrek 190 Popular POPULAR",
+              "description": "",
+              "itemCondition": "Used",
+              "priceCurrency": "USD",
+              "price": "39900.00"
+            }
+          },
+          {
+            "@type": "Offer",
+            "url": "https://www.rvtrader.com/listing/2022-K-Z-SPORTSMEN+180TH-5037266635",
+            "itemOffered": {
+              "@type": "Thing",
+              "name": "2022 K-Z SPORTSMEN 180TH",
+              "description": "",
+              "itemCondition": "Used",
+              "priceCurrency": "USD",
+              "price": "14999.00"
+            }
+          },
+          {
+            "@type": "Offer",
+            "url": "https://www.rvtrader.com/listing/2022-Alliance+Rv-Paradigm+340RL-5038420717",
+            "itemOffered": {
+              "@type": "Thing",
+              "name": "2022 Alliance Rv Paradigm 340RL",
+              "description": "",
+              "itemCondition": "Used",
+              "priceCurrency": "USD",
+              "price": "55000.00"
+            }
+          },
+          {
+            "@type": "Offer",
+            "url": "https://www.rvtrader.com/listing/2026-Kz+Rv-Sportsmen+SE291BHKSE-5038534843",
+            "itemOffered": {
+              "@type": "Thing",
+              "name": "2026 Kz Rv Sportsmen SE291BHKSE",
+              "description": "",
+              "itemCondition": "New",
+              "priceCurrency": "USD",
+              "price": "29599.00"
+            }
+          },
+          {
+            "@type": "Offer",
+            "url": "https://www.rvtrader.com/listing/2027-Luxe-48FLB-5038865990",
+            "itemOffered": {
+              "@type": "Thing",
+              "name": "2027 Luxe 48FLB",
+              "description": "",
+              "itemCondition": "New",
+              "priceCurrency": "USD",
+              "price": "497961.00"
+            }
+          },
+          {
+            "@type": "Offer",
+            "url": "https://www.rvtrader.com/listing/2025-Forest+River-ROCKWOOD+GEO+PRO+G19FD-5036543217",
+            "itemOffered": {
+              "@type": "Thing",
+              "name": "2025 Forest River ROCKWOOD GEO PRO G19FD",
+              "description": "",
+              "itemCondition": "Used",
+              "priceCurrency": "USD",
+              "price": "19900.00"
+            }
+          },
+          {
+            "@type": "Offer",
+            "url": "https://www.rvtrader.com/listing/2026-Forest+River-Alpha+Wolf+280QBS-L-5038932163",
+            "itemOffered": {
+              "@type": "Thing",
+              "name": "2026 Forest River Alpha Wolf 280QBS-L",
+              "description": "",
+              "itemCondition": "New",
+              "priceCurrency": "USD",
+              "price": "60135.00"
+            }
+          },
+          {
+            "@type": "Offer",
+            "url": "https://www.rvtrader.com/listing/2026-Forest+River-Alpha+Wolf+25RB-L-5038932162",
+            "itemOffered": {
+              "@type": "Thing",
+              "name": "2026 Forest River Alpha Wolf 25RB-L",
+              "description": "",
+              "itemCondition": "New",
+              "priceCurrency": "USD",
+              "price": "58880.00"
+            }
+          },
+          {
+            "@type": "Offer",
+            "url": "https://www.rvtrader.com/listing/2026-Forest+River-Alpha+Wolf+280QBS-L-5038918392",
+            "itemOffered": {
+              "@type": "Thing",
+              "name": "2026 Forest River Alpha Wolf 280QBS-L",
+              "description": "",
+              "itemCondition": "New",
+              "priceCurrency": "USD",
+              "price": "58932.00"
+            }
+          }
+        ]
+      }
+    }
+  },
+
+  "detailPageResponse": {
+    "url": "https://www.rvtrader.com/listing/2026-Forest+River+Rv-Cherokee+Timberwolf+39AL-5037070155",
+    "jsonld": {
+      "@context": "https://schema.org",
+      "@type": "Vehicle",
+      "name": "2026 Forest River Rv Destination Trailer",
+      "sku": "5037070155",
+      "url": "https://www.rvtrader.com/listing/2026-Forest-River-Rv-Cherokee-Timberwolf-39AL-5037070155",
+      "image": "https://cdn-media.tilabs.io/v1/media/6916e5a189fd1e894b0aa31a.jpg?width=1200&height=1200",
+      "brand": {
+        "@type": "Brand",
+        "name": "Forest River Rv"
+      },
+      "manufacturer": "Forest River Rv",
+      "model": "Cherokee Timberwolf 39AL",
+      "description": "2026 Forest River RV Cherokee Timberwolf 39AL, <p><strong>Forest River Timberwolf destination trailer 39AL highlights:</strong></p> <ul> <li>Large Loft Area</li> <li>L-Shaped Sofa</li> <li>Rear Kitchen</li> <li>Shower with a Seat</li> <li>King Bed</li> </ul> <p> </p> <p>Time spent in this destination trailer will be time well spent! You will appreciate <strong>dual</strong> <strong>entry doors</strong> for maximum convenience, plus a <strong>spacious full bath</strong> that is close by the front private bedroom! Your crew can relax in the middle living area on the L-shaped sofa, and there are<strong> two lounge chairs</strong> for even more seating spaces. The rear kitchen will be any chef's dream with its <strong>island with six stools</strong> and all the appliances to create meals each day. This model also features triple slides so you can enjoy more space to relax!</p> <p> </p> <p>Enjoy comforts of home wherever you decide to roam in a Timberwolf destination trailer by Forest River. The <strong>seamless roofing membrane</strong> with heat reflectivity and power gear frame technology provide a durable foundation to your RV. You will also appreciate the exclusive solar thermo controlled reflective tinted safety glass windows, tire pressure monitors, and an <strong>on-demand tankless water heater</strong> to make extended stays easier than ever. Inside, the night shades will provide your crew with privacy, while the LED lights illuminate your space. There are seamless countertops, along with a premium bedding ensemble and comforter, <strong>USB charging stations</strong>, a supersized <strong>central A/C unit</strong>, and many more comforts!</p> <p> </p>",
+      "offers": {
+        "@type": "Offer",
+        "availability": "InStock",
+        "priceCurrency": "USD",
+        "price": "51495.00",
+        "itemCondition": "NewCondition"
+      }
+    },
+    "htmlExtractedData": {
+      "rvType": "Destination Trailer",
+      "condition": "New",
+      "length": "45 ft.",
+      "gvwr": "13,180 lbs.",
+      "sleepingCapacity": "6",
+      "slideOuts": "3",
+      "location": {
+        "city": "Bunker Hill",
+        "state": "IN",
+        "distance": "116 miles away"
+      },
+      "dealer": {
+        "name": "RV Dynasty",
+        "phone": "877-306-0194"
+      },
+      "stockCode": "954909",
+      "daysListed": "190 days listed",
+      "saves": "0 saves",
+      "photoCount": 87
+    }
+  },
+
+  "extractedListings": [
+    {
+      "sku": "5037070155",
+      "name": "2026 Forest River Rv Cherokee Timberwolf 39AL",
+      "year": 2026,
+      "make": "Forest River Rv",
+      "model": "Cherokee Timberwolf 39AL",
+      "condition": "New",
+      "price": 51495.00,
+      "currency": "USD",
+      "url": "https://www.rvtrader.com/listing/2026-Forest+River+Rv-Cherokee+Timberwolf+39AL-5037070155"
+    },
+    {
+      "sku": "5038346185",
+      "name": "2026 Forest River Rv Cherokee Wolf Pup 14RKW",
+      "year": 2026,
+      "make": "Forest River Rv",
+      "model": "Cherokee Wolf Pup 14RKW",
+      "condition": "New",
+      "price": 14995.00,
+      "currency": "USD",
+      "url": "https://www.rvtrader.com/listing/2026-Forest+River+Rv-Cherokee+Wolf+Pup+14RKW-5038346185"
+    },
+    {
+      "sku": "5038800792",
+      "name": "2017 Forest River Rv Rockwood Roo 233S",
+      "year": 2017,
+      "make": "Forest River Rv",
+      "model": "Rockwood Roo 233S",
+      "condition": "Used",
+      "price": 12895.00,
+      "currency": "USD",
+      "url": "https://www.rvtrader.com/listing/2017-Forest+River+Rv-Rockwood+Roo+233S-5038800792"
+    },
+    {
+      "sku": "5038119827",
+      "name": "2026 Thor EDDIE BAUER 18EB",
+      "year": 2026,
+      "make": "Thor",
+      "model": "EDDIE BAUER 18EB",
+      "condition": "New",
+      "price": 100999.00,
+      "currency": "USD",
+      "url": "https://www.rvtrader.com/listing/2026-Thor-EDDIE+BAUER+18EB-5038119827"
+    },
+    {
+      "sku": "5038144169",
+      "name": "2018 Jayco Jay Flight SLX 195RB",
+      "year": 2018,
+      "make": "Jayco",
+      "model": "Jay Flight SLX 195RB",
+      "condition": "Used",
+      "price": 8995.00,
+      "currency": "USD",
+      "url": "https://www.rvtrader.com/listing/2018-Jayco-Jay+Flight+SLX+195RB-5038144169"
+    },
+    {
+      "sku": "5038791341",
+      "name": "2025 Airstream Globetrotter 25FB",
+      "year": 2025,
+      "make": "Airstream",
+      "model": "Globetrotter 25FB",
+      "condition": "New",
+      "price": 106428.00,
+      "currency": "USD",
+      "url": "https://www.rvtrader.com/listing/2025-Airstream-Globetrotter+25FB-5038791341"
+    },
+    {
+      "sku": "5038865990",
+      "name": "2027 Luxe 48FLB",
+      "year": 2027,
+      "make": "Luxe",
+      "model": "48FLB",
+      "condition": "New",
+      "price": 497961.00,
+      "currency": "USD",
+      "url": "https://www.rvtrader.com/listing/2027-Luxe-48FLB-5038865990"
+    }
+  ]
+}

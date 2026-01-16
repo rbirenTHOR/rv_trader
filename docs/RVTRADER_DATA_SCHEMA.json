@@ -1,0 +1,710 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RVTrader.com Data Schema Documentation",
+  "description": "Complete data structures available from RVTrader.com for scraping",
+  "version": "1.0.0",
+  "lastUpdated": "2026-01-16",
+
+  "schemas": {
+    "listPage": {
+      "description": "JSON-LD schema embedded in search/listing pages",
+      "location": "<script type=\"application/ld+json\">",
+      "structure": {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": {
+          "type": "string",
+          "description": "Always 'RVs' for listing pages",
+          "example": "RVs"
+        },
+        "offers": {
+          "@type": "AggregateOffer",
+          "offerCount": {
+            "type": "number|null",
+            "description": "Total number of listings (often null in response)"
+          },
+          "lowPrice": {
+            "type": "string",
+            "description": "Lowest price in current results",
+            "format": "decimal string",
+            "example": "8995.00"
+          },
+          "highPrice": {
+            "type": "string",
+            "description": "Highest price in current results",
+            "format": "decimal string",
+            "example": "497961.00"
+          },
+          "priceCurrency": {
+            "type": "string",
+            "description": "Currency code",
+            "example": "USD"
+          },
+          "offers": {
+            "type": "array",
+            "description": "Array of individual listing offers (36 per page)",
+            "items": {
+              "@type": "Offer",
+              "url": {
+                "type": "string",
+                "description": "Full URL to listing detail page",
+                "format": "uri",
+                "example": "https://www.rvtrader.com/listing/2026-Forest+River+Rv-Cherokee+Timberwolf+39AL-5037070155"
+              },
+              "itemOffered": {
+                "@type": "Thing",
+                "name": {
+                  "type": "string",
+                  "description": "Full listing title with year, make, model",
+                  "example": "2026 Forest River Rv Cherokee Timberwolf 39AL"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Short description (usually empty in list view)",
+                  "example": ""
+                },
+                "itemCondition": {
+                  "type": "string",
+                  "description": "Condition of the RV",
+                  "enum": ["New", "Used"],
+                  "example": "New"
+                },
+                "priceCurrency": {
+                  "type": "string",
+                  "description": "Currency code",
+                  "example": "USD"
+                },
+                "price": {
+                  "type": "string",
+                  "description": "Listing price",
+                  "format": "decimal string",
+                  "example": "51495.00"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "detailPage": {
+      "description": "JSON-LD Vehicle schema embedded in detail/listing pages",
+      "location": "<script type=\"application/ld+json\">",
+      "structure": {
+        "@context": "https://schema.org",
+        "@type": "Vehicle",
+        "name": {
+          "type": "string",
+          "description": "Vehicle type description with year",
+          "example": "2026 Forest River Rv Destination Trailer"
+        },
+        "sku": {
+          "type": "string",
+          "description": "Unique listing identifier (10-digit number)",
+          "pattern": "^[0-9]{10}$",
+          "example": "5037070155"
+        },
+        "url": {
+          "type": "string",
+          "description": "Canonical URL for the listing",
+          "format": "uri",
+          "example": "https://www.rvtrader.com/listing/2026-Forest-River-Rv-Cherokee-Timberwolf-39AL-5037070155"
+        },
+        "image": {
+          "type": "string",
+          "description": "Primary image URL from CDN",
+          "format": "uri",
+          "example": "https://cdn-media.tilabs.io/v1/media/6916e5a189fd1e894b0aa31a.jpg?width=1200&height=1200"
+        },
+        "brand": {
+          "@type": "Brand",
+          "name": {
+            "type": "string",
+            "description": "Manufacturer/brand name",
+            "example": "Forest River Rv"
+          }
+        },
+        "manufacturer": {
+          "type": "string",
+          "description": "Manufacturer name (same as brand)",
+          "example": "Forest River Rv"
+        },
+        "model": {
+          "type": "string",
+          "description": "Model name and variant",
+          "example": "Cherokee Timberwolf 39AL"
+        },
+        "description": {
+          "type": "string",
+          "description": "Full HTML description with features and highlights",
+          "format": "html",
+          "example": "2026 Forest River RV Cherokee Timberwolf 39AL, <p><strong>Forest River Timberwolf destination trailer 39AL highlights:</strong></p>..."
+        },
+        "offers": {
+          "@type": "Offer",
+          "availability": {
+            "type": "string",
+            "description": "Stock availability status",
+            "example": "InStock"
+          },
+          "priceCurrency": {
+            "type": "string",
+            "description": "Currency code",
+            "example": "USD"
+          },
+          "price": {
+            "type": "string",
+            "description": "Listing price",
+            "format": "decimal string",
+            "example": "51495.00"
+          },
+          "itemCondition": {
+            "type": "string",
+            "description": "Condition using schema.org vocabulary",
+            "enum": ["NewCondition", "UsedCondition"],
+            "example": "NewCondition"
+          }
+        }
+      }
+    },
+
+    "detailPageHTML": {
+      "description": "Additional data available from HTML DOM (requires browser automation)",
+      "fields": {
+        "rvType": {
+          "type": "string",
+          "description": "Specific RV category",
+          "examples": ["Destination Trailer", "Class A", "Class B", "Class C", "Travel Trailer", "Fifth Wheel", "Toy Hauler", "Pop-Up Camper"]
+        },
+        "condition": {
+          "type": "string",
+          "description": "New or Used",
+          "examples": ["New", "Used"]
+        },
+        "length": {
+          "type": "string",
+          "description": "Overall length with unit",
+          "pattern": "^[0-9]+ ft\\.$",
+          "example": "45 ft."
+        },
+        "gvwr": {
+          "type": "string",
+          "description": "Gross Vehicle Weight Rating",
+          "pattern": "^[0-9,]+ lbs\\.$",
+          "example": "13,180 lbs."
+        },
+        "sleepingCapacity": {
+          "type": "string",
+          "description": "Number of sleeping spots",
+          "example": "6"
+        },
+        "slideOuts": {
+          "type": "string",
+          "description": "Number of slide-out sections",
+          "example": "3"
+        },
+        "location": {
+          "type": "object",
+          "description": "Dealer location information",
+          "properties": {
+            "city": {
+              "type": "string",
+              "example": "Bunker Hill"
+            },
+            "state": {
+              "type": "string",
+              "example": "IN"
+            },
+            "distance": {
+              "type": "string",
+              "description": "Distance from search zip",
+              "example": "116 miles away"
+            }
+          }
+        },
+        "dealer": {
+          "type": "object",
+          "description": "Dealer/seller information",
+          "properties": {
+            "name": {
+              "type": "string",
+              "example": "RV Dynasty"
+            },
+            "phone": {
+              "type": "string",
+              "pattern": "^[0-9]{3}-[0-9]{3}-[0-9]{4}$",
+              "example": "877-306-0194"
+            },
+            "website": {
+              "type": "string",
+              "format": "uri"
+            }
+          }
+        },
+        "stockCode": {
+          "type": "string",
+          "description": "Dealer's internal stock number",
+          "example": "954909"
+        },
+        "daysListed": {
+          "type": "string",
+          "description": "How long the listing has been active",
+          "example": "190 days listed"
+        },
+        "saves": {
+          "type": "string",
+          "description": "Number of users who saved this listing",
+          "example": "0 saves"
+        },
+        "photoCount": {
+          "type": "number",
+          "description": "Number of photos in gallery",
+          "example": 87
+        }
+      }
+    },
+
+    "imageUrls": {
+      "description": "Image URL patterns for CDN",
+      "baseUrl": "https://cdn-media.tilabs.io/v1/media/",
+      "pattern": "{image_id}.{format}?width={width}&height={height}",
+      "parameters": {
+        "image_id": {
+          "type": "string",
+          "description": "24-character hexadecimal image identifier",
+          "pattern": "^[a-f0-9]{24}$",
+          "example": "6916e5a189fd1e894b0aa31a"
+        },
+        "format": {
+          "type": "string",
+          "enum": ["jpg", "jpeg", "png", "webp"],
+          "default": "jpg"
+        },
+        "width": {
+          "type": "number",
+          "description": "Requested image width in pixels",
+          "examples": [400, 800, 1200]
+        },
+        "height": {
+          "type": "number",
+          "description": "Requested image height in pixels",
+          "examples": [400, 800, 1200]
+        }
+      },
+      "examples": [
+        "https://cdn-media.tilabs.io/v1/media/6916e5a189fd1e894b0aa31a.jpg?width=1200&height=1200",
+        "https://cdn-media.tilabs.io/v1/media/6916e5a189fd1e894b0aa31a.jpg?width=400&height=400"
+      ]
+    },
+
+    "trackingObject": {
+      "description": "window.trk JavaScript object containing comprehensive tracking/analytics data - available via browser automation",
+      "location": "window.trk (JavaScript global)",
+      "extractionMethod": "browser_evaluate or page.evaluate(() => window.trk)",
+      "structure": {
+        "pagename": {
+          "type": "string",
+          "description": "Page type identifier",
+          "example": "detail"
+        },
+        "server": {
+          "type": "string",
+          "description": "Internal server hostname",
+          "example": "ip-10-236-53-71.ec2.internal"
+        },
+        "channel": {
+          "type": "string",
+          "description": "Site section/channel",
+          "example": "find"
+        },
+        "ipaddy": {
+          "type": "string",
+          "description": "Visitor IP address",
+          "example": "165.225.59.72"
+        },
+        "statename": {
+          "type": "string",
+          "description": "Visitor's state (lowercase)",
+          "example": "illinois"
+        },
+        "statecode": {
+          "type": "string",
+          "description": "Visitor's state code (lowercase)",
+          "example": "il"
+        },
+        "city": {
+          "type": "string",
+          "description": "Visitor's city (lowercase)",
+          "example": "chicago"
+        },
+        "zipcode": {
+          "type": "string",
+          "description": "Visitor's zip code",
+          "example": "60616"
+        },
+        "lat": {
+          "type": "string",
+          "description": "Visitor's latitude",
+          "example": "41.85"
+        },
+        "long": {
+          "type": "string",
+          "description": "Visitor's longitude",
+          "example": "-87.63"
+        },
+        "adid": {
+          "type": "string",
+          "description": "Listing/ad ID (same as sku)",
+          "pattern": "^[0-9]{10}$",
+          "example": "5037070155"
+        },
+        "custid": {
+          "type": "string",
+          "description": "Customer/dealer account ID",
+          "example": "11287114"
+        },
+        "dealerid": {
+          "type": "string",
+          "description": "Dealer ID",
+          "example": "3054198"
+        },
+        "fueltype": {
+          "type": "string",
+          "description": "Fuel type (often empty for RVs)",
+          "example": ""
+        },
+        "length": {
+          "type": "string",
+          "description": "RV length",
+          "example": "45 ft"
+        },
+        "listingsellertype": {
+          "type": "string",
+          "description": "Seller type",
+          "enum": ["dealer", "private"],
+          "example": "dealer"
+        },
+        "type": {
+          "type": "string",
+          "description": "RV type (lowercase)",
+          "example": "destination trailer"
+        },
+        "category": {
+          "type": "string",
+          "description": "RV category (often empty)",
+          "example": ""
+        },
+        "make": {
+          "type": "string",
+          "description": "Manufacturer name (lowercase)",
+          "example": "forest river rv"
+        },
+        "model": {
+          "type": "string",
+          "description": "Model name (lowercase)",
+          "example": "cherokee timberwolf 39al"
+        },
+        "condition": {
+          "type": "string",
+          "description": "Condition (lowercase)",
+          "enum": ["new", "used"],
+          "example": "new"
+        },
+        "prodprice": {
+          "type": "string",
+          "description": "Price without decimals",
+          "example": "51495"
+        },
+        "year": {
+          "type": "string",
+          "description": "Model year",
+          "example": "2026"
+        },
+        "affid": {
+          "type": "string",
+          "description": "Affiliate identifier",
+          "example": "rv|3"
+        },
+        "listingtier": {
+          "type": "string",
+          "description": "Listing tier/promotion level",
+          "enum": ["premium_select", "premium", "basic"],
+          "example": "premium_select"
+        },
+        "dma": {
+          "type": "string",
+          "description": "Designated Market Area code and name",
+          "example": "602-chicago"
+        },
+        "searchzip": {
+          "type": "string",
+          "description": "Search zip code used",
+          "example": "60616"
+        },
+        "tradeinValue": {
+          "type": "string",
+          "description": "Trade-in value available flag",
+          "enum": ["yes", "no"],
+          "example": "no"
+        },
+        "tChat": {
+          "type": "string",
+          "description": "Chat feature available flag",
+          "enum": ["yes", "no"],
+          "example": "no"
+        },
+        "version": {
+          "type": "string",
+          "description": "Site version",
+          "example": "v26.1.4"
+        },
+        "canary": {
+          "type": "string",
+          "description": "Framework identifier",
+          "example": "Nuxt"
+        },
+        "target_feature_flags": {
+          "type": "object",
+          "description": "A/B testing and feature flags"
+        }
+      }
+    },
+
+    "domStats": {
+      "description": "Engagement statistics extracted from DOM text - NOT from a separate API",
+      "location": "Rendered page text (requires browser automation)",
+      "extractionMethod": "Parse page text using regex or DOM queries",
+      "note": "These values are rendered server-side, no separate API endpoint exists",
+      "fields": {
+        "daysListed": {
+          "type": "string",
+          "description": "Number of days the listing has been active",
+          "pattern": "^[0-9]+$",
+          "domText": "X days listed",
+          "example": "190"
+        },
+        "saves": {
+          "type": "string",
+          "description": "Number of users who saved/hearted this listing",
+          "pattern": "^[0-9]+$",
+          "domText": "X saves",
+          "example": "0"
+        }
+      },
+      "extractionCode": {
+        "javascript": "const text = document.body.innerText; const daysMatch = text.match(/(\\d+)\\s*days?\\s*listed/i); const savesMatch = text.match(/(\\d+)\\s*saves?/i); return { daysListed: daysMatch?.[1], saves: savesMatch?.[1] };"
+      }
+    },
+
+    "metaTags": {
+      "description": "Open Graph and Twitter meta tags available in page head",
+      "location": "<head> section meta tags",
+      "fields": {
+        "og:title": {
+          "type": "string",
+          "description": "Open Graph title",
+          "example": "2026 Forest River Rv Cherokee Timberwolf 39AL"
+        },
+        "og:description": {
+          "type": "string",
+          "description": "Open Graph description",
+          "example": "View pictures and details of this 2026 Forest River Rv Cherokee Timberwolf 39AL..."
+        },
+        "og:image": {
+          "type": "string",
+          "format": "uri",
+          "description": "Primary image URL",
+          "example": "https://cdn-media.tilabs.io/v1/media/6916e5a189fd1e894b0aa31a.jpg?width=1200&height=1200"
+        },
+        "og:url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Canonical URL"
+        },
+        "twitter:card": {
+          "type": "string",
+          "description": "Twitter card type",
+          "example": "summary_large_image"
+        },
+        "twitter:data1": {
+          "type": "string",
+          "description": "Price value",
+          "example": "$51,495"
+        },
+        "twitter:label1": {
+          "type": "string",
+          "description": "Price label",
+          "example": "Price"
+        },
+        "twitter:data2": {
+          "type": "string",
+          "description": "Location value",
+          "example": "Bunker Hill, IN"
+        },
+        "twitter:label2": {
+          "type": "string",
+          "description": "Location label",
+          "example": "Location"
+        }
+      }
+    },
+
+    "listingUrl": {
+      "description": "Listing URL structure",
+      "pattern": "https://www.rvtrader.com/listing/{year}-{make}-{model}-{listing_id}",
+      "components": {
+        "year": {
+          "type": "string",
+          "pattern": "^[0-9]{4}$",
+          "description": "4-digit year",
+          "example": "2026"
+        },
+        "make": {
+          "type": "string",
+          "description": "Manufacturer name with + for spaces",
+          "example": "Forest+River+Rv"
+        },
+        "model": {
+          "type": "string",
+          "description": "Model name with + for spaces",
+          "example": "Cherokee+Timberwolf+39AL"
+        },
+        "listing_id": {
+          "type": "string",
+          "pattern": "^[0-9]{10}$",
+          "description": "10-digit unique listing identifier",
+          "example": "5037070155"
+        }
+      },
+      "examples": [
+        "https://www.rvtrader.com/listing/2026-Forest+River+Rv-Cherokee+Timberwolf+39AL-5037070155",
+        "https://www.rvtrader.com/listing/2017-Forest+River+Rv-Rockwood+Roo+233S-5038800792",
+        "https://www.rvtrader.com/listing/2025-Airstream-Globetrotter+25FB-5038791341",
+        "https://www.rvtrader.com/listing/2027-Luxe-48FLB-5038865990"
+      ]
+    }
+  },
+
+  "sampleData": {
+    "trackingObject": {
+      "pagename": "detail",
+      "server": "ip-10-236-53-71.ec2.internal",
+      "channel": "find",
+      "ipaddy": "165.225.59.72",
+      "statename": "illinois",
+      "statecode": "il",
+      "city": "chicago",
+      "zipcode": "60616",
+      "lat": "41.85",
+      "long": "-87.63",
+      "adid": "5037070155",
+      "custid": "11287114",
+      "fueltype": "",
+      "length": "45 ft",
+      "listingsellertype": "dealer",
+      "type": "destination trailer",
+      "category": "",
+      "make": "forest river rv",
+      "model": "cherokee timberwolf 39al",
+      "condition": "new",
+      "prodprice": "51495",
+      "year": "2026",
+      "affid": "rv|3",
+      "listingtier": "premium_select",
+      "dma": "602-chicago",
+      "searchzip": "60616",
+      "dealerid": "3054198",
+      "tradeinValue": "no",
+      "tChat": "no",
+      "version": "v26.1.4",
+      "canary": "Nuxt"
+    },
+    "domStats": {
+      "daysListed": "190",
+      "saves": "0"
+    },
+    "listPageOffer": {
+      "@type": "Offer",
+      "url": "https://www.rvtrader.com/listing/2026-Forest+River+Rv-Cherokee+Timberwolf+39AL-5037070155",
+      "itemOffered": {
+        "@type": "Thing",
+        "name": "2026 Forest River Rv Cherokee Timberwolf 39AL",
+        "description": "",
+        "itemCondition": "New",
+        "priceCurrency": "USD",
+        "price": "51495.00"
+      }
+    },
+    "detailPageVehicle": {
+      "@context": "https://schema.org",
+      "@type": "Vehicle",
+      "name": "2026 Forest River Rv Destination Trailer",
+      "sku": "5037070155",
+      "url": "https://www.rvtrader.com/listing/2026-Forest-River-Rv-Cherokee-Timberwolf-39AL-5037070155",
+      "image": "https://cdn-media.tilabs.io/v1/media/6916e5a189fd1e894b0aa31a.jpg?width=1200&height=1200",
+      "brand": {
+        "@type": "Brand",
+        "name": "Forest River Rv"
+      },
+      "manufacturer": "Forest River Rv",
+      "model": "Cherokee Timberwolf 39AL",
+      "description": "2026 Forest River RV Cherokee Timberwolf 39AL, <p><strong>Forest River Timberwolf destination trailer 39AL highlights:</strong></p> <ul> <li>Large Loft Area</li> <li>L-Shaped Sofa</li> <li>Rear Kitchen</li> <li>Shower with a Seat</li> <li>King Bed</li> </ul>...",
+      "offers": {
+        "@type": "Offer",
+        "availability": "InStock",
+        "priceCurrency": "USD",
+        "price": "51495.00",
+        "itemCondition": "NewCondition"
+      }
+    },
+    "multipleListings": [
+      {
+        "name": "2026 Forest River Rv Cherokee Timberwolf 39AL",
+        "condition": "New",
+        "price": "51495.00",
+        "url": "https://www.rvtrader.com/listing/2026-Forest+River+Rv-Cherokee+Timberwolf+39AL-5037070155"
+      },
+      {
+        "name": "2026 Forest River Rv Cherokee Wolf Pup 14RKW",
+        "condition": "New",
+        "price": "14995.00",
+        "url": "https://www.rvtrader.com/listing/2026-Forest+River+Rv-Cherokee+Wolf+Pup+14RKW-5038346185"
+      },
+      {
+        "name": "2017 Forest River Rv Rockwood Roo 233S",
+        "condition": "Used",
+        "price": "12895.00",
+        "url": "https://www.rvtrader.com/listing/2017-Forest+River+Rv-Rockwood+Roo+233S-5038800792"
+      },
+      {
+        "name": "2027 Luxe 48FLB",
+        "condition": "New",
+        "price": "497961.00",
+        "url": "https://www.rvtrader.com/listing/2027-Luxe-48FLB-5038865990"
+      },
+      {
+        "name": "2018 Jayco Jay Flight SLX 195RB",
+        "condition": "Used",
+        "price": "8995.00",
+        "url": "https://www.rvtrader.com/listing/2018-Jayco-Jay+Flight+SLX+195RB-5038144169"
+      }
+    ]
+  },
+
+  "notes": {
+    "pagination": "36 listings per page, use ?page=N parameter (1-indexed)",
+    "totalListings": "Approximately 225,571 total listings",
+    "maxPages": "Approximately 6,266 pages",
+    "priceRange": "Prices range from ~$8,995 to ~$497,961+",
+    "jsonldLocation": "Single JSON-LD block per page in <script type=\"application/ld+json\"> tag",
+    "ssrFriendly": "Site uses Nuxt.js SSR - JSON-LD data available via simple HTTP requests without JS execution",
+    "engagementStats": "Saves/hearts and days listed are NOT available via a separate API - they are rendered server-side in the HTML and must be extracted from DOM text",
+    "trackingObject": "window.trk contains comprehensive listing metadata and is the most reliable source for structured data like type, length, dealerid, listingtier, etc.",
+    "dataExtractionPriority": [
+      "1. JSON-LD (schema.org Vehicle) - primary structured data via HTTP",
+      "2. window.trk object - comprehensive tracking data (requires JS)",
+      "3. Meta tags (og:*, twitter:*) - social/preview data via HTTP",
+      "4. DOM text parsing - engagement stats (requires JS)"
+    ]
+  }
+}

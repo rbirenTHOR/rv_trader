@@ -1,0 +1,1209 @@
+{
+  "asset": {
+    "id": "5037070155",
+    "sku": "5037070155",
+    "stock_number": "1004174",
+    "vin": "5ZT2CK4B1T1004174",
+    "name": "2026 Forest River Rv Destination Trailer",
+    "year": 2026,
+    "make": "Forest River Rv",
+    "model": "Cherokee Timberwolf 39AL",
+    "trim": "39AL",
+    "condition": "New",
+    "class": "Destination Trailer",
+    "category": null,
+    "price": 51495,
+    "price_formatted": "$51,495",
+    "msrp": "",
+    "location": "Bunker Hill, IN",
+    "city": "bunker hill",
+    "state": "IN",
+    "zip": "46914",
+    "length": 45,
+    "gross_vehicle_weight": 13180,
+    "sleeping_capacity": 6,
+    "slide_outs": 3,
+    "awnings": "yes",
+    "water_capacity": "40",
+    "self_contained": "Y",
+    "is_bunkhouse": "unknown",
+    "has_floorplan": true,
+    "mileage": null,
+    "fuel_type": null,
+    "engine_type": null,
+    "engine_size": null,
+    "drive_train": null,
+    "exterior_color": null,
+    "interior_color": null,
+    "dealer_id": "3054198",
+    "dealer_name": "RV Dynasty",
+    "dealer_phone": "1-877-306-0194",
+    "customer_id": "11287114",
+    "is_dealer": true,
+    "url": "https://www.rvtrader.com/listing/2026-Forest-River-Rv-Cherokee-Timberwolf-39AL-5037070155",
+    "dealer_link": "https://www.rvdynasty.com/product/new-2026-forest-river-rv-cherokee-timberwolf-39al-2767440-3",
+    "dealer_gallery_link": "/rv-dealers/detail/RV+Dynasty-3054198?&",
+    "photo_count": 72,
+    "photos": [
+      "https://cdn-media.tilabs.io/v1/media/6916e5a189fd1e894b0aa31a.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916e5b2d6d05735070d9a1e.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916e5cd561edf68440181f4.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916e5ec0a69a2c47603875b.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916e6061452a1c921022325.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916e6250a69a2c476038770.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916e64ab438018484087d68.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916e66c10edd4dca5078e89.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916e68fd6d05735070d9a49.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916e6b49c534cb18a0f9576.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916e6df3fac18ff480fd779.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916e70912c11eb9450e4058.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916e73b3b20766ca8045d07.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916e76eca2686c8e8021922.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916e7aa7eb61e977702f816.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916e7dfc3788ae5720085e5.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916e8190e472748780f5840.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916e855f6cd878e240924b2.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916e88a6931f36bf209074e.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916e8c1471dc24516044efc.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916e900471dc24516044f10.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916e93b24ee7878110331fb.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916e9753fac18ff480fd7ab.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916e9dc5a4a751c5a06ffd6.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916ea13fdceaeaa6a06527c.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916ea4ba284c6cb5c0b3d22.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916ea846c5295de5407a972.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916eabfad9b93c70505bc89.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916eafac6a7df0a6d021af6.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916eb33b48ee3f1cb0f11bb.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916eb69e1a14f315a0632b2.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916eba230504696b6022de4.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916ebd9ca07d0cbd30041a9.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916ec0f1d24c818790aa43f.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916ec410dcde556a40572ee.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916ec6f88fec8a05b0405f6.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916ec9fc554b7117a07cef4.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916ecce8d8dc0406d0d993a.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916ecf935420c3f310e1366.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916ed281388899add08caf4.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916ed55906350c8cb0bde56.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916ed7ea10d68fedd083234.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916eda9396807f06e088c73.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916edd378c9c8a196057bc8.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916ee00d4ddfa7371012ac4.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916ee258bf4856f960929e4.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916ee5058d381030c0357b8.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916ee7b53e91f6029059892.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916eea3548cdfcafe0a59ca.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916eec7caa3272a7e048fcb.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916eeef5a96c39fad0c86b8.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916ef18fc080246350e9048.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916ef44db272be2e30cfb36.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916ef6d9cd67d342b0bfc84.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916ef9dac7af9179406ec17.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916efc5d7b478ff390ba6a3.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916efee2269aeab5906057c.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916f01b0e2f64a95b036fc3.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916f0428f86bfb18506ef89.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916f067fd979405070e8321.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916f092895f9cc7ba0534fb.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916f0b53a123ab7650cbd3e.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916f0dcdcdb2247e208c74c.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916f100f71b0f44d00f7a29.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916f120592864ee00094e94.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916f1449b0bddb2aa0fa8f2.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916f16909d13fbd830949e6.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916f18a6aa520d79f03a227.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916f1ad40133337920cfa2f.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916f1d2698961339d00279b.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916f1ef5a084325090c538e.jpg",
+      "https://cdn-media.tilabs.io/v1/media/6916f20d16f944a99e06637b.jpg"
+    ],
+    "videos": [
+      {
+        "url": "/v1/videos/5012174848",
+        "id": "5012174848",
+        "videoUrl": "https://www.youtube.com/watch?v=SvEG9gbMSds",
+        "embedUrl": "https://www.youtube.com/embed/SvEG9gbMSds",
+        "youTubeVideoId": "SvEG9gbMSds",
+        "thumbnail": "https://img.youtube.com/vi/SvEG9gbMSds/maxresdefault.jpg"
+      },
+      {
+        "url": "/v1/videos/5012637992",
+        "id": "5012637992",
+        "videoUrl": "https://www.youtube.com/watch?v=XXfoHhI60b0",
+        "embedUrl": "https://www.youtube.com/embed/XXfoHhI60b0",
+        "youTubeVideoId": "XXfoHhI60b0",
+        "thumbnail": "https://img.youtube.com/vi/XXfoHhI60b0/maxresdefault.jpg"
+      },
+      {
+        "url": "/v1/videos/5006923898",
+        "id": "5006923898",
+        "videoUrl": "https://www.youtube.com/watch?v=QaWwwQ4jo0Q",
+        "embedUrl": "https://www.youtube.com/embed/QaWwwQ4jo0Q",
+        "youTubeVideoId": "QaWwwQ4jo0Q",
+        "thumbnail": "https://img.youtube.com/vi/QaWwwQ4jo0Q/maxresdefault.jpg"
+      }
+    ],
+    "main_image": "https://cdn-media.tilabs.io/v1/media/6916e5a189fd1e894b0aa31a.jpg?width=1200&height=1200",
+    "floorplan": "689ad491b875aa50e2052e17",
+    "description": "2026 Forest River RV Cherokee Timberwolf 39AL, <p><strong>Forest River Timberwolf destination trailer 39AL highlights:</strong></p> <ul> <li>Large Loft Area</li> <li>L-Shaped Sofa</li> <li>Rear Kitchen</li> <li>Shower with a Seat</li> <li>King Bed</li> </ul> <p> </p> <p>Time spent in this destination trailer will be time well spent! You will appreciate <strong>dual</strong> <strong>entry doors</strong> for maximum convenience, plus a <strong>spacious full bath</strong> that is close by the front private bedroom! Your crew can relax in the middle living area on the L-shaped sofa, and there are<strong> two lounge chairs</strong> for even more seating spaces. The rear kitchen will be any chef's dream with its <strong>island with six stools</strong> and all the appliances to create meals each day. This model also features triple slides so you can enjoy more space to relax!</p> <p> </p> <p>Enjoy comforts of home wherever you decide to roam in a Timberwolf destination trailer by Forest River. The <strong>seamless roofing membrane</strong> with heat reflectivity and power gear frame technology provide a durable foundation to your RV. You will also appreciate the exclusive solar thermo controlled reflective tinted safety glass windows, tire pressure monitors, and an <strong>on-demand tankless water heater</strong> to make extended stays easier than ever. Inside, the night shades will provide your crew with privacy, while the LED lights illuminate your space. There are seamless countertops, along with a premium bedding ensemble and comforter, <strong>USB charging stations</strong>, a supersized <strong>central A/C unit</strong>, and many more comforts!</p> <p> </p>",
+    "features": [
+      {
+        "id": "5000000064",
+        "name": ""
+      },
+      {
+        "id": "5000000137",
+        "name": ""
+      },
+      {
+        "id": "5000000159",
+        "name": ""
+      }
+    ],
+    "ad_options": null,
+    "factory_specs": null,
+    "listing_tier": "premium_select",
+    "dma": "",
+    "create_date": 1752152563,
+    "has_make_an_offer": true,
+    "is_willing_to_negotiate": true,
+    "has_video_chat": true,
+    "is_sms_available": true,
+    "is_chat_available": false,
+    "price_drop": false,
+    "price_drop_amount": null,
+    "all_details": {
+      "Condition": "New",
+      "Year": 2026,
+      "Make": "Forest River Rv",
+      "Model": "Cherokee Timberwolf 39AL",
+      "Class": "Destination Trailer",
+      "Location": "Bunker Hill, IN",
+      "Gross Vehicle Weight": "13,180",
+      "Stock Number": "1004174",
+      "VIN Number": "5ZT2CK4B1T1004174",
+      "Sleeping Capacity": "6",
+      "Bunkhouse Floorplan": "unknown",
+      "Floor Plan": true,
+      "Awnings": "yes",
+      "Slide Outs": "3",
+      "Length": "45",
+      "Water Capacity": "40",
+      "Self Contained": "Y",
+      "Price": "51,495"
+    }
+  },
+  "raw_ad_data": {
+    "id": "5037070155",
+    "loggedInUserCustomerId": null,
+    "adUrl": "https://www.rvtrader.com/listing/2026-Forest-River-Rv-Cherokee-Timberwolf-39AL-5037070155",
+    "buyNowFinioCreditInfo": "72w9yd4q",
+    "categoryName": null,
+    "className": "Destination Trailer",
+    "condition": "New",
+    "customerId": "11287114",
+    "dealerId": "3054198",
+    "dealerName": "RV Dynasty",
+    "features": [
+      {
+        "id": "5000000064",
+        "name": ""
+      },
+      {
+        "id": "5000000137",
+        "name": ""
+      },
+      {
+        "id": "5000000159",
+        "name": ""
+      }
+    ],
+    "makeAnOfferPrice": null,
+    "makeDisplayName": "Forest River Rv",
+    "modelDisplayName": "Cherokee Timberwolf 39AL",
+    "phone": "8773060194",
+    "photos": [
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916e5a189fd1e894b0aa31a.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916e5b2d6d05735070d9a1e.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916e5cd561edf68440181f4.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916e5ec0a69a2c47603875b.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916e6061452a1c921022325.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916e6250a69a2c476038770.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916e64ab438018484087d68.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916e66c10edd4dca5078e89.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916e68fd6d05735070d9a49.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916e6b49c534cb18a0f9576.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916e6df3fac18ff480fd779.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916e70912c11eb9450e4058.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916e73b3b20766ca8045d07.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916e76eca2686c8e8021922.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916e7aa7eb61e977702f816.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916e7dfc3788ae5720085e5.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916e8190e472748780f5840.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916e855f6cd878e240924b2.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916e88a6931f36bf209074e.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916e8c1471dc24516044efc.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916e900471dc24516044f10.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916e93b24ee7878110331fb.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916e9753fac18ff480fd7ab.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916e9dc5a4a751c5a06ffd6.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916ea13fdceaeaa6a06527c.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916ea4ba284c6cb5c0b3d22.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916ea846c5295de5407a972.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916eabfad9b93c70505bc89.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916eafac6a7df0a6d021af6.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916eb33b48ee3f1cb0f11bb.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916eb69e1a14f315a0632b2.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916eba230504696b6022de4.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916ebd9ca07d0cbd30041a9.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916ec0f1d24c818790aa43f.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916ec410dcde556a40572ee.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916ec6f88fec8a05b0405f6.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916ec9fc554b7117a07cef4.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916ecce8d8dc0406d0d993a.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916ecf935420c3f310e1366.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916ed281388899add08caf4.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916ed55906350c8cb0bde56.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916ed7ea10d68fedd083234.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916eda9396807f06e088c73.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916edd378c9c8a196057bc8.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916ee00d4ddfa7371012ac4.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916ee258bf4856f960929e4.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916ee5058d381030c0357b8.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916ee7b53e91f6029059892.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916eea3548cdfcafe0a59ca.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916eec7caa3272a7e048fcb.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916eeef5a96c39fad0c86b8.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916ef18fc080246350e9048.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916ef44db272be2e30cfb36.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916ef6d9cd67d342b0bfc84.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916ef9dac7af9179406ec17.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916efc5d7b478ff390ba6a3.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916efee2269aeab5906057c.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916f01b0e2f64a95b036fc3.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916f0428f86bfb18506ef89.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916f067fd979405070e8321.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916f092895f9cc7ba0534fb.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916f0b53a123ab7650cbd3e.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916f0dcdcdb2247e208c74c.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916f100f71b0f44d00f7a29.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916f120592864ee00094e94.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916f1449b0bddb2aa0fa8f2.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916f16909d13fbd830949e6.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916f18a6aa520d79f03a227.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916f1ad40133337920cfa2f.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916f1d2698961339d00279b.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916f1ef5a084325090c538e.jpg"
+      },
+      {
+        "url": "https://cdn-media.tilabs.io/v1/media/6916f20d16f944a99e06637b.jpg"
+      }
+    ],
+    "price": "$51,495",
+    "realmId": "3",
+    "state": "IN",
+    "trimName": "39AL",
+    "year": 2026,
+    "zip": "46914",
+    "formattedPhone": "1-877-306-0194",
+    "description": "2026 Forest River RV Cherokee Timberwolf 39AL, <p><strong>Forest River Timberwolf destination trailer 39AL highlights:</strong></p> <ul> <li>Large Loft Area</li> <li>L-Shaped Sofa</li> <li>Rear Kitchen</li> <li>Shower with a Seat</li> <li>King Bed</li> </ul> <p> </p> <p>Time spent in this destination trailer will be time well spent! You will appreciate <strong>dual</strong> <strong>entry doors</strong> for maximum convenience, plus a <strong>spacious full bath</strong> that is close by the front private bedroom! Your crew can relax in the middle living area on the L-shaped sofa, and there are<strong> two lounge chairs</strong> for even more seating spaces. The rear kitchen will be any chef's dream with its <strong>island with six stools</strong> and all the appliances to create meals each day. This model also features triple slides so you can enjoy more space to relax!</p> <p> </p> <p>Enjoy comforts of home wherever you decide to roam in a Timberwolf destination trailer by Forest River. The <strong>seamless roofing membrane</strong> with heat reflectivity and power gear frame technology provide a durable foundation to your RV. You will also appreciate the exclusive solar thermo controlled reflective tinted safety glass windows, tire pressure monitors, and an <strong>on-demand tankless water heater</strong> to make extended stays easier than ever. Inside, the night shades will provide your crew with privacy, while the LED lights illuminate your space. There are seamless countertops, along with a premium bedding ensemble and comforter, <strong>USB charging stations</strong>, a supersized <strong>central A/C unit</strong>, and many more comforts!</p> <p> </p>",
+    "miles": "0",
+    "location": "Bunker Hill, IN",
+    "locationDistance": "",
+    "details": {
+      "Condition": "New",
+      "Year": 2026,
+      "Make": "Forest River Rv",
+      "Model": "Cherokee Timberwolf 39AL",
+      "Class": "Destination Trailer",
+      "Location": "Bunker Hill, IN",
+      "Gross Vehicle Weight": "13,180",
+      "Stock Number": "1004174",
+      "VIN Number": "5ZT2CK4B1T1004174",
+      "Sleeping Capacity": "6",
+      "Bunkhouse Floorplan": "unknown",
+      "Floor Plan": true,
+      "Awnings": "yes",
+      "Slide Outs": "3",
+      "Length": "45",
+      "Water Capacity": "40",
+      "Self Contained": "Y",
+      "Price": "51,495"
+    },
+    "factorySpecs": null,
+    "localDelivery": "",
+    "emailSellerUrl": "/listing/email/seller/2026-Forest-River-Rv-Cherokee-Timberwolf-39AL-5037070155",
+    "dealerLink": "https://www.rvdynasty.com/product/new-2026-forest-river-rv-cherokee-timberwolf-39al-2767440-3",
+    "galleryLink": "/rv-dealers/detail/RV+Dynasty-3054198?&",
+    "realmUrl": "RVTrader.com",
+    "realmName": "RV Trader",
+    "isSmsAvailable": true,
+    "isChatAvailable": false,
+    "isDealerWebsiteAvailable": true,
+    "buyNow": {
+      "hasBuyNow": {
+        "status": "",
+        "availableToBuy": false
+      },
+      "buyNowUrl": ""
+    },
+    "isDealer": true,
+    "hasVHRAdFeature": false,
+    "adVhrType": "",
+    "hasPurchasedVhr": "",
+    "adId": "5037070155",
+    "adAttribs": {
+      "itemUrl": "https://www.rvdynasty.com/product/new-2026-forest-river-rv-cherokee-timberwolf-39al-2767440-3",
+      "makeAnOffer": "Y",
+      "msrp": "N",
+      "priceDisclaimer": "LOWEST PRICES NATIONWIDE! HUNDREDS OF RV'S IN STOCK! NATIONWIDE DELIVERY AVAILABLE! NO GAMES, NO JUNK FEES! RVDYNASTY.COM",
+      "requestAPrice": "N",
+      "tagLineIcon": "fa fa-truck",
+      "tagLineValue": "LOWEST NATIONWIDE - WILL SHIP!"
+    },
+    "isAffiliatePage": false,
+    "isReferredFromSearch": false,
+    "searchUrl": "/39al/rvs-for-sale?make=%7C440465&model=%7C764988662&trim=39AL%7C327828&zip=46914&radius=250",
+    "searchPageUrl": "/39al/rvs-for-sale?make=%7C440465&model=%7C764988662&trim=39AL%7C327828&zip=46914&radius=250",
+    "shortSearchText": "See all Forest River Rvs",
+    "shouldUseGalleryLinkStatus": false,
+    "additionalPricingTitle": "",
+    "pricingDetailsHtml": "",
+    "msrp": {
+      "data": {
+        "text": ""
+      }
+    },
+    "leasing": {
+      "isLease": false,
+      "leasingPriceText": "Leasing Available"
+    },
+    "dealerLogo": {
+      "url": "https://cdn-media.tilabs.io/v1/media/64ff8a24daa0dd61ff79bcca.jpg"
+    },
+    "basicPackagePrice": 79.95,
+    "placeAdLink": "/sell-rvs",
+    "tiChat": {
+      "enabled": false,
+      "data": {
+        "appUrl": "https://chat.traderinteractive.com",
+        "guestDisabled": false
+      }
+    },
+    "isCallConnectEnabled": true,
+    "callConnectCode": "9549",
+    "stockNumber": "1004174",
+    "hasMakeAnOffer": true,
+    "dealerMapUrl": "https://maps.google.com/maps?daddr=10001 S. US Highway 31 bunker hill, IN 46914",
+    "dealerLocationUrl": "https://maps.google.com/maps?daddr=10001 S. US Highway 31 Bunker Hill IN 46914",
+    "hasAdLocationLockdown": false,
+    "vrUrl": "",
+    "hasVrViewer": true,
+    "hasScanToCall": true,
+    "videoChat": true,
+    "isRequestAPrice": false,
+    "isFinancing": false,
+    "isWillingToNegotiate": true,
+    "financingCTAlabel": "Get Prequalified",
+    "financingUrlVdp": "https://vantagerecreationalfinance.com/RVTrader",
+    "floorplan": "689ad491b875aa50e2052e17",
+    "dealerLoyalty": {
+      "loyaltyIcon": null,
+      "loyaltyText": null
+    },
+    "badgeStatus": null,
+    "priceChangeStats": {
+      "hasPriceDrop": false,
+      "priceDropAmount": null,
+      "priceDropDate": "2026-01-08T14:53:44-05:00"
+    },
+    "trustedPartner": null,
+    "dealerHasHideInspection": false,
+    "adDetails": {
+      "condition": "New",
+      "year": 2026,
+      "makeDisplayName": "Forest River Rv",
+      "modelDisplayName": "Cherokee Timberwolf 39AL",
+      "className": "Destination Trailer",
+      "categoryName": null,
+      "categoryId": null,
+      "location": "Bunker Hill, IN",
+      "mileage": null,
+      "horsePower": null,
+      "fuelType": null,
+      "grossVehicleWeight": 13180,
+      "axles": null,
+      "realAxles": null,
+      "suspension": null,
+      "driveTrain": null,
+      "stockNumber": "1004174",
+      "manufacturerSerialNumber": "5ZT2CK4B1T1004174",
+      "primaryColor": null,
+      "secondaryColor": null,
+      "engineSize": null,
+      "engineType": null,
+      "sleepingCapacity": 6,
+      "isBunkhouse": "unknown",
+      "hasFloorplan": true,
+      "sleepOption": null,
+      "numAirConditioners": null,
+      "awnings": "yes",
+      "slideouts": 3,
+      "length": 45,
+      "engineManufacturer": null,
+      "waterCapacity": "40",
+      "levelingJacks": null,
+      "selfContained": "Y",
+      "propellerHours": null,
+      "airframeTime": null,
+      "registrationNumber": null,
+      "hours": null,
+      "exteriorColor": null,
+      "interiorColor": null,
+      "consignmentNum": null,
+      "transmissionMake": null,
+      "transmissionSpeed": null,
+      "price": 51495
+    },
+    "adOptions": null,
+    "city": "bunker hill",
+    "positionMapping": "{\"home\":{\"hero_desktop\":\"desk_home_billboard\",\"hero_mobile\":\"mob_home_billboard\",\"herotext_desktop\":\"home_custom_1\",\"herotext_mobile\":\"mob_home_custom_1\",\"leader_desktop\":\"home_incontent_1\",\"right1_desktop\":\"home_incontenet_2\",\"right2_desktop\":\"home_incontent_4\",\"spons_mobile\":\"mob_home_custom_2\",\"bottom_desktop\":\"home_incontent_3\",\"bottom_tablet\":\"home_incontent_3\",\"bottom_mobile\":\"mob_home_footer\",\"masthead_desktop\":\"home_billboard_1\"},\"search\":{\"footer_desktop\":\"desk_sales_sticky_footer\",\"footer_tablet\":\"desk_tab_sales_sticky_footer\",\"footer_mobile\":\"mob_sales_sticky_footer\",\"top_desktop\":\"desk_sales_leaderboard\",\"top_tablet\":\"desk_tab_sales_leaderboard\",\"top_mobile\":\"mob_sales_leaderboard\",\"left1_desktop\":\"desk_sales_mrec\",\"liner1_desktop\":\"desk_sales_incontent_1\",\"liner1_mobile\":\"mob_sales_incontent_1\",\"liner2_desktop\":\"desk_sales_incontent_2\",\"liner2_mobile\":\"mob_sales_incontent_2\",\"liner3_desktop\":\"desk_sales_incontent_3\",\"liner3_mobile\":\"mob_sales_incontent_3\",\"liner4_desktop\":\"desk_sale_incontent_4\",\"liner4_mobile\":\"mob_sale_incontent_4\",\"liner5_desktop\":\"desk_sale_incontent_5\",\"liner5_mobile\":\"mob_sale_incontent_5\",\"liner6_desktop\":\"desk_sale_incontent_6\",\"liner6_mobile\":\"mob_sale_incontent_6\",\"bottom_desktop\":\"desk_sales_footer\",\"bottom_tablet\":\"desk_tab_sales_footer\",\"bottom_mobile\":\"mob_sales_footer\",\"spons_desktop\":\"desk_sales_custom_1\",\"spons_tablet\":\"tab_sales_custom_1\",\"spons_mobile\":\"mob_sales_custom_1\"},\"vdp\":{\"top_desktop\":\"desktop_listing_leaderboard\",\"middle1_desktop\":\"desktop_listing_incontent_2\",\"right1_desktop\":\"desktop_listing_vrec\",\"right2_desktop\":\"desktop_listing_mrec\",\"bottom_desktop\":\"desktop_listing_footer\",\"textdetail_redesign\":\"RVTrader_VDP_Textlink_TextDetail\",\"middle_mobile\":\"mob_listing_incontent_1\",\"bottom_mobile\":\"mob_listing_footer\",\"photo_desktop\":\"desktop_listing_custom_2\",\"photo_mobile\":\"mob_listing_custom_2\",\"photo1_desktop\":\"RVTrader_VDP_StandardBanner_GalleryPhoto\",\"photo2_desktop\":\"RVTrader_VDP_StandardBanner_GalleryPhoto02\",\"photo3_desktop\":\"RVTrader_VDP_StandardBanner_GalleryPhoto03\",\"photo4_desktop\":\"RVTrader_VDP_StandardBanner_GalleryPhoto04\",\"photo5_desktop\":\"RVTrader_VDP_StandardBanner_GalleryPhoto05\",\"photo6_desktop\":\"RVTrader_VDP_StandardBanner_GalleryPhoto06\",\"photo7_desktop\":\"RVTrader_VDP_StandardBanner_GalleryPhoto07\",\"photo8_desktop\":\"RVTrader_VDP_StandardBanner_GalleryPhoto08\",\"photo9_desktop\":\"RVTrader_VDP_StandardBanner_GalleryPhoto09\",\"photo10_desktop\":\"RVTrader_VDP_StandardBanner_GalleryPhoto10\",\"photoExpanded1_desktop\":\"RVTrader_VDP_StandardBanner_ExpandedGallery01\",\"photoExpanded2_desktop\":\"RVTrader_VDP_StandardBanner_ExpandedGallery02\",\"photoExpanded3_desktop\":\"RVTrader_VDP_StandardBanner_ExpandedGallery03\",\"photoExpanded4_desktop\":\"RVTrader_VDP_StandardBanner_ExpandedGallery04\",\"photoExpanded5_desktop\":\"RVTrader_VDP_StandardBanner_ExpandedGallery05\",\"photoExpanded6_desktop\":\"RVTrader_VDP_StandardBanner_ExpandedGallery06\",\"photoExpanded7_desktop\":\"RVTrader_VDP_StandardBanner_ExpandedGallery07\",\"photoExpanded8_desktop\":\"RVTrader_VDP_StandardBanner_ExpandedGallery08\",\"photoExpanded9_desktop\":\"RVTrader_VDP_StandardBanner_ExpandedGallery09\",\"photoExpanded10_desktop\":\"RVTrader_VDP_StandardBanner_ExpandedGallery10\",\"slideshow_desktop\":\"desk_listing_slideshow\",\"slideshow_mobile\":\"mob_listing_slideshow\",\"weblinks_desktop\":\"desktop_listing_custom_1\",\"weblinks_mobile\":\"mob_listing_custom_1\",\"ins1_desktop\":\"RVTrader_VDP_Insurance_Insurance\"},\"dealer\":{\"right1_desktop\":\"desktop_dealer_vrec\",\"bottom_desktop\":\"desktop_dealer_incontent_1\"},\"dealersearch\":{\"right1_desktop\":\"desktop_result_vrec\",\"bottom_desktop\":\"desktop_result_footer\"},\"advancedsearch\":{\"right1_desktop\":\"desk_search_vrec\",\"right2_desktop\":\"desk_search_mrec_1\",\"right3_desktop\":\"desk_search_mrec_2\",\"bottom_desktop\":\"desk_search_footer\"},\"dealergallery\":{\"top_desktop\":\"desktop_gallery_incontent_1\",\"left1_desktop\":\"desktop_gallery_mrec\",\"top_mobile\":\"mobile_gallery_incontent_1\"},\"pricechecker\":{\"right1_desktop\":\"desk_price_mrec_1\",\"bottom_desktop\":\"desk_price_footer\"}}",
+    "makeId": [
+      "440465"
+    ],
+    "modelId": [
+      "764988662"
+    ],
+    "dealerGroupId": "5000004314",
+    "isVHRPurchaseAvailable": true,
+    "breadcrumbs": [
+      {
+        "text": "Home",
+        "link": "/"
+      },
+      {
+        "text": "Browse RVs",
+        "link": "/rvs-for-sale"
+      },
+      {
+        "text": "Destination Trailer",
+        "link": "/Destination-Trailer/rvs-for-sale?type=Destination%20Trailer%7C2440298575"
+      },
+      {
+        "text": "Forest River",
+        "link": "/Forest-River/rvs-for-sale?make=Forest%20River%7C440465"
+      },
+      {
+        "text": "CHEROKEE TIMBERWOLF",
+        "link": "/Forest-River-Cherokee-Timberwolf/rvs-for-sale?make=Forest%20River%7C440465&model=CHEROKEE%20TIMBERWOLF%7C764988662"
+      },
+      {
+        "text": "Indiana",
+        "link": "/Indiana-Forest-River-Cherokee-Timberwolf/rvs-for-sale?make=Forest%20River%7C440465&model=CHEROKEE%20TIMBERWOLF%7C764988662&state=Indiana%7CIN"
+      },
+      {
+        "text": "Bunker Hill",
+        "link": "/Bunker-Hill-Forest-River-Cherokee-Timberwolf/rvs-for-sale?make=Forest%20River%7C440465&model=CHEROKEE%20TIMBERWOLF%7C764988662&city=bunker%20hill&state=Indiana%7CIN"
+      },
+      {
+        "text": "2026",
+        "link": "/2026-Forest-River-Cherokee-Timberwolf/rvs-for-sale?make=Forest%20River%7C440465&model=CHEROKEE%20TIMBERWOLF%7C764988662&year=2026"
+      }
+    ],
+    "vantageApplicationFormUrl": "https://vantagerecreationalfinance.com/RVTrader",
+    "abData": {
+      "drill_down": false,
+      "shadow_logger_churn": true,
+      "componentized_publift_ads": false,
+      "monthly_payment": false,
+      "see_similar_listings": false
+    },
+    "hasHideDealerWebsiteLink": false,
+    "hasContactAtOnce": false,
+    "hasDigitalRetailingEnhancedLead": false,
+    "hasHideFactorySpecs": false,
+    "hasHideFinance": false,
+    "hasHideLoanCalculator": false,
+    "hasHideStandardFeatures": false,
+    "hasOptOutDealerGroupWebsite": false,
+    "hasRemoveLoanCalcDealerFinancing": false,
+    "hasRemoveVinFromDisplay": false,
+    "hasRequestPrice": true,
+    "hasRequestBestPrice": false,
+    "hasRequestQuotePreorder": false,
+    "hasRequestQuoteWeBuy": false,
+    "hasRequestTradeIn": false,
+    "hasShowListingAddress": false,
+    "hasSuggestedTrucks": false,
+    "hasTiChatGuestDisabled": false,
+    "hasTiChatManaged": false,
+    "hasTradeIn": false,
+    "hasShutOffAdvertising": false,
+    "hasTradeInFeature": false,
+    "hasTradertraxxCombinedExperience": true,
+    "hasVideo": true,
+    "isHibernate": false,
+    "removeRequestPhotoVideo": false,
+    "hasMarketplaceFinance": true,
+    "hasVideoChatRequest": true,
+    "leadButtons": {
+      "sms": {
+        "enabled": true,
+        "data": {
+          "href": "sms://8559502588?&body=Hello.%20I%20am%20interested%20in%20your%202026%20Forest%20River%20Rv%20Cherokee%20Timberwolf%2039AL%20for%20sale%20on%20RVTrader.com%20with%20stock%20number%201004174."
+        }
+      },
+      "phone": {
+        "enabled": true
+      },
+      "email": {
+        "enabled": true,
+        "data": {
+          "href": "/listing/email/seller/2026-Forest-River-Rv-Cherokee-Timberwolf-39AL-5037070155"
+        }
+      }
+    },
+    "isHibernated": false,
+    "buyNowUrl": "",
+    "categories": "",
+    "priceHeader": {
+      "price": "<span id=\"addetail-price-detail\" js-selector=\"addetail-price\" class=\"addetail-price\">$51,495</span>",
+      "emailSeller": {
+        "enabled": true,
+        "data": {
+          "track": "Contact Seller Button",
+          "uniqueIdentifier": "Email-Standard-ListingDetail-Modal-Desktop-StickyHeader"
+        }
+      },
+      "call": {
+        "enabled": true,
+        "data": {
+          "track": "Listing Phone Number Click - Sticky Header",
+          "phone": "1-877-306-0194"
+        }
+      }
+    },
+    "isRental": false,
+    "thumbnail": "https://cdn-media.tilabs.io/v1/media/6916e5a189fd1e894b0aa31a.jpg?width=75&height=50&quality=60&bestfit=true&upsize=true&blurBackground=true&blurValue=100",
+    "clickToWeb": "",
+    "interstitial": "",
+    "interstitialDataTrack": "",
+    "bestPriceUrl": "/listing/email/bestprice/2026-Forest-River-Rv-Cherokee-Timberwolf-39AL-5037070155",
+    "createDate": 1752152563,
+    "dealerPhoneNumbers": [
+      {
+        "type": "feed",
+        "number": "7656898815",
+        "phoneText": "Business"
+      },
+      {
+        "type": "callSource",
+        "number": "8773060194",
+        "phoneText": "Toll Free"
+      },
+      {
+        "type": "twilioForwarding",
+        "number": "7653477577",
+        "phoneText": ""
+      },
+      {
+        "type": "twilioGateway",
+        "number": "8559502588",
+        "phoneText": ""
+      }
+    ],
+    "media": {
+      "videos": [
+        {
+          "url": "/v1/videos/5012174848",
+          "id": "5012174848",
+          "videoUrl": "https://www.youtube.com/watch?v=SvEG9gbMSds",
+          "embedUrl": "https://www.youtube.com/embed/SvEG9gbMSds",
+          "youTubeVideoId": "SvEG9gbMSds",
+          "thumbnail": "https://img.youtube.com/vi/SvEG9gbMSds/maxresdefault.jpg"
+        },
+        {
+          "url": "/v1/videos/5012637992",
+          "id": "5012637992",
+          "videoUrl": "https://www.youtube.com/watch?v=XXfoHhI60b0",
+          "embedUrl": "https://www.youtube.com/embed/XXfoHhI60b0",
+          "youTubeVideoId": "XXfoHhI60b0",
+          "thumbnail": "https://img.youtube.com/vi/XXfoHhI60b0/maxresdefault.jpg"
+        },
+        {
+          "url": "/v1/videos/5006923898",
+          "id": "5006923898",
+          "videoUrl": "https://www.youtube.com/watch?v=QaWwwQ4jo0Q",
+          "embedUrl": "https://www.youtube.com/embed/QaWwwQ4jo0Q",
+          "youTubeVideoId": "QaWwwQ4jo0Q",
+          "thumbnail": "https://img.youtube.com/vi/QaWwwQ4jo0Q/maxresdefault.jpg"
+        }
+      ],
+      "photos": [
+        "6916e5a189fd1e894b0aa31a",
+        "6916e5b2d6d05735070d9a1e",
+        "6916e5cd561edf68440181f4",
+        "6916e5ec0a69a2c47603875b",
+        "6916e6061452a1c921022325",
+        "6916e6250a69a2c476038770",
+        "6916e64ab438018484087d68",
+        "6916e66c10edd4dca5078e89",
+        "6916e68fd6d05735070d9a49",
+        "6916e6b49c534cb18a0f9576",
+        "6916e6df3fac18ff480fd779",
+        "6916e70912c11eb9450e4058",
+        "6916e73b3b20766ca8045d07",
+        "6916e76eca2686c8e8021922",
+        "6916e7aa7eb61e977702f816",
+        "6916e7dfc3788ae5720085e5",
+        "6916e8190e472748780f5840",
+        "6916e855f6cd878e240924b2",
+        "6916e88a6931f36bf209074e",
+        "6916e8c1471dc24516044efc",
+        "6916e900471dc24516044f10",
+        "6916e93b24ee7878110331fb",
+        "6916e9753fac18ff480fd7ab",
+        "6916e9dc5a4a751c5a06ffd6",
+        "6916ea13fdceaeaa6a06527c",
+        "6916ea4ba284c6cb5c0b3d22",
+        "6916ea846c5295de5407a972",
+        "6916eabfad9b93c70505bc89",
+        "6916eafac6a7df0a6d021af6",
+        "6916eb33b48ee3f1cb0f11bb",
+        "6916eb69e1a14f315a0632b2",
+        "6916eba230504696b6022de4",
+        "6916ebd9ca07d0cbd30041a9",
+        "6916ec0f1d24c818790aa43f",
+        "6916ec410dcde556a40572ee",
+        "6916ec6f88fec8a05b0405f6",
+        "6916ec9fc554b7117a07cef4",
+        "6916ecce8d8dc0406d0d993a",
+        "6916ecf935420c3f310e1366",
+        "6916ed281388899add08caf4",
+        "6916ed55906350c8cb0bde56",
+        "6916ed7ea10d68fedd083234",
+        "6916eda9396807f06e088c73",
+        "6916edd378c9c8a196057bc8",
+        "6916ee00d4ddfa7371012ac4",
+        "6916ee258bf4856f960929e4",
+        "6916ee5058d381030c0357b8",
+        "6916ee7b53e91f6029059892",
+        "6916eea3548cdfcafe0a59ca",
+        "6916eec7caa3272a7e048fcb",
+        "6916eeef5a96c39fad0c86b8",
+        "6916ef18fc080246350e9048",
+        "6916ef44db272be2e30cfb36",
+        "6916ef6d9cd67d342b0bfc84",
+        "6916ef9dac7af9179406ec17",
+        "6916efc5d7b478ff390ba6a3",
+        "6916efee2269aeab5906057c",
+        "6916f01b0e2f64a95b036fc3",
+        "6916f0428f86bfb18506ef89",
+        "6916f067fd979405070e8321",
+        "6916f092895f9cc7ba0534fb",
+        "6916f0b53a123ab7650cbd3e",
+        "6916f0dcdcdb2247e208c74c",
+        "6916f100f71b0f44d00f7a29",
+        "6916f120592864ee00094e94",
+        "6916f1449b0bddb2aa0fa8f2",
+        "6916f16909d13fbd830949e6",
+        "6916f18a6aa520d79f03a227",
+        "6916f1ad40133337920cfa2f",
+        "6916f1d2698961339d00279b",
+        "6916f1ef5a084325090c538e",
+        "6916f20d16f944a99e06637b"
+      ],
+      "photoViewerEndBanner": {
+        "enabled": true
+      }
+    },
+    "anchorLinks": {
+      "loanCalc": {
+        "enabled": true
+      }
+    },
+    "partnerOffers": {
+      "enabled": false,
+      "data": {
+        "financingUrlVdp": "https://vantagerecreationalfinance.com/RVTrader",
+        "getFinancingCtaLabel": "Get Prequalified"
+      }
+    },
+    "tradeIn": {
+      "enabled": false,
+      "data": {
+        "tradeIndetails": [],
+        "tradeSavings": 0,
+        "tradeInYear": "",
+        "tradeInMake": "",
+        "tradeInModel": "",
+        "tradeInCleanTradePrice": 0,
+        "tradeinRoughTradePrice": 0
+      }
+    },
+    "tagline": {
+      "enabled": true,
+      "data": {
+        "tagline": "LOWEST NATIONWIDE - WILL SHIP!",
+        "tagIcon": "fas fa-truck"
+      }
+    },
+    "dealerContactLinks": {
+      "sms": {
+        "enabled": true,
+        "data": {
+          "smsGatewayNumber": "8559502588",
+          "smsLeadBody": "Hello.%20I%20am%20interested%20in%20your%202026%20Forest%20River%20Rv%20Cherokee%20Timberwolf%2039AL%20for%20sale%20on%20RVTrader.com%20with%20stock%20number%201004174."
+        }
+      },
+      "videoChat": {
+        "enabled": true,
+        "data": {
+          "track": "videochatDetail",
+          "uniqueIdentifier": "Email-VideoChat-EmailForm-Modal-Top"
+        }
+      }
+    },
+    "bestPrice": {
+      "data": []
+    },
+    "smsGatewayNumber": "8559502588",
+    "dealerLocation": {
+      "enabled": true,
+      "data": {
+        "location": "Bunker Hill, IN"
+      }
+    },
+    "insiderReviews": {
+      "reviewText": "Reviews",
+      "url": "https://www.rvinsider.com/Forest River-RV-Reviews?make=Forest River",
+      "writeReviewLink": "https://www.rvinsider.com/Write-RV-Review"
+    },
+    "brochure": {
+      "enabled": true,
+      "data": {
+        "text": ""
+      }
+    },
+    "loanCalc": {
+      "data": {
+        "sponsorDealerText": "Sponsored By RV Dynasty",
+        "loanLengthOptions": [
+          24,
+          36,
+          48,
+          60,
+          72
+        ],
+        "defaultLoanLength": 48,
+        "showLoanCalculatorLearnMoreButton": true,
+        "showDealerLogo": true
+      }
+    },
+    "inspection": {
+      "enabled": false,
+      "data": {
+        "isPAAInspectionReportElastic": false,
+        "isPAAInspectionReport": null
+      }
+    },
+    "emailForm": {
+      "data": {
+        "hideDealerLinks": false,
+        "dealerLink": "https://www.rvdynasty.com/product/new-2026-forest-river-rv-cherokee-timberwolf-39al-2767440-3",
+        "formZip": "",
+        "formNewsletter": null,
+        "fields": [
+          {
+            "field": "zip_code",
+            "value": "46914",
+            "type": "hidden"
+          },
+          {
+            "field": "year",
+            "value": 2026,
+            "type": "hidden"
+          },
+          {
+            "field": "make",
+            "value": "Forest River Rv",
+            "type": "hidden"
+          },
+          {
+            "field": "model",
+            "value": "Cherokee Timberwolf 39AL",
+            "type": "hidden"
+          },
+          {
+            "field": "trim",
+            "value": "39AL",
+            "type": "hidden"
+          },
+          {
+            "field": "class",
+            "value": "Destination Trailer",
+            "type": "hidden"
+          },
+          {
+            "field": "category",
+            "value": "",
+            "type": "hidden"
+          },
+          {
+            "field": "price",
+            "value": "$51,495",
+            "type": "hidden"
+          },
+          {
+            "field": "state",
+            "value": "IN",
+            "type": "hidden"
+          },
+          {
+            "field": "dealer",
+            "value": "3054198",
+            "type": "hidden"
+          },
+          {
+            "field": "fuelType",
+            "value": "",
+            "type": "hidden"
+          },
+          {
+            "field": "length",
+            "value": 45,
+            "type": "hidden"
+          },
+          {
+            "field": "grossVehicleWeight",
+            "value": 13180,
+            "type": "hidden"
+          },
+          {
+            "field": "categoryId",
+            "value": "",
+            "type": "hidden"
+          },
+          {
+            "field": "classId",
+            "value": "2440298575",
+            "type": "hidden"
+          },
+          {
+            "field": "makeId",
+            "value": "440465",
+            "type": "hidden"
+          },
+          {
+            "field": "modelId",
+            "value": "764988662",
+            "type": "hidden"
+          },
+          {
+            "field": "dealerId",
+            "value": "3054198",
+            "type": "hidden"
+          },
+          {
+            "field": "dealerGroupId",
+            "value": 5000004314,
+            "type": "hidden"
+          },
+          {
+            "field": "first_name",
+            "type": "text",
+            "value": "",
+            "required": true,
+            "validation": "[A-Z a-z]+"
+          },
+          {
+            "field": "last_name",
+            "type": "text",
+            "value": "",
+            "required": true,
+            "validation": "[A-Za-z0-9- ]+"
+          },
+          {
+            "field": "email",
+            "type": "email",
+            "value": "",
+            "required": true,
+            "validation": "[A-Za-z0-9.+_%-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,}"
+          },
+          {
+            "field": "phone",
+            "type": "tel",
+            "value": "",
+            "validation": "([1-9]d{2})sd{3}-d{4}"
+          },
+          {
+            "field": "subject",
+            "type": "hidden",
+            "value": "Mobile Customer Request"
+          },
+          {
+            "field": "adid",
+            "type": "hidden",
+            "value": "5037070155"
+          }
+        ],
+        "showDealerPhoneSmsText": true,
+        "dealerPhoneSmsText": "Call <a href=\"tel:1-877-306-0194\" data-track=\"Listing Phone Number Click - Contact Form\">1-877-306-0194</a> <span class=\"destkopTxt\"> or </span> <span class=\"destkopTxt\"> <a class=\"btnInvert smsSellerBtn desktopTextBtn\"\n data-adid=\"5037070155\"\n data-custid=\"11287114\"\n data-dealernumber=\"1-855-950-2588\"\n data-dlrid=\"3054198\"\n data-toggle=\"tooltip\"\n data-track=\"SMS Seller Button\"\n href=\"#\"\n title=\"Text message seller about this 2026 Forest River Rv Cherokee Timberwolf 39AL for sale\"\n rel=\"nofollow\">\n Text<span class=\"far fa-comments\"></span>\n </a></span>",
+        "dealerLogo": "https://cdn-media.tilabs.io/v1/media/64ff8a24daa0dd61ff79bcca.jpg",
+        "showDealerLogo": true,
+        "dealerRepeatTag": "<p><strong>RVBusiness Top 50 Dealer!</strong></p><p><strong>Riverstone #1 Dealer in North America 2024</strong></p><p><strong>Timberwolf #1 Dealer in North America 2024</strong></p><ul><li><i><strong>Best Price Guarantee - Lowest Prices on the Internet</strong></i></li></ul><p>Best Price Guarantee - Lowest Prices on the Internet! - <strong> Riverstone, Cherokee, Grey Wolf, Wolf Pup, Timberwolf, Arctic Wolf, Alpha Wolf, Wolf Pack, Cedar Creek, Cottage, Columbus, Freedom Express, Work & Play, Crusader, Sanibel, Tracer, Lacrosse, Sandpiper,, Four Winds, Sabre, Catalina, Della Terra, and Rogue!</strong></p>",
+        "showPhone": true,
+        "showDealerWebsiteLink": true,
+        "dealerWebsiteLinkDwsclixAdid": "5037070155",
+        "dealerWebsiteLinkDwsclixDlrid": "3054198",
+        "dealerWebsiteLinkTrack": "Detail-Seller Website Link",
+        "showDealerInventoryLink": true,
+        "dealerGalleryLink": "/rv-dealers/detail/RV+Dynasty-3054198?&",
+        "showDealerMapLink": true,
+        "dealerMapUrlTrack": "Detail-Seller Map Link",
+        "showVideoChatLink": true,
+        "videoChatLinkTrack": "videochatDetail",
+        "videoChatLinkUniqueIdentifier": "Email-VideoChat-EmailForm-Modal-Top",
+        "showSmsLink": true,
+        "smsNumber": "1-855-950-2588",
+        "smsLinkTrack": "Detail-Top Bar-Call or Text Link",
+        "textAreaMessage": "Is this 2026 Forest River Rv Cherokee Timberwolf 39AL still available?",
+        "showRequestPhotoInput": true,
+        "showRequestVideoInput": true,
+        "showNewsletterInput": true,
+        "submitButtonText": "Send Email"
+      }
+    },
+    "footer": {
+      "data": {
+        "socialLinks": {
+          "facebook": "https://www.facebook.com/rvtrader",
+          "instagram": "https://www.instagram.com/RVTrader",
+          "twitter": "https://twitter.com/RVTrder",
+          "linkedin": "https://www.linkedin.com/showcase/rvtrader/",
+          "pinterest": "https://www.pinterest.com/RVTrader",
+          "youtube": "https://www.youtube.com/@RVTraderOfficial"
+        },
+        "sitemapLinkUrl": "/research/about/sitemap",
+        "feedbackMobileUrl": "mailto:rvmobilefeedback@rvtrader.com?subject=Mobile RV Trader Site Feedback&amp;body=%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A-------------------------%0D%0AFor Development Use. Do Not Delete%0D%0AMozilla%2F5.0+%28Windows+NT+10.0%3B+Win64%3B+x64%29+AppleWebKit%2F537.36+%28KHTML%2C+like+Gecko%29+Chrome%2F56.0.2924.87+Safari%2F537.36%0D%0Ahttps%3A%2F%2Fwww.rvtrader.com%2F%0D%0AsName: www.rvtrader.com rHost: 204.154.44.36",
+        "feedbackTabletUrl": "mailto:rvmobilefeedback@rvtrader.com?subject=Tablet RV Trader Site Feedback&amp;body=%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A-------------------------%0D%0AFor Development Use. Do Not Delete%0D%0AMozilla%2F5.0+%28Windows+NT+10.0%3B+Win64%3B+x64%29+AppleWebKit%2F537.36+%28KHTML%2C+like+Gecko%29+Chrome%2F56.0.2924.87+Safari%2F537.36%0D%0Ahttps%3A%2F%2Fwww.rvtrader.com%2F%0D%0AsName: www.rvtrader.com rHost: 204.154.44.36",
+        "feedbackDesktopUrl": "mailto:rvmobilefeedback@rvtrader.com?subject=Desktop RV Trader Site Feedback&amp;body=%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A-------------------------%0D%0AFor Development Use. Do Not Delete%0D%0AMozilla%2F5.0+%28Windows+NT+10.0%3B+Win64%3B+x64%29+AppleWebKit%2F537.36+%28KHTML%2C+like+Gecko%29+Chrome%2F56.0.2924.87+Safari%2F537.36%0D%0Ahttps%3A%2F%2Fwww.rvtrader.com%2F%0D%0AsName: www.rvtrader.com rHost: 204.154.44.36",
+        "dealerLoginUrl": "https://dealers.rvtrader.com",
+        "dealerSearchUrl": "/rv-dealers",
+        "showConsumerApp": true,
+        "consumerAppLinkGoogle": "https://play.google.com/store/apps/details?id=com.DWS.rvtrader&hl=en_US",
+        "consumerAppLinkApple": "https://itunes.apple.com/us/app/rv-trader-shop-rvs/id338887129?mt=8",
+        "consumerAppImageGoogle": "https://cdn-static.tilabs.io/marketplace/common/icons/google-play-badge.webp",
+        "consumerAppImageApple": "https://cdn-static.tilabs.io/marketplace/common/icons/apple-store-badge.webp",
+        "aboutLink": "/research/about",
+        "communityGuidelinesLink": "/research/about/community-guidelines",
+        "showBlogLink": true,
+        "blogLink": "/blog/",
+        "blogLinkTrack": "Footer-RV Trader-Blog",
+        "mediaKitUrl": "https://rvtradermediakit.com"
+      }
+    },
+    "affiliateLinksNoFollowAttributes": "nofollow noopener"
+  },
+  "raw_jsonld": {
+    "@context": "https://schema.org",
+    "@type": "Vehicle",
+    "name": "2026 Forest River Rv Destination Trailer",
+    "sku": "5037070155",
+    "url": "https://www.rvtrader.com/listing/2026-Forest-River-Rv-Cherokee-Timberwolf-39AL-5037070155",
+    "image": "https://cdn-media.tilabs.io/v1/media/6916e5a189fd1e894b0aa31a.jpg?width=1200&height=1200",
+    "brand": {
+      "@type": "Brand",
+      "name": "Forest River Rv"
+    },
+    "manufacturer": "Forest River Rv",
+    "model": "Cherokee Timberwolf 39AL",
+    "description": "2026 Forest River RV Cherokee Timberwolf 39AL, <p><strong>Forest River Timberwolf destination trailer 39AL highlights:</strong></p> <ul> <li>Large Loft Area</li> <li>L-Shaped Sofa</li> <li>Rear Kitchen</li> <li>Shower with a Seat</li> <li>King Bed</li> </ul> <p> </p> <p>Time spent in this destination trailer will be time well spent! You will appreciate <strong>dual</strong> <strong>entry doors</strong> for maximum convenience, plus a <strong>spacious full bath</strong> that is close by the front private bedroom! Your crew can relax in the middle living area on the L-shaped sofa, and there are<strong> two lounge chairs</strong> for even more seating spaces. The rear kitchen will be any chef's dream with its <strong>island with six stools</strong> and all the appliances to create meals each day. This model also features triple slides so you can enjoy more space to relax!</p> <p> </p> <p>Enjoy comforts of home wherever you decide to roam in a Timberwolf destination trailer by Forest River. The <strong>seamless roofing membrane</strong> with heat reflectivity and power gear frame technology provide a durable foundation to your RV. You will also appreciate the exclusive solar thermo controlled reflective tinted safety glass windows, tire pressure monitors, and an <strong>on-demand tankless water heater</strong> to make extended stays easier than ever. Inside, the night shades will provide your crew with privacy, while the LED lights illuminate your space. There are seamless countertops, along with a premium bedding ensemble and comforter, <strong>USB charging stations</strong>, a supersized <strong>central A/C unit</strong>, and many more comforts!</p> <p> </p>",
+    "offers": {
+      "@type": "Offer",
+      "availability": "InStock",
+      "priceCurrency": "USD",
+      "price": "51495.00",
+      "itemCondition": "NewCondition"
+    }
+  },
+  "raw_tracking": {
+    "pagename": "detail",
+    "server": "ip-10-236-54-244.ec2.internal",
+    "channel": "find",
+    "ipaddy": "98.32.167.205",
+    "statename": "",
+    "statecode": "",
+    "city": "",
+    "zipcode": "",
+    "lat": "",
+    "long": "",
+    "adid": "5037070155",
+    "custid": "11287114",
+    "fueltype": "",
+    "length": "45 ft",
+    "listingsellertype": "dealer",
+    "type": "destination trailer",
+    "category": "",
+    "make": "forest river rv",
+    "model": "cherokee timberwolf 39al",
+    "condition": "new",
+    "prodprice": "51495",
+    "year": "2026",
+    "affid": "rv|3",
+    "products": "3054198;5037070155,Text Links;Insurance;;;event33=1,Text Links;Financing;;;event33=1,Text Links;Resorts;;;event33=1,Text Links;Warranty;;;event33=1",
+    "listingtier": "premium_select",
+    "dma": "",
+    "dealDesignationRadius": "",
+    "dealDesignationType": "",
+    "searchzip": "",
+    "dealerid": "3054198",
+    "tradeinValue": "no",
+    "tChat": "no",
+    "version": "v26.1.4",
+    "canary": "Vue3"
+  },
+  "source": "adData"
+}
