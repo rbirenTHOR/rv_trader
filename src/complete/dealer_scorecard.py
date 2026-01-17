@@ -68,7 +68,10 @@ BENCHMARKS = {
 
 # Ranking algorithm correlations (from RANKING_ALGORITHM.md and MERCH_SCORE.md)
 # Negative correlation = higher value = better rank
-# Total impact = relevance_pts + merch_pts (both contribute to final ranking)
+# Merch multiplier: +10 merch pts ≈ +202 relevance pts (20.2x multiplier)
+# Total impact = relevance_pts + (merch_pts * 20.2) - the TRUE combined effect
+MERCH_TO_RELEVANCE_MULTIPLIER = 20.2  # Derived from correlation analysis
+
 RANKING_CORRELATIONS = {
     'has_price': {'correlation': -0.840, 'relevance_pts': 194, 'merch_pts': 5, 'label': 'Price Listed'},
     'has_vin': {'correlation': -0.689, 'relevance_pts': 165, 'merch_pts': 6, 'label': 'VIN Disclosed'},
@@ -76,7 +79,7 @@ RANKING_CORRELATIONS = {
     'photo_count': {'correlation': -0.611, 'relevance_pts': 195, 'merch_pts': 30, 'label': '35+ Photos'},
     'has_floorplan': {'correlation': -0.300, 'relevance_pts': 50, 'merch_pts': 12, 'label': 'Floorplan'},
 }
-# Note: Removed 'merch_score' as a separate factor since it's the SUM of the above factors
+# Note: description_length contributes ~45 merch pts but can't be measured from search API
 
 
 # =============================================================================
@@ -275,12 +278,16 @@ def calculate_ranking_factor_comparison(thor: Dict, comp: Dict) -> List[Dict]:
         winning = gap > 0
         importance = abs(config['correlation'])
 
-        total_pts = config['relevance_pts'] + config.get('merch_pts', 0)
+        # Calculate true total impact: direct relevance + (merch * multiplier)
+        merch_pts = config.get('merch_pts', 0)
+        merch_impact = int(merch_pts * MERCH_TO_RELEVANCE_MULTIPLIER)
+        total_pts = config['relevance_pts'] + merch_impact
         factors.append({
             'factor': config['label'],
             'correlation': config['correlation'],
             'relevance_pts': config['relevance_pts'],
-            'merch_pts': config.get('merch_pts', 0),
+            'merch_pts': merch_pts,
+            'merch_impact': merch_impact,
             'total_pts': total_pts,
             'thor_value': thor_val,
             'comp_value': comp_val,
