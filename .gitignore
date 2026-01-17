@@ -20,7 +20,9 @@ build/
 # Output data (large files)
 output/*.json
 output/*.csv
+output/scorecards/*.html
 !output/.gitkeep
+!output/scorecards/.gitkeep
 
 # Environment
 .env
