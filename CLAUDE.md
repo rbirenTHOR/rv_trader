@@ -23,7 +23,7 @@ rv_trader/
 ├── src/
 │   ├── rank_listings.py     # MAIN: Bulk ranked extraction (62 fields, ~5s/zip)
 │   ├── nuxt_extractor.py    # Single page extraction (Playwright)
-│   └── engagement_scraper.py # Views/saves extraction (needs work)
+│   └── engagement_scraper.py # Views/saves extraction (auto cookie refresh)
 ├── output/                  # Extracted data (CSV/JSON)
 ├── docs/
 │   ├── RANKING_ALGORITHM.md # **IMPORTANT: Complete ranking formula**
@@ -43,19 +43,18 @@ rv_trader/
 |--------|---------|--------|
 | `rank_listings.py` | Search results extraction (62 fields) | **COMPLETE** |
 | `nuxt_extractor.py` | Single page detail extraction | **COMPLETE** |
+| `engagement_scraper.py` | Views/saves extraction (auto cookie refresh) | **COMPLETE** |
 
 ### What Needs Work
 | Task | Status | Blocker |
 |------|--------|---------|
-| Engagement data (views/saves) | **BLOCKED** | API needs session cookies |
 | Detail page batch scraping | **PARTIAL** | HTTP blocked, Playwright slow |
 | Analytics pipeline | **NOT STARTED** | Waiting on data collection |
 
 ### Next Priority
-1. Fix `engagement_scraper.py` - cookies expire, need fresh datadome cookie
-2. Build batch detail scraper via ScraperAPI
-3. Merge search + detail + engagement data
-4. Build Thor brand comparison analytics
+1. Build batch detail scraper via ScraperAPI
+2. Merge search + detail + engagement data
+3. Build Thor brand comparison analytics
 
 ---
 
@@ -104,7 +103,7 @@ FINAL_RANK = sort_by(
 
 ## rank_listings.py
 
-Fast bulk extraction using async HTTP via ScraperAPI. Extracts all listings for each RV type in a zip code with search position ranks.
+Fast bulk extraction using async HTTP (direct API). Extracts all listings for each RV type in a zip code with search position ranks.
 
 ### Usage
 ```bash
@@ -153,25 +152,32 @@ python src/rank_listings.py --zip 60616 --radius 100     # Custom radius (defaul
 - API: `https://www.rvtrader.com/ssr-api/search-results?type={Type}|{Code}&page={N}&zip={Zip}&radius={R}&condition={N|U}`
 - 36 results per page, max 10 pages (360 cap)
 - Auto price chunking when >360 results ($5k increments)
-- 10 concurrent requests via ScraperAPI
+- 50 concurrent requests (direct API, ~2s per zip)
 
 ---
 
 ## engagement_scraper.py
 
-Extracts views/saves/days_listed from detail pages via API endpoints.
+Extracts views/saves from detail pages via API endpoints. **Cookies auto-refresh every 48 hours via browser.**
 
-### API Endpoints (Discovered)
+### Usage
+```bash
+python src/engagement_scraper.py                    # Uses cached cookies (auto-refresh if >48h)
+python src/engagement_scraper.py --limit 10         # Limit to 10 listings
+python src/engagement_scraper.py --refresh-cookies  # Force cookie refresh via browser
+```
+
+### Cookie System
+- Cookies stored in `.cookie_cache.json` (gitignored)
+- Auto-refresh via Playwright browser when >48 hours old
+- Browser opens, user browses RVTrader, then navigates to `rvtrader.com/done` to signal completion
+- Captures `datadome` and other required cookies automatically
+
+### API Endpoints
 ```
 Views: /gettiledata/addetail_listingstats/showadviewsstats?adId={id}
 Saves: /gettiledata/addetail_listingstats/showsavedadsstats?adId={id}
 ```
-
-### Current Issue
-Requires valid `datadome` session cookie. Cookies expire. Need to:
-1. Open browser to RVTrader
-2. Copy fresh `datadome` cookie from DevTools
-3. Update COOKIE constant in script
 
 ### Response Format
 ```json
@@ -213,11 +219,11 @@ Requires valid `datadome` session cookie. Cookies expire. Need to:
 
 ---
 
-## ScraperAPI
-All search requests route through ScraperAPI to avoid IP blocks.
+## ScraperAPI (NOT USED)
+Direct API is faster and works without blocks. ScraperAPI key retained for future use if needed.
+- **Status:** DISABLED - direct RVTrader API works fine
 - **API Key:** `ef66e965591986214ea474407eb0adc8`
-- **Endpoint:** `http://api.scraperapi.com?api_key=KEY&url=TARGET`
-- **Config:** Line 22 in `rank_listings.py`
+- **Note:** ScraperAPI has async integration issues with aiohttp; direct API is ~50ms vs ~1s per request
 
 ---
 
@@ -249,4 +255,4 @@ Consider consolidating into single `detail_batch_scraper.py`.
 2. **Distance is NOT a factor** - Premium at 47mi beats non-premium at 25mi
 3. **Description truncated in search** - All 150 chars, can't analyze from search results
 4. **Full description matters for merch_score** - Need detail pages
-5. **Engagement data requires browser session** - API needs datadome cookie
+5. **Engagement data working** - Auto cookie refresh via Playwright browser (48h expiry)

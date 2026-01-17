@@ -26,6 +26,9 @@ output/*.csv
 .env
 *.env
 
+# Cookie cache (contains session cookies)
+.cookie_cache.json
+
 # OS
 .DS_Store
 Thumbs.db
