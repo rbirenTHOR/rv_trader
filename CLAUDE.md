@@ -8,17 +8,20 @@ Extract RV listing data from RVTrader.com to help **Thor Industries brands** (Th
 # 1. Get search rankings (fast, no cookies needed)
 python src/complete/rank_listings.py --zip 60616
 
-# 2. Generate Thor brand analysis v2 (comprehensive CSV + manufacturer reports)
+# 2. Generate visual dealer scorecards (SHAREABLE HTML!)
+python src/complete/dealer_scorecard.py
+
+# 3. Generate Thor brand analysis v2 (comprehensive CSV + manufacturer reports)
 python src/complete/thor_brand_analysis_v2.py
 
 # Optional: Additional data collection
-# 3. Refresh cookies if needed (opens browser)
+# 4. Refresh cookies if needed (opens browser)
 python src/complete/engagement_scraper.py --refresh-cookies
 
-# 4. Get full descriptions from detail pages
+# 5. Get full descriptions from detail pages
 python src/complete/description_scraper.py --limit 50
 
-# 5. Get engagement stats (views/saves)
+# 6. Get engagement stats (views/saves)
 python src/complete/engagement_scraper.py --limit 50
 ```
 
@@ -34,8 +37,12 @@ rv_trader/
 │       ├── description_scraper.py   # Full description + specs extraction (~2s/listing)
 │       ├── engagement_scraper.py    # Views/saves extraction (auto cookie refresh)
 │       ├── thor_brand_analysis.py   # Thor brand analysis v1 (basic report)
-│       └── thor_brand_analysis_v2.py # **NEW** Comprehensive analysis with tier ceilings
+│       ├── thor_brand_analysis_v2.py # Comprehensive analysis with tier ceilings
+│       └── dealer_scorecard.py      # **NEW** Visual HTML scorecards (shareable!)
 ├── output/                  # Extracted data (CSV/JSON)
+│   ├── scorecards/                            # **SHAREABLE** Visual dealer scorecards
+│   │   ├── index_{timestamp}.html             # Summary page with all dealers
+│   │   └── scorecard_{dealer}_{ts}.html       # Per-dealer visual scorecard
 │   ├── thor_actions_{timestamp}.csv           # Comprehensive CSV with all actions
 │   ├── thor_report_v2_{timestamp}.txt         # Summary report
 │   └── manufacturer_report_{brand}_{ts}.txt   # Per-manufacturer reports
@@ -60,6 +67,7 @@ rv_trader/
 | `engagement_scraper.py` | Views/saves extraction (auto cookie refresh) | **COMPLETE** |
 | `thor_brand_analysis.py` | Thor brand analysis v1 (basic report) | **COMPLETE** |
 | `thor_brand_analysis_v2.py` | **Comprehensive analysis with tier ceilings + manufacturer reports** | **COMPLETE** |
+| `dealer_scorecard.py` | **Visual HTML scorecards for dealers - easy to share!** | **NEW** |
 
 ### What Needs Work
 | Task | Status | Notes |
@@ -369,6 +377,63 @@ Each Thor brand gets a report with:
 **Actions:** action_1 through action_5, total_relevance_gain, total_merch_gain, priority_score
 
 **URLs:** listing_url
+
+---
+
+## dealer_scorecard.py
+
+**Visual HTML scorecards that dealers can easily view and share.** This is the recommended tool for creating shareable dealer reports.
+
+### Key Features
+- **Beautiful HTML output** - Opens in any browser, easy to print/share
+- **Per-dealer one-pagers** - Each dealer gets their own scorecard
+- **Visual grade (A-F)** - At-a-glance quality assessment
+- **Quick quality check** - Visual indicators for price, VIN, floorplan, photos
+- **Top improvement opportunities** - Actionable items with estimated rank gains
+- **All listings table** - Complete inventory with status indicators
+- **Index page** - Summary of all dealers with links to individual scorecards
+
+### Usage
+```bash
+python src/complete/dealer_scorecard.py                    # Uses latest ranked_listings CSV
+python src/complete/dealer_scorecard.py -i input.csv       # Specific input file
+python src/complete/dealer_scorecard.py --brand Jayco      # Filter to specific Thor brand
+python src/complete/dealer_scorecard.py --dealer "Thor"    # Filter to specific dealer
+```
+
+### Output Files
+| File | Purpose |
+|------|---------|
+| `output/scorecards/index_*.html` | Summary page linking all dealer scorecards |
+| `output/scorecards/scorecard_{dealer}_*.html` | Per-dealer visual scorecard |
+
+### Scorecard Sections
+1. **Header** - Dealer name, brand, location, phone, overall grade (A-F)
+2. **Key Metrics** - Avg rank, total listings, avg photos, positions to gain
+3. **Quick Quality Check** - Visual indicators for price/VIN/floorplan/photos
+4. **Top Opportunities** - Top 5 listings with specific actions needed
+5. **All Listings Table** - Complete inventory with status badges
+
+### Grading Scale
+| Grade | Score | Meaning |
+|-------|-------|---------|
+| A | 90+ | Excellent - listings fully optimized |
+| B | 80-89 | Good - minor improvements needed |
+| C | 70-79 | Average - several improvements needed |
+| D | 60-69 | Below Average - significant gaps |
+| F | <60 | Poor - major optimization needed |
+
+### Example Workflow
+```bash
+# 1. Get fresh ranking data
+python src/complete/rank_listings.py --zip 60616
+
+# 2. Generate visual scorecards for all Thor dealers
+python src/complete/dealer_scorecard.py
+
+# 3. Open index in browser to see all dealers
+# Then share individual scorecard HTML files with dealers
+```
 
 ---
 
