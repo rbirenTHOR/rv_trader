@@ -1441,8 +1441,8 @@ def generate_index_page(by_dealer: Dict, all_listings: List[Dict], market: Dict,
                     <thead>
                         <tr>
                             <th>Ranking Factor</th>
-                            <th style="text-align: center;">Correlation</th>
-                            <th style="text-align: center;">Total Pts</th>
+                            <th style="text-align: center;">Impact</th>
+                            <th style="text-align: center;">Rank Pts</th>
                             <th style="text-align: center;">Thor %</th>
                             <th style="text-align: center;">Competitor %</th>
                             <th style="text-align: center;">Gap</th>
