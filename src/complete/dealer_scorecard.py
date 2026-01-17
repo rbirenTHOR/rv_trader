@@ -66,6 +66,16 @@ BENCHMARKS = {
     'listing_age_critical': 60,  # days
 }
 
+# Ranking algorithm correlations (from RANKING_ALGORITHM.md)
+# Negative correlation = higher value = better rank
+RANKING_CORRELATIONS = {
+    'has_price': {'correlation': -0.840, 'relevance_pts': 194, 'label': 'Price Listed'},
+    'has_vin': {'correlation': -0.689, 'relevance_pts': 165, 'label': 'VIN Disclosed'},
+    'photo_count': {'correlation': -0.611, 'relevance_pts': 195, 'label': '35+ Photos'},
+    'merch_score': {'correlation': -0.516, 'relevance_pts': 0, 'label': 'Merch Score'},
+    'has_floorplan': {'correlation': -0.300, 'relevance_pts': 50, 'label': 'Floorplan'},
+}
+
 
 # =============================================================================
 # DATA LOADING
@@ -181,6 +191,100 @@ def calculate_market_benchmarks(all_listings: List[Dict]) -> Dict:
         'pct_photos_35': round(photos_35_plus / total * 100, 1) if total > 0 else 0,
         'data_completeness': round((with_price + with_vin + with_floorplan + with_length) / (total * 4) * 100, 1) if total > 0 else 0,
     }
+
+
+def calculate_competitive_analysis(all_listings: List[Dict]) -> Dict:
+    """Calculate Thor vs Competitor benchmarks based on ranking algorithm factors."""
+    thor_listings = [l for l in all_listings if l.get('thor_brand')]
+    competitor_listings = [l for l in all_listings if not l.get('thor_brand')]
+
+    def calc_group_metrics(listings: List[Dict]) -> Dict:
+        if not listings:
+            return {'count': 0}
+        total = len(listings)
+        ranks = [l['rank'] for l in listings if l.get('rank')]
+        photos = [l['photo_count'] for l in listings]
+        merch = [l['merch_score'] for l in listings if l.get('merch_score')]
+
+        return {
+            'count': total,
+            'avg_rank': round(sum(ranks) / len(ranks), 1) if ranks else 999,
+            'avg_photos': round(sum(photos) / len(photos), 1) if photos else 0,
+            'avg_merch': round(sum(merch) / len(merch), 1) if merch else 0,
+            'pct_premium': round(sum(1 for l in listings if l.get('is_premium')) / total * 100, 1),
+            'pct_price': round(sum(1 for l in listings if l.get('has_price')) / total * 100, 1),
+            'pct_vin': round(sum(1 for l in listings if l.get('has_vin')) / total * 100, 1),
+            'pct_floorplan': round(sum(1 for l in listings if l.get('has_floorplan')) / total * 100, 1),
+            'pct_photos_35': round(sum(1 for l in listings if l.get('photo_count', 0) >= 35) / total * 100, 1),
+        }
+
+    thor = calc_group_metrics(thor_listings)
+    comp = calc_group_metrics(competitor_listings)
+
+    # Calculate competitive gaps (positive = Thor winning)
+    def gap(thor_val, comp_val, lower_is_better=False):
+        if lower_is_better:
+            return round(comp_val - thor_val, 1)
+        return round(thor_val - comp_val, 1)
+
+    return {
+        'thor': thor,
+        'competitor': comp,
+        'gaps': {
+            'rank': gap(thor.get('avg_rank', 0), comp.get('avg_rank', 0), lower_is_better=True),
+            'photos': gap(thor.get('avg_photos', 0), comp.get('avg_photos', 0)),
+            'merch': gap(thor.get('avg_merch', 0), comp.get('avg_merch', 0)),
+            'premium': gap(thor.get('pct_premium', 0), comp.get('pct_premium', 0)),
+            'price': gap(thor.get('pct_price', 0), comp.get('pct_price', 0)),
+            'vin': gap(thor.get('pct_vin', 0), comp.get('pct_vin', 0)),
+            'floorplan': gap(thor.get('pct_floorplan', 0), comp.get('pct_floorplan', 0)),
+            'photos_35': gap(thor.get('pct_photos_35', 0), comp.get('pct_photos_35', 0)),
+        },
+        # Correlation-weighted competitive score
+        'ranking_factors': calculate_ranking_factor_comparison(thor, comp),
+    }
+
+
+def calculate_ranking_factor_comparison(thor: Dict, comp: Dict) -> List[Dict]:
+    """Compare Thor vs Competitors on ranking algorithm factors, weighted by correlation."""
+    factors = []
+
+    for factor_key, config in RANKING_CORRELATIONS.items():
+        # Map factor keys to metric keys
+        metric_map = {
+            'has_price': 'pct_price',
+            'has_vin': 'pct_vin',
+            'photo_count': 'pct_photos_35',
+            'merch_score': 'avg_merch',
+            'has_floorplan': 'pct_floorplan',
+        }
+        metric_key = metric_map.get(factor_key)
+        if not metric_key:
+            continue
+
+        thor_val = thor.get(metric_key, 0)
+        comp_val = comp.get(metric_key, 0)
+        gap = thor_val - comp_val
+
+        # Determine if Thor is winning
+        winning = gap > 0
+        importance = abs(config['correlation'])
+
+        factors.append({
+            'factor': config['label'],
+            'correlation': config['correlation'],
+            'relevance_pts': config['relevance_pts'],
+            'thor_value': thor_val,
+            'comp_value': comp_val,
+            'gap': round(gap, 1),
+            'winning': winning,
+            'importance': round(importance * 100),  # 0-100 scale
+            'impact': 'High' if importance > 0.6 else 'Medium' if importance > 0.4 else 'Low',
+        })
+
+    # Sort by correlation strength (most impactful first)
+    factors.sort(key=lambda x: abs(x['correlation']), reverse=True)
+    return factors
 
 
 def calculate_dealer_benchmarks(dealer_listings: List[Dict], market: Dict) -> Dict:
@@ -1157,8 +1261,9 @@ def generate_dealer_scorecard(dealer_name: str, dealer_listings: List[Dict],
 # INDEX PAGE
 # =============================================================================
 
-def generate_index_page(by_dealer: Dict, all_listings: List[Dict], market: Dict, output_dir: Path) -> str:
-    """Generate comprehensive index page with market benchmarks."""
+def generate_index_page(by_dealer: Dict, all_listings: List[Dict], market: Dict,
+                        competitive: Dict, output_dir: Path) -> str:
+    """Generate comprehensive index page with market benchmarks and competitive analysis."""
 
     rows = []
     for dealer_name, listings in sorted(by_dealer.items()):
@@ -1181,8 +1286,34 @@ def generate_index_page(by_dealer: Dict, all_listings: List[Dict], market: Dict,
             <td>{benchmarks['avg_rank']}</td>
             <td>{benchmarks['pct_premium']}%</td>
             <td>{benchmarks['avg_photos']}</td>
-            <td>{benchmarks['data_completeness']}%</td>
-            <td>{benchmarks['avg_age_days']:.0f}d</td>
+            <td>{benchmarks['pct_price']}%</td>
+            <td>{benchmarks['pct_vin']}%</td>
+            <td>{benchmarks['pct_floorplan']}%</td>
+        </tr>
+        """)
+
+    # Generate competitive analysis rows
+    thor = competitive.get('thor', {})
+    comp = competitive.get('competitor', {})
+    factors = competitive.get('ranking_factors', [])
+
+    factor_rows = []
+    for f in factors:
+        gap = f['gap']
+        gap_class = 'positive' if gap > 0 else 'negative' if gap < 0 else 'neutral'
+        gap_str = f"+{gap:.1f}" if gap > 0 else f"{gap:.1f}"
+        winning_icon = '&#10004;' if f['winning'] else '&#10008;'
+        winning_color = '#22c55e' if f['winning'] else '#ef4444'
+
+        factor_rows.append(f"""
+        <tr>
+            <td><strong>{f['factor']}</strong></td>
+            <td style="text-align: center;"><span style="background: #fee2e2; padding: 2px 8px; border-radius: 4px;">r={f['correlation']:.2f}</span></td>
+            <td style="text-align: center;">{f['relevance_pts']}</td>
+            <td style="text-align: center; font-weight: 600;">{f['thor_value']:.1f}%</td>
+            <td style="text-align: center;">{f['comp_value']:.1f}%</td>
+            <td style="text-align: center;"><span class="gap-{gap_class}">{gap_str}</span></td>
+            <td style="text-align: center; color: {winning_color}; font-size: 1.2rem;">{winning_icon}</td>
         </tr>
         """)
 
@@ -1194,7 +1325,7 @@ def generate_index_page(by_dealer: Dict, all_listings: List[Dict], market: Dict,
         <title>Dealer Scorecards - Benchmarking Dashboard</title>
         <style>
             body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 30px; background: #f5f5f5; }}
-            .container {{ max-width: 1200px; margin: 0 auto; }}
+            .container {{ max-width: 1400px; margin: 0 auto; }}
             .header {{ background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%); color: white; padding: 25px; border-radius: 12px 12px 0 0; }}
             .header h1 {{ margin: 0 0 10px 0; }}
             .benchmarks {{
@@ -1206,16 +1337,41 @@ def generate_index_page(by_dealer: Dict, all_listings: List[Dict], market: Dict,
             .bench {{ background: rgba(255,255,255,0.1); padding: 12px; border-radius: 8px; text-align: center; }}
             .bench-value {{ font-size: 1.5rem; font-weight: bold; }}
             .bench-label {{ font-size: 0.8rem; opacity: 0.9; }}
-            .card {{ background: white; border-radius: 0 0 12px 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }}
+            .card {{ background: white; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; overflow: hidden; }}
+            .card-header {{ background: #1e3a5f; color: white; padding: 15px 20px; font-size: 1.1rem; font-weight: 600; }}
             table {{ width: 100%; border-collapse: collapse; }}
-            th {{ background: #f1f5f9; padding: 12px; text-align: left; font-size: 0.8rem; font-weight: 600; color: #64748b; text-transform: uppercase; }}
-            td {{ padding: 12px; border-bottom: 1px solid #e5e7eb; }}
+            th {{ background: #f1f5f9; padding: 12px; text-align: left; font-size: 0.75rem; font-weight: 600; color: #64748b; text-transform: uppercase; }}
+            td {{ padding: 12px; border-bottom: 1px solid #e5e7eb; font-size: 0.9rem; }}
             tr:hover {{ background: #f9fafb; }}
             a {{ text-decoration: none; }}
+
+            /* Competitive Analysis */
+            .competitive-grid {{
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+                padding: 20px;
+            }}
+            .comp-box {{ background: #f8fafc; border-radius: 8px; padding: 20px; }}
+            .comp-box h3 {{ margin: 0 0 15px 0; color: #1e3a5f; font-size: 1rem; }}
+            .comp-stat {{ display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #e5e7eb; }}
+            .comp-stat:last-child {{ border-bottom: none; }}
+            .comp-label {{ color: #6b7280; }}
+            .comp-value {{ font-weight: 600; }}
+
+            .gap-positive {{ background: #dcfce7; color: #166534; padding: 2px 8px; border-radius: 4px; font-weight: 600; }}
+            .gap-negative {{ background: #fee2e2; color: #991b1b; padding: 2px 8px; border-radius: 4px; font-weight: 600; }}
+            .gap-neutral {{ background: #f3f4f6; color: #6b7280; padding: 2px 8px; border-radius: 4px; }}
+
+            .summary-row {{ display: flex; gap: 20px; padding: 20px; background: #f0f9ff; }}
+            .summary-item {{ flex: 1; text-align: center; }}
+            .summary-value {{ font-size: 2rem; font-weight: bold; color: #1e3a5f; }}
+            .summary-label {{ font-size: 0.85rem; color: #6b7280; }}
         </style>
     </head>
     <body>
         <div class="container">
+            <!-- Header with Market Benchmarks -->
             <div class="header">
                 <h1>Thor Dealer Benchmarking Dashboard</h1>
                 <p>Generated {datetime.now().strftime('%Y-%m-%d %H:%M')} | {len(by_dealer)} Dealers | {market['total_listings']} Total Listings</p>
@@ -1226,23 +1382,85 @@ def generate_index_page(by_dealer: Dict, all_listings: List[Dict], market: Dict,
                     </div>
                     <div class="bench">
                         <div class="bench-value">{market['pct_premium']}%</div>
-                        <div class="bench-label">Market % Premium</div>
+                        <div class="bench-label">% Premium</div>
                     </div>
                     <div class="bench">
                         <div class="bench-value">{market['avg_photos']:.1f}</div>
-                        <div class="bench-label">Market Avg Photos</div>
+                        <div class="bench-label">Avg Photos</div>
                     </div>
                     <div class="bench">
-                        <div class="bench-value">{market['data_completeness']}%</div>
-                        <div class="bench-label">Market Data Complete</div>
+                        <div class="bench-value">{market['pct_price']}%</div>
+                        <div class="bench-label">% Has Price</div>
                     </div>
                     <div class="bench">
-                        <div class="bench-value">{market['avg_age_days']:.0f}d</div>
-                        <div class="bench-label">Market Avg Age</div>
+                        <div class="bench-value">{market['pct_vin']}%</div>
+                        <div class="bench-label">% Has VIN</div>
                     </div>
                 </div>
             </div>
+
+            <!-- Thor vs Competitor Analysis -->
             <div class="card">
+                <div class="card-header">Thor vs Competitor Analysis (Ranked by Correlation Strength)</div>
+                <div class="summary-row">
+                    <div class="summary-item">
+                        <div class="summary-value">{thor.get('count', 0)}</div>
+                        <div class="summary-label">Thor Listings</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value">{comp.get('count', 0)}</div>
+                        <div class="summary-label">Competitor Listings</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value">{thor.get('avg_rank', 0)}</div>
+                        <div class="summary-label">Thor Avg Rank</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value">{comp.get('avg_rank', 0)}</div>
+                        <div class="summary-label">Competitor Avg Rank</div>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Ranking Factor</th>
+                            <th style="text-align: center;">Correlation</th>
+                            <th style="text-align: center;">Relevance Pts</th>
+                            <th style="text-align: center;">Thor</th>
+                            <th style="text-align: center;">Competitor</th>
+                            <th style="text-align: center;">Gap</th>
+                            <th style="text-align: center;">Winning?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {''.join(factor_rows)}
+                    </tbody>
+                </table>
+                <div class="competitive-grid">
+                    <div class="comp-box">
+                        <h3>Thor Industries Breakdown</h3>
+                        <div class="comp-stat"><span class="comp-label">% Premium</span><span class="comp-value">{thor.get('pct_premium', 0)}%</span></div>
+                        <div class="comp-stat"><span class="comp-label">% Has Price</span><span class="comp-value">{thor.get('pct_price', 0)}%</span></div>
+                        <div class="comp-stat"><span class="comp-label">% Has VIN</span><span class="comp-value">{thor.get('pct_vin', 0)}%</span></div>
+                        <div class="comp-stat"><span class="comp-label">% Has Floorplan</span><span class="comp-value">{thor.get('pct_floorplan', 0)}%</span></div>
+                        <div class="comp-stat"><span class="comp-label">% 35+ Photos</span><span class="comp-value">{thor.get('pct_photos_35', 0)}%</span></div>
+                        <div class="comp-stat"><span class="comp-label">Avg Merch Score</span><span class="comp-value">{thor.get('avg_merch', 0)}</span></div>
+                    </div>
+                    <div class="comp-box">
+                        <h3>Competitor Breakdown</h3>
+                        <div class="comp-stat"><span class="comp-label">% Premium</span><span class="comp-value">{comp.get('pct_premium', 0)}%</span></div>
+                        <div class="comp-stat"><span class="comp-label">% Has Price</span><span class="comp-value">{comp.get('pct_price', 0)}%</span></div>
+                        <div class="comp-stat"><span class="comp-label">% Has VIN</span><span class="comp-value">{comp.get('pct_vin', 0)}%</span></div>
+                        <div class="comp-stat"><span class="comp-label">% Has Floorplan</span><span class="comp-value">{comp.get('pct_floorplan', 0)}%</span></div>
+                        <div class="comp-stat"><span class="comp-label">% 35+ Photos</span><span class="comp-value">{comp.get('pct_photos_35', 0)}%</span></div>
+                        <div class="comp-stat"><span class="comp-label">Avg Merch Score</span><span class="comp-value">{comp.get('avg_merch', 0)}</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dealer Table -->
+            <div class="card">
+                <div class="card-header">Thor Dealer Scorecards (Data Completeness Breakdown)</div>
                 <table>
                     <thead>
                         <tr>
@@ -1253,8 +1471,9 @@ def generate_index_page(by_dealer: Dict, all_listings: List[Dict], market: Dict,
                             <th>Avg Rank</th>
                             <th>% Premium</th>
                             <th>Avg Photos</th>
-                            <th>Data %</th>
-                            <th>Avg Age</th>
+                            <th>% Price</th>
+                            <th>% VIN</th>
+                            <th>% Floorplan</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1302,12 +1521,24 @@ def generate_scorecards(csv_path: str, output_dir: str = None,
     tier_ceilings = calculate_tier_ceilings(listings)
     tier_ceiling = tier_ceilings.get('standard', 1)
 
+    # Calculate competitive analysis (Thor vs Competitors)
+    competitive = calculate_competitive_analysis(listings)
+    thor = competitive.get('thor', {})
+    comp = competitive.get('competitor', {})
+
     print(f"\nMarket Benchmarks:")
     print(f"  Avg Rank: {market['avg_rank']:.1f}")
     print(f"  % Premium: {market['pct_premium']}%")
     print(f"  Avg Photos: {market['avg_photos']:.1f}")
-    print(f"  Data Completeness: {market['data_completeness']}%")
+    print(f"  % Price: {market['pct_price']}% | % VIN: {market['pct_vin']}% | % Floorplan: {market['pct_floorplan']}%")
     print(f"  Avg Age: {market['avg_age_days']:.0f} days")
+
+    print(f"\nThor vs Competitor Analysis:")
+    print(f"  Thor: {thor.get('count', 0)} listings, Avg Rank: {thor.get('avg_rank', 0)}")
+    print(f"  Competitor: {comp.get('count', 0)} listings, Avg Rank: {comp.get('avg_rank', 0)}")
+    for f in competitive.get('ranking_factors', [])[:3]:
+        status = 'WINNING' if f['winning'] else 'LOSING'
+        print(f"  {f['factor']}: Thor {f['thor_value']:.0f}% vs Comp {f['comp_value']:.0f}% ({status})")
 
     # Group by dealer
     by_dealer = defaultdict(list)
@@ -1348,8 +1579,8 @@ def generate_scorecards(csv_path: str, output_dir: str = None,
         generated.append(str(file_path))
         print(f"  Created: {file_path.name}")
 
-    # Generate index page
-    index_html = generate_index_page(by_dealer, listings, market, output_dir)
+    # Generate index page with competitive analysis
+    index_html = generate_index_page(by_dealer, listings, market, competitive, output_dir)
     index_path = output_dir / f"index_{datetime.now().strftime('%Y%m%d_%H%M%S')}.html"
     with open(index_path, 'w', encoding='utf-8') as f:
         f.write(index_html)
