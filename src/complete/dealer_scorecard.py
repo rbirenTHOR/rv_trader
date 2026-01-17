@@ -66,14 +66,16 @@ BENCHMARKS = {
     'listing_age_critical': 60,  # days
 }
 
-# Ranking algorithm correlations (from RANKING_ALGORITHM.md)
+# Ranking algorithm correlations (from RANKING_ALGORITHM.md and MERCH_SCORE.md)
 # Negative correlation = higher value = better rank
+# Merch correlations are positive (higher = better merch score)
 RANKING_CORRELATIONS = {
-    'has_price': {'correlation': -0.840, 'relevance_pts': 194, 'label': 'Price Listed'},
-    'has_vin': {'correlation': -0.689, 'relevance_pts': 165, 'label': 'VIN Disclosed'},
-    'photo_count': {'correlation': -0.611, 'relevance_pts': 195, 'label': '35+ Photos'},
-    'merch_score': {'correlation': -0.516, 'relevance_pts': 0, 'label': 'Merch Score'},
-    'has_floorplan': {'correlation': -0.300, 'relevance_pts': 50, 'label': 'Floorplan'},
+    'has_price': {'correlation': -0.840, 'relevance_pts': 194, 'merch_pts': 5, 'label': 'Price Listed'},
+    'has_vin': {'correlation': -0.689, 'relevance_pts': 165, 'merch_pts': 6, 'label': 'VIN Disclosed'},
+    'has_length': {'correlation': -0.702, 'relevance_pts': 0, 'merch_pts': 8, 'label': 'Length Spec'},
+    'photo_count': {'correlation': -0.611, 'relevance_pts': 195, 'merch_pts': 30, 'label': '35+ Photos'},
+    'merch_score': {'correlation': -0.516, 'relevance_pts': 0, 'merch_pts': 0, 'label': 'Merch Score'},
+    'has_floorplan': {'correlation': -0.300, 'relevance_pts': 50, 'merch_pts': 12, 'label': 'Floorplan'},
 }
 
 
@@ -214,6 +216,7 @@ def calculate_competitive_analysis(all_listings: List[Dict]) -> Dict:
             'pct_premium': round(sum(1 for l in listings if l.get('is_premium')) / total * 100, 1),
             'pct_price': round(sum(1 for l in listings if l.get('has_price')) / total * 100, 1),
             'pct_vin': round(sum(1 for l in listings if l.get('has_vin')) / total * 100, 1),
+            'pct_length': round(sum(1 for l in listings if l.get('has_length')) / total * 100, 1),
             'pct_floorplan': round(sum(1 for l in listings if l.get('has_floorplan')) / total * 100, 1),
             'pct_photos_35': round(sum(1 for l in listings if l.get('photo_count', 0) >= 35) / total * 100, 1),
         }
@@ -237,6 +240,7 @@ def calculate_competitive_analysis(all_listings: List[Dict]) -> Dict:
             'premium': gap(thor.get('pct_premium', 0), comp.get('pct_premium', 0)),
             'price': gap(thor.get('pct_price', 0), comp.get('pct_price', 0)),
             'vin': gap(thor.get('pct_vin', 0), comp.get('pct_vin', 0)),
+            'length': gap(thor.get('pct_length', 0), comp.get('pct_length', 0)),
             'floorplan': gap(thor.get('pct_floorplan', 0), comp.get('pct_floorplan', 0)),
             'photos_35': gap(thor.get('pct_photos_35', 0), comp.get('pct_photos_35', 0)),
         },
@@ -254,6 +258,7 @@ def calculate_ranking_factor_comparison(thor: Dict, comp: Dict) -> List[Dict]:
         metric_map = {
             'has_price': 'pct_price',
             'has_vin': 'pct_vin',
+            'has_length': 'pct_length',
             'photo_count': 'pct_photos_35',
             'merch_score': 'avg_merch',
             'has_floorplan': 'pct_floorplan',
@@ -274,6 +279,7 @@ def calculate_ranking_factor_comparison(thor: Dict, comp: Dict) -> List[Dict]:
             'factor': config['label'],
             'correlation': config['correlation'],
             'relevance_pts': config['relevance_pts'],
+            'merch_pts': config.get('merch_pts', 0),
             'thor_value': thor_val,
             'comp_value': comp_val,
             'gap': round(gap, 1),
@@ -1288,6 +1294,7 @@ def generate_index_page(by_dealer: Dict, all_listings: List[Dict], market: Dict,
             <td>{benchmarks['avg_photos']}</td>
             <td>{benchmarks['pct_price']}%</td>
             <td>{benchmarks['pct_vin']}%</td>
+            <td>{benchmarks['pct_length']}%</td>
             <td>{benchmarks['pct_floorplan']}%</td>
         </tr>
         """)
@@ -1304,12 +1311,14 @@ def generate_index_page(by_dealer: Dict, all_listings: List[Dict], market: Dict,
         gap_str = f"+{gap:.1f}" if gap > 0 else f"{gap:.1f}"
         winning_icon = '&#10004;' if f['winning'] else '&#10008;'
         winning_color = '#22c55e' if f['winning'] else '#ef4444'
+        merch_pts = f.get('merch_pts', 0)
 
         factor_rows.append(f"""
         <tr>
             <td><strong>{f['factor']}</strong></td>
             <td style="text-align: center;"><span style="background: #fee2e2; padding: 2px 8px; border-radius: 4px;">r={f['correlation']:.2f}</span></td>
             <td style="text-align: center;">{f['relevance_pts']}</td>
+            <td style="text-align: center;">{merch_pts}</td>
             <td style="text-align: center; font-weight: 600;">{f['thor_value']:.1f}%</td>
             <td style="text-align: center;">{f['comp_value']:.1f}%</td>
             <td style="text-align: center;"><span class="gap-{gap_class}">{gap_str}</span></td>
@@ -1426,6 +1435,7 @@ def generate_index_page(by_dealer: Dict, all_listings: List[Dict], market: Dict,
                             <th>Ranking Factor</th>
                             <th style="text-align: center;">Correlation</th>
                             <th style="text-align: center;">Relevance Pts</th>
+                            <th style="text-align: center;">Merch Pts</th>
                             <th style="text-align: center;">Thor</th>
                             <th style="text-align: center;">Competitor</th>
                             <th style="text-align: center;">Gap</th>
@@ -1442,6 +1452,7 @@ def generate_index_page(by_dealer: Dict, all_listings: List[Dict], market: Dict,
                         <div class="comp-stat"><span class="comp-label">% Premium</span><span class="comp-value">{thor.get('pct_premium', 0)}%</span></div>
                         <div class="comp-stat"><span class="comp-label">% Has Price</span><span class="comp-value">{thor.get('pct_price', 0)}%</span></div>
                         <div class="comp-stat"><span class="comp-label">% Has VIN</span><span class="comp-value">{thor.get('pct_vin', 0)}%</span></div>
+                        <div class="comp-stat"><span class="comp-label">% Has Length</span><span class="comp-value">{thor.get('pct_length', 0)}%</span></div>
                         <div class="comp-stat"><span class="comp-label">% Has Floorplan</span><span class="comp-value">{thor.get('pct_floorplan', 0)}%</span></div>
                         <div class="comp-stat"><span class="comp-label">% 35+ Photos</span><span class="comp-value">{thor.get('pct_photos_35', 0)}%</span></div>
                         <div class="comp-stat"><span class="comp-label">Avg Merch Score</span><span class="comp-value">{thor.get('avg_merch', 0)}</span></div>
@@ -1451,6 +1462,7 @@ def generate_index_page(by_dealer: Dict, all_listings: List[Dict], market: Dict,
                         <div class="comp-stat"><span class="comp-label">% Premium</span><span class="comp-value">{comp.get('pct_premium', 0)}%</span></div>
                         <div class="comp-stat"><span class="comp-label">% Has Price</span><span class="comp-value">{comp.get('pct_price', 0)}%</span></div>
                         <div class="comp-stat"><span class="comp-label">% Has VIN</span><span class="comp-value">{comp.get('pct_vin', 0)}%</span></div>
+                        <div class="comp-stat"><span class="comp-label">% Has Length</span><span class="comp-value">{comp.get('pct_length', 0)}%</span></div>
                         <div class="comp-stat"><span class="comp-label">% Has Floorplan</span><span class="comp-value">{comp.get('pct_floorplan', 0)}%</span></div>
                         <div class="comp-stat"><span class="comp-label">% 35+ Photos</span><span class="comp-value">{comp.get('pct_photos_35', 0)}%</span></div>
                         <div class="comp-stat"><span class="comp-label">Avg Merch Score</span><span class="comp-value">{comp.get('avg_merch', 0)}</span></div>
@@ -1460,7 +1472,7 @@ def generate_index_page(by_dealer: Dict, all_listings: List[Dict], market: Dict,
 
             <!-- Dealer Table -->
             <div class="card">
-                <div class="card-header">Thor Dealer Scorecards (Data Completeness Breakdown)</div>
+                <div class="card-header">Thor Dealer Scorecards (Specs Breakdown)</div>
                 <table>
                     <thead>
                         <tr>
@@ -1473,6 +1485,7 @@ def generate_index_page(by_dealer: Dict, all_listings: List[Dict], market: Dict,
                             <th>Avg Photos</th>
                             <th>% Price</th>
                             <th>% VIN</th>
+                            <th>% Length</th>
                             <th>% Floorplan</th>
                         </tr>
                     </thead>
