@@ -68,15 +68,15 @@ BENCHMARKS = {
 
 # Ranking algorithm correlations (from RANKING_ALGORITHM.md and MERCH_SCORE.md)
 # Negative correlation = higher value = better rank
-# Merch correlations are positive (higher = better merch score)
+# Total impact = relevance_pts + merch_pts (both contribute to final ranking)
 RANKING_CORRELATIONS = {
     'has_price': {'correlation': -0.840, 'relevance_pts': 194, 'merch_pts': 5, 'label': 'Price Listed'},
     'has_vin': {'correlation': -0.689, 'relevance_pts': 165, 'merch_pts': 6, 'label': 'VIN Disclosed'},
     'has_length': {'correlation': -0.702, 'relevance_pts': 0, 'merch_pts': 8, 'label': 'Length Spec'},
     'photo_count': {'correlation': -0.611, 'relevance_pts': 195, 'merch_pts': 30, 'label': '35+ Photos'},
-    'merch_score': {'correlation': -0.516, 'relevance_pts': 0, 'merch_pts': 0, 'label': 'Merch Score'},
     'has_floorplan': {'correlation': -0.300, 'relevance_pts': 50, 'merch_pts': 12, 'label': 'Floorplan'},
 }
+# Note: Removed 'merch_score' as a separate factor since it's the SUM of the above factors
 
 
 # =============================================================================
@@ -275,11 +275,13 @@ def calculate_ranking_factor_comparison(thor: Dict, comp: Dict) -> List[Dict]:
         winning = gap > 0
         importance = abs(config['correlation'])
 
+        total_pts = config['relevance_pts'] + config.get('merch_pts', 0)
         factors.append({
             'factor': config['label'],
             'correlation': config['correlation'],
             'relevance_pts': config['relevance_pts'],
             'merch_pts': config.get('merch_pts', 0),
+            'total_pts': total_pts,
             'thor_value': thor_val,
             'comp_value': comp_val,
             'gap': round(gap, 1),
@@ -1311,14 +1313,13 @@ def generate_index_page(by_dealer: Dict, all_listings: List[Dict], market: Dict,
         gap_str = f"+{gap:.1f}" if gap > 0 else f"{gap:.1f}"
         winning_icon = '&#10004;' if f['winning'] else '&#10008;'
         winning_color = '#22c55e' if f['winning'] else '#ef4444'
-        merch_pts = f.get('merch_pts', 0)
+        total_pts = f.get('total_pts', 0)
 
         factor_rows.append(f"""
         <tr>
             <td><strong>{f['factor']}</strong></td>
             <td style="text-align: center;"><span style="background: #fee2e2; padding: 2px 8px; border-radius: 4px;">r={f['correlation']:.2f}</span></td>
-            <td style="text-align: center;">{f['relevance_pts']}</td>
-            <td style="text-align: center;">{merch_pts}</td>
+            <td style="text-align: center;"><strong>{total_pts}</strong></td>
             <td style="text-align: center; font-weight: 600;">{f['thor_value']:.1f}%</td>
             <td style="text-align: center;">{f['comp_value']:.1f}%</td>
             <td style="text-align: center;"><span class="gap-{gap_class}">{gap_str}</span></td>
@@ -1434,10 +1435,9 @@ def generate_index_page(by_dealer: Dict, all_listings: List[Dict], market: Dict,
                         <tr>
                             <th>Ranking Factor</th>
                             <th style="text-align: center;">Correlation</th>
-                            <th style="text-align: center;">Relevance Pts</th>
-                            <th style="text-align: center;">Merch Pts</th>
-                            <th style="text-align: center;">Thor</th>
-                            <th style="text-align: center;">Competitor</th>
+                            <th style="text-align: center;">Total Pts</th>
+                            <th style="text-align: center;">Thor %</th>
+                            <th style="text-align: center;">Competitor %</th>
                             <th style="text-align: center;">Gap</th>
                             <th style="text-align: center;">Winning?</th>
                         </tr>
