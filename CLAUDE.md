@@ -5,14 +5,21 @@ Extract RV listing data from RVTrader.com to help **Thor Industries brands** (Th
 
 ## Quick Start
 ```bash
-# Rank all listings by zip code (all RV types)
-python src/rank_listings.py --zip 60616
+# 1. Get search rankings (fast, no cookies needed)
+python src/complete/rank_listings.py --zip 60616
 
-# Single RV type only
-python src/rank_listings.py --zip 60616 --type "Travel Trailer"
+# 2. Generate Thor brand analysis v2 (comprehensive CSV + manufacturer reports)
+python src/complete/thor_brand_analysis_v2.py
 
-# Used condition instead of New (default)
-python src/rank_listings.py --zip 60616 --condition U
+# Optional: Additional data collection
+# 3. Refresh cookies if needed (opens browser)
+python src/complete/engagement_scraper.py --refresh-cookies
+
+# 4. Get full descriptions from detail pages
+python src/complete/description_scraper.py --limit 50
+
+# 5. Get engagement stats (views/saves)
+python src/complete/engagement_scraper.py --limit 50
 ```
 
 ## Project Structure
@@ -20,11 +27,18 @@ python src/rank_listings.py --zip 60616 --condition U
 rv_trader/
 ├── CLAUDE.md                # THIS FILE - Project context
 ├── zip_codes.txt            # Zip codes to search (one per line)
+├── .cookie_cache.json       # Cached cookies for scraping (gitignored)
 ├── src/
-│   ├── rank_listings.py     # MAIN: Bulk ranked extraction (62 fields, ~5s/zip)
-│   ├── nuxt_extractor.py    # Single page extraction (Playwright)
-│   └── engagement_scraper.py # Views/saves extraction (auto cookie refresh)
+│   └── complete/            # Production-ready scripts
+│       ├── rank_listings.py         # Bulk ranked extraction (62 fields, ~5s/zip)
+│       ├── description_scraper.py   # Full description + specs extraction (~2s/listing)
+│       ├── engagement_scraper.py    # Views/saves extraction (auto cookie refresh)
+│       ├── thor_brand_analysis.py   # Thor brand analysis v1 (basic report)
+│       └── thor_brand_analysis_v2.py # **NEW** Comprehensive analysis with tier ceilings
 ├── output/                  # Extracted data (CSV/JSON)
+│   ├── thor_actions_{timestamp}.csv           # Comprehensive CSV with all actions
+│   ├── thor_report_v2_{timestamp}.txt         # Summary report
+│   └── manufacturer_report_{brand}_{ts}.txt   # Per-manufacturer reports
 ├── docs/
 │   ├── RANKING_ALGORITHM.md # **IMPORTANT: Complete ranking formula**
 │   ├── MERCH_SCORE.md       # **IMPORTANT: Merch score deep dive**
@@ -42,19 +56,22 @@ rv_trader/
 | Script | Purpose | Status |
 |--------|---------|--------|
 | `rank_listings.py` | Search results extraction (62 fields) | **COMPLETE** |
-| `nuxt_extractor.py` | Single page detail extraction | **COMPLETE** |
+| `description_scraper.py` | Full description + specs from detail pages | **COMPLETE** |
 | `engagement_scraper.py` | Views/saves extraction (auto cookie refresh) | **COMPLETE** |
+| `thor_brand_analysis.py` | Thor brand analysis v1 (basic report) | **COMPLETE** |
+| `thor_brand_analysis_v2.py` | **Comprehensive analysis with tier ceilings + manufacturer reports** | **COMPLETE** |
 
 ### What Needs Work
-| Task | Status | Blocker |
-|------|--------|---------|
-| Detail page batch scraping | **PARTIAL** | HTTP blocked, Playwright slow |
-| Analytics pipeline | **NOT STARTED** | Waiting on data collection |
+| Task | Status | Notes |
+|------|--------|-------|
+| Merge all data sources | **NOT STARTED** | Combine search + detail + engagement |
+| Multi-zip analysis | **NOT STARTED** | Run analysis across multiple markets |
+| Historical tracking | **NOT STARTED** | Track ranking changes over time |
 
 ### Next Priority
-1. Build batch detail scraper via ScraperAPI
-2. Merge search + detail + engagement data
-3. Build Thor brand comparison analytics
+1. Run analysis across multiple zip codes for broader market view
+2. Merge description_scraper + engagement_scraper data into analysis
+3. Build historical tracking to measure improvement impact
 
 ---
 
@@ -107,11 +124,11 @@ Fast bulk extraction using async HTTP (direct API). Extracts all listings for ea
 
 ### Usage
 ```bash
-python src/rank_listings.py                              # All zips in zip_codes.txt
-python src/rank_listings.py --zip 60616                  # Single zip
-python src/rank_listings.py --zip 60616 --type "Class B" # Single type
-python src/rank_listings.py --zip 60616 --condition U    # Used (default=New)
-python src/rank_listings.py --zip 60616 --radius 100     # Custom radius (default=50)
+python src/complete/rank_listings.py                              # All zips in zip_codes.txt
+python src/complete/rank_listings.py --zip 60616                  # Single zip
+python src/complete/rank_listings.py --zip 60616 --type "Class B" # Single type
+python src/complete/rank_listings.py --zip 60616 --condition U    # Used (default=New)
+python src/complete/rank_listings.py --zip 60616 --radius 100     # Custom radius (default=50)
 ```
 
 ### Output
@@ -156,15 +173,42 @@ python src/rank_listings.py --zip 60616 --radius 100     # Custom radius (defaul
 
 ---
 
+## description_scraper.py
+
+Extracts full descriptions and specs from detail pages. **Requires cookies from `.cookie_cache.json`.**
+
+### Usage
+```bash
+python src/complete/description_scraper.py                  # All listings from latest ranked_listings
+python src/complete/description_scraper.py --limit 20       # Limit to 20 listings
+python src/complete/description_scraper.py --delay 0.5      # 0.5s delay between requests (default: 0.3)
+```
+
+### Output
+- `output/detail_data_{timestamp}.json`
+
+### Fields Extracted
+- **description**: Full description text (HTML stripped, 1000-3000+ chars typical)
+- **description_length**: Character count
+- **specs**: sleepingCapacity, hasFloorplan, slideouts, waterCapacity, fuelType, length, etc.
+
+### Technical Details
+- Uses cookies from `.cookie_cache.json` (shared with engagement_scraper)
+- Sequential requests (no session - sessions interfere with DataDome cookies)
+- ~2s per listing (mostly network time for 400KB pages)
+- NUXT_DATA extraction from page HTML
+
+---
+
 ## engagement_scraper.py
 
 Extracts views/saves from detail pages via API endpoints. **Cookies auto-refresh every 48 hours via browser.**
 
 ### Usage
 ```bash
-python src/engagement_scraper.py                    # Uses cached cookies (auto-refresh if >48h)
-python src/engagement_scraper.py --limit 10         # Limit to 10 listings
-python src/engagement_scraper.py --refresh-cookies  # Force cookie refresh via browser
+python src/complete/engagement_scraper.py                    # Uses cached cookies (auto-refresh if >48h)
+python src/complete/engagement_scraper.py --limit 10         # Limit to 10 listings
+python src/complete/engagement_scraper.py --refresh-cookies  # Force cookie refresh via browser
 ```
 
 ### Cookie System
@@ -184,6 +228,147 @@ Saves: /gettiledata/addetail_listingstats/showsavedadsstats?adId={id}
 {"error": null, "listingViewsData": "138"}
 {"error": null, "listingSavesData": 1}
 ```
+
+---
+
+## thor_brand_analysis.py
+
+Analyzes Thor brand performance vs competitors and calculates estimated rank improvements based on the ranking algorithm point values.
+
+### Usage
+```bash
+python src/complete/thor_brand_analysis.py                    # Analyze latest ranked_listings CSV
+python src/complete/thor_brand_analysis.py -i output/file.csv # Specific input file
+python src/complete/thor_brand_analysis.py -o report.txt      # Save to file (default: stdout)
+```
+
+### Output
+- `output/thor_brand_report.txt` (when using -o flag)
+
+### Report Sections
+1. **Executive Summary** - Market share, avg rankings, total improvement potential
+2. **Thor Brand Performance** - Breakdown by brand (Jayco, Airstream, Thor Motor Coach, etc.)
+3. **Top Competitors** - Non-Thor brands ranked by listing count
+4. **Top Performing Thor Listings** - Best ranked Thor units
+5. **Ranking Improvement Opportunities** - Listings with estimated rank gains
+6. **Quick Wins** - Easy fixes (add VIN, price, floorplan)
+7. **Key Recommendations** - Prioritized action items with point values
+
+### Rank Improvement Calculation
+Uses ranking algorithm point values to estimate position gains:
+```
+~15 relevance points = 1 rank position improvement
+
+Actions and their impact:
+- Add price:     +194 relevance → ~13 positions
+- Add VIN:       +165 relevance → ~11 positions
+- 35+ photos:    +195 relevance → ~13 positions
+- Add floorplan: +50 relevance  → ~3 positions
+```
+
+### Thor Brands Tracked
+| Brand | Make Patterns Matched |
+|-------|----------------------|
+| Thor Motor Coach | thor, thor motor coach |
+| Jayco | jayco |
+| Airstream | airstream |
+| Tiffin Motorhomes | tiffin, tiffin motorhomes |
+| Entegra Coach | entegra, entegra coach |
+| Heartland RV | heartland |
+| Cruiser RV | cruiser |
+| Keystone RV | keystone |
+| Dutchmen RV | dutchmen |
+
+---
+
+## thor_brand_analysis_v2.py
+
+**Comprehensive Thor brand analysis with tier ceiling constraints and per-manufacturer reports.** This is the recommended analysis tool for generating actionable recommendations.
+
+### Key Improvements Over v1
+- **Tier Ceiling Constraint**: Accounts for premium/standard tier system - standard listings can't outrank premium without purchasing premium
+- **Correlation-Weighted Priority**: Actions prioritized by actual rank correlation strength
+- **Outperforming Detection**: Identifies listings already beating their tier ceiling (low competition)
+- **Manufacturer Reports**: Generates separate reports for each Thor brand to send to manufacturers
+- **Dealer-Level Breakdown**: Shows each dealer's performance vs market average
+
+### Usage
+```bash
+python src/complete/thor_brand_analysis_v2.py                    # Analyze latest ranked_listings CSV
+python src/complete/thor_brand_analysis_v2.py -i output/file.csv # Specific input file
+```
+
+### Output Files
+| File | Purpose |
+|------|---------|
+| `thor_actions_{timestamp}.csv` | **70-column CSV** with all listing data, actions, and improvement estimates |
+| `thor_report_v2_{timestamp}.txt` | Executive summary report |
+| `manufacturer_report_{brand}_{timestamp}.txt` | Per-brand reports for manufacturers |
+
+### Tier System Explained
+```
+TIER HIERARCHY:
+  top_premium (rank 1-3)   → Paid placement, highest visibility
+  premium (rank 4-15)      → Paid placement
+  standard (rank 16+)      → Free listings
+
+TIER CEILING:
+  Standard listings CANNOT outrank premium listings without purchasing premium.
+  tier_ceiling = lowest premium rank in that search
+
+  Example: If premium listings occupy ranks 1-15, standard tier ceiling = 16
+  A standard listing at rank 20 can improve to rank 16, but NOT rank 15.
+```
+
+### Improvement Calculation
+```
+~15 relevance points ≈ 1 rank position improvement
+
+Actions by correlation strength (highest impact first):
+| Action          | Relevance | Merch | Rank Correlation |
+|-----------------|-----------|-------|------------------|
+| Add price       | +194 pts  | +5    | r = -0.840       |
+| Add VIN         | +165 pts  | +6    | r = -0.689       |
+| 35+ photos      | +195 pts  | +30   | r = -0.611       |
+| Add floorplan   | +50 pts   | +12   | r = -0.300       |
+| Add length      | +0 pts    | +8    | r = -0.125       |
+
+Estimated improvement = total_relevance_gain / 15
+Realistic improvement = min(estimated, current_rank - tier_ceiling)
+```
+
+### Manufacturer Report Format
+Each Thor brand gets a report with:
+1. **Brand Summary** - Avg rank, premium vs standard count, total improvement potential
+2. **Quick Wins** - Count of easy fixes (missing price, VIN, floorplan, photos)
+3. **Dealer Breakdown** - Each dealer's listings with:
+   - Dealer metrics (listing count, avg rank vs market)
+   - Process issues (missing data patterns)
+   - Listing table (rank, year, model, price, photos, length, merch, status, actions)
+   - Detailed action list per listing with URLs
+
+### Listing Status Categories
+| Status | Meaning |
+|--------|---------|
+| `Premium` | Paid placement - optimize to maintain position |
+| `At Ceiling` | At tier ceiling - needs premium to improve further |
+| `Outperform` | Standard listing beating tier ceiling (low competition) |
+
+### CSV Columns (70 total)
+
+**Hierarchy:** thor_brand, dealer_group, dealer_name, dealer_phone, dealer_location
+
+**Vehicle:** id, vin, stock_number, year, make, model, trim, class, condition, length, price, msrp
+
+**Ranking:** rank, relevance_score, merch_score, ad_listing_position
+
+**Tier Analysis:** tier, tier_ceiling, realistic_new_rank, realistic_improvement, outperforming_tier
+
+**Quality Metrics:** has_price, has_vin, has_floorplan, photo_count, photos_needed, length_missing
+
+**Actions:** action_1 through action_5, total_relevance_gain, total_merch_gain, priority_score
+
+**URLs:** listing_url
 
 ---
 
@@ -256,3 +441,15 @@ Consider consolidating into single `detail_batch_scraper.py`.
 3. **Description truncated in search** - All 150 chars, can't analyze from search results
 4. **Full description matters for merch_score** - Need detail pages
 5. **Engagement data working** - Auto cookie refresh via Playwright browser (48h expiry)
+6. **Tier ceiling is critical** - Standard listings can outperform their tier but can't promise further improvement
+7. **Correlation-based priority works** - Price (r=-0.840) > VIN (r=-0.689) > Photos (r=-0.611) > Floorplan (r=-0.300)
+8. **Quick wins available** - Missing VINs, prices, floorplans are easy fixes with high impact
+
+### Sample Analysis Results (Class B, 60616)
+| Brand | Listings | Avg Rank | Premium | Improvement Potential |
+|-------|----------|----------|---------|----------------------|
+| Jayco | 16 | 23.2 | 0 | 17 positions |
+| Airstream | 12 | 32.2 | 2 | 30 positions |
+| Thor Motor Coach | 6 | 24.0 | 3 | 25 positions |
+| Entegra Coach | 2 | 21.5 | 2 | 9 positions |
+| Tiffin Motorhomes | 1 | 40.0 | 0 | 0 positions |

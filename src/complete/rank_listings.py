@@ -18,10 +18,10 @@ from pathlib import Path
 from datetime import datetime
 from urllib.parse import urlencode, quote
 
-# ScraperAPI configuration
+# ScraperAPI configuration (not currently used - direct API is faster)
 SCRAPER_API_KEY = 'ef66e965591986214ea474407eb0adc8'
 SCRAPER_API_BASE = 'http://api.scraperapi.com'
-USE_SCRAPER_API = True  # Set to False to use direct requests
+USE_SCRAPER_API = False
 
 # RV Type mappings
 RV_TYPES = {
@@ -45,8 +45,8 @@ MAX_RESULTS = RESULTS_PER_PAGE * MAX_PAGES  # 360
 DEFAULT_RADIUS = 50
 DEFAULT_CONDITION = 'N'
 
-# Parallelization - reduced when using ScraperAPI due to rate limits
-MAX_CONCURRENT_REQUESTS = 10 if USE_SCRAPER_API else 50
+# Parallelization
+MAX_CONCURRENT_REQUESTS = 50
 
 # Price breakpoints for chunking
 PRICE_BREAKS = [
@@ -234,20 +234,17 @@ def flatten_listing(listing: dict, rank: int, zip_code: str, rv_type: str,
 
 
 async def fetch_page(session: aiohttp.ClientSession, url: str, semaphore: asyncio.Semaphore) -> dict:
-    """Fetch a single API page, optionally through ScraperAPI."""
+    """Fetch a single API page."""
     async with semaphore:
         try:
-            fetch_url = wrap_with_scraper_api(url)
-            # Longer timeout for ScraperAPI (they process the request on their end)
-            timeout = aiohttp.ClientTimeout(total=60 if USE_SCRAPER_API else 15)
-            async with session.get(fetch_url, headers=HEADERS, timeout=timeout) as resp:
+            timeout = aiohttp.ClientTimeout(total=15)
+            async with session.get(url, headers=HEADERS, timeout=timeout) as resp:
                 if resp.status == 200:
                     return await resp.json()
                 elif resp.status == 403:
-                    print(f"  [WARN] 403 Forbidden - may need ScraperAPI")
+                    print(f"  [WARN] 403 Forbidden")
         except Exception as e:
-            if USE_SCRAPER_API:
-                print(f"  [ERR] ScraperAPI request failed: {type(e).__name__}")
+            print(f"  [ERR] Request failed: {type(e).__name__}")
         return None
 
 
