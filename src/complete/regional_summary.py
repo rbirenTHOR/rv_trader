@@ -601,7 +601,7 @@ def generate_region_section(region: str, listings: List[Dict], brand_metrics: Di
 
         dealer_rows.append(f"""
         <tr class="dealer-row">
-            <td colspan="10" style="background: #f1f5f9; font-weight: 600; padding: 12px 8px;">
+            <td colspan="11" style="background: #f1f5f9; font-weight: 600; padding: 12px 8px;">
                 {html.escape(dealer_name)}
                 <span class="badge badge-{d_grade.lower()}" style="margin-left: 10px;">{d_grade}</span>
                 <span style="float: right; font-weight: normal; color: #6b7280;">
@@ -628,6 +628,7 @@ def generate_region_section(region: str, listings: List[Dict], brand_metrics: Di
                 <thead>
                     <tr>
                         <th>Rank</th>
+                        <th>Stock #</th>
                         <th>Year</th>
                         <th>Model</th>
                         <th>Price</th>
@@ -655,6 +656,7 @@ def generate_listing_rows(listings: List[Dict]) -> str:
 
     for l in sorted_listings:
         rank = l.get('rank', '-')
+        stock_num = html.escape(str(l.get('stock_number', '-'))[:15]) if l.get('stock_number') else '-'
         year = l.get('year', '-')
         model = html.escape(str(l.get('model', 'Unknown'))[:25])
         price = f"${l.get('price', 0):,.0f}" if l.get('has_price') else '<span class="cross">Missing</span>'
@@ -686,6 +688,7 @@ def generate_listing_rows(listings: List[Dict]) -> str:
         rows.append(f"""
         <tr>
             <td>{rank}</td>
+            <td><code>{stock_num}</code></td>
             <td>{year}</td>
             <td>{model}</td>
             <td>{price}</td>

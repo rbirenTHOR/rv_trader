@@ -1010,6 +1010,7 @@ HTML_TEMPLATE = """
                     <thead>
                         <tr>
                             <th>Rank</th>
+                            <th>Stock #</th>
                             <th>Year</th>
                             <th>Model</th>
                             <th>Price</th>
@@ -1099,6 +1100,7 @@ def generate_opportunity_html(opp: Dict) -> str:
 def generate_listing_row_html(listing: Dict) -> str:
     """Generate HTML table row for a listing."""
     rank = listing.get('rank', 'N/A')
+    stock_num = html.escape(str(listing.get('stock_number', '-'))[:15]) if listing.get('stock_number') else '-'
     year = listing.get('year', 'N/A')
     model = html.escape(str(listing.get('model', 'Unknown'))[:22])
     price = f"${listing.get('price', 0):,.0f}" if listing.get('has_price') else '<span class="cross">-</span>'
@@ -1123,6 +1125,7 @@ def generate_listing_row_html(listing: Dict) -> str:
     return f"""
     <tr>
         <td>{rank}</td>
+        <td><code>{stock_num}</code></td>
         <td>{year}</td>
         <td>{model}</td>
         <td>{price}</td>
