@@ -40,3 +40,5 @@ Thumbs.db
 
 # Jupyter
 .ipynb_checkpoints/
+output/reports/*.html
+!output/reports/.gitkeep
