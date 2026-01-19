@@ -1,0 +1,4 @@
+# 3 Zip Codes - Diverse Regions
+46514,Elkhart IN - RV Capital
+85201,Mesa AZ - Snowbird Central
+37863,Pigeon Forge TN - Smoky Mountains

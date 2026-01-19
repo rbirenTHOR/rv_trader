@@ -115,18 +115,21 @@ rv_trader_2/
 | `dealer_premium_audit.py` | Premium tier detection from rank data | ✅ COMPLETE |
 | `export_flat_file.py` | Flat CSV export for data warehouse/BI (77 cols) | ✅ COMPLETE |
 
-### Interactive Dashboard (NEW - 2026-01-19)
+### Interactive Dashboard (Updated 2026-01-19)
 
 The unified dashboard (`rv_dashboard.html`) replaces the static HTML reports with a client-side interactive experience:
 
 | Feature | Description |
 |---------|-------------|
 | **Data Loading** | Loads `rv_data.json` via fetch() - no server required |
+| **🔍 Query Filters Box** | Highlighted blue box with Search Zip + RV Type (primary search criteria) |
+| **Dynamic Header** | Location, RV Type, Radius, Total, Tier Ceilings update when filters change |
 | **Filter: Brand** | Dropdown to filter by any make (Jayco, Thor, Winnebago, etc.) |
 | **Filter: Tier** | Top Premium / Premium / Standard checkboxes |
 | **Filter: Year** | Dropdown for model year (2026, 2025, older) |
 | **Filter: Position** | Competitive position (Dominant, Strong, Competitive, etc.) |
 | **Filter: Search Zip** | Filter by query zip code (for multi-zip searches) |
+| **Filter: RV Type** | Filter by Class A, Class B, etc. (for multi-type searches) |
 | **Filter: Region** | Geographic region (Midwest, Southeast, Southwest, etc.) |
 | **Filter: Dealer Search** | Text search for dealer name |
 | **Filter: Thor Only** | Toggle to show only Thor Industries brands |
@@ -139,10 +142,21 @@ The unified dashboard (`rv_dashboard.html`) replaces the static HTML reports wit
 | **Export CSV** | Export filtered data to CSV file |
 
 ```bash
-# Generate dashboard
-python src/complete/consolidate_data.py
+# Generate dashboard (multi-zip, multi-type workflow)
+# 1. Extract data for multiple zips and types
+python src/complete/rank_listings.py --zip-file zip_codes_3.txt --radius 50 --type "Class A"
+python src/complete/rank_listings.py --zip-file zip_codes_3.txt --radius 50 --type "Class B"
 
-# View in browser (requires local server for fetch to work)
+# 2. Merge the JSON files (Python one-liner)
+python -c "import json; from pathlib import Path; d=Path('output'); files=[f for f in sorted(d.glob('ranked_listings_*.json')) if 'merged' not in f.name]; all_l=[]; [all_l.extend(json.load(open(f,'r',encoding='utf-8')).get('listings',[])) for f in files]; json.dump({'listings':all_l},open(d/'ranked_listings_merged.json','w'),indent=2)"
+
+# 3. Fetch engagement for all listings
+python src/complete/engagement_scraper.py --input output/ranked_listings_merged.json
+
+# 4. Consolidate and generate dashboard
+python src/complete/consolidate_data.py --input ranked_listings_merged.json
+
+# 5. View in browser (requires local server for fetch to work)
 cd output/reports
 python -m http.server 8080
 # Open: http://localhost:8080/rv_dashboard.html
@@ -150,7 +164,12 @@ python -m http.server 8080
 
 **Architecture:**
 ```
-rank_listings.py → ranked_listings_*.json
+rank_listings.py → ranked_listings_*.json (one per type)
+         ↓
+    merge JSON files (manual or script)
+         ↓
+    ranked_listings_merged.json
+         ↓
 engagement_scraper.py → engagement_stats_*.json
          ↓
     consolidate_data.py
@@ -159,6 +178,25 @@ engagement_scraper.py → engagement_stats_*.json
          ↓
     rv_dashboard.html (loads via fetch)
 ```
+
+### Performance Timing (3 zips × 2 types × 50mi)
+
+| Step | Duration | Details |
+|------|----------|---------|
+| Class A extraction | **9 sec** | 204 listings |
+| Class B extraction | **8 sec** | 251 listings |
+| Engagement scraper | **6 sec** | 455 listings @ 114/sec |
+| Consolidate | **2 sec** | Merge + generate JSON |
+| **TOTAL** | **~26 sec** | 455 listings with full metadata |
+
+**Throughput:**
+- Search extraction: ~25 listings/second
+- Engagement data: ~114 listings/second (30 concurrent)
+
+**Scaling Estimate (National - 53 zips × 2 types):**
+- Search: ~3-5 minutes
+- Engagement: ~30-60 seconds
+- Total: **~5-6 minutes** for full national dataset
 
 ### Legacy: Interactive HTML Report (thor_report_html.py)
 
@@ -478,10 +516,14 @@ python src/complete/rank_listings.py --zip-file zip_codes_national.txt --radius 
 - ✅ **Location Column** - City, State shown for each listing
 - ✅ **Days Color Coding** - Visual indicator for listing age (green/yellow/red)
 - ✅ **Click-to-Open Rows** - Click any row to open listing on RVTrader
+- ✅ **Query Filters Box** - Highlighted blue box for Search Zip + RV Type (primary query params)
+- ✅ **RV Type Filter** - Filter by Class A, Class B, etc. for multi-type searches
+- ✅ **Dynamic Header** - Location, RV Type, Radius, Total, Tier Ceilings update with filter changes
+- ✅ **Multi-zip/type workflow** - Documentation for merging multiple search results
+- ✅ **Performance timing** - Documented: 455 listings in ~26 sec (3 zips × 2 types)
 
 ### High Priority
 1. **Fix spec_scraper.py** - Debug Playwright timeouts to get full specs from detail pages
-2. **Multi-zip consolidation** - Enhance consolidate_data.py to merge multiple search results
 
 ### Medium Priority
 1. Historical trend charts (line graphs over weeks)
