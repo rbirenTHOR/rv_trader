@@ -13,7 +13,7 @@ import csv
 import json
 from pathlib import Path
 from collections import defaultdict
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Optional, Dict, List, Any
 
 
@@ -91,6 +91,121 @@ RELEVANCE_PER_RANK = 15.0
 MERCH_BASE_SCORE = 72
 MERCH_PHOTO_FACTOR = 0.5  # ~0.5 pts per photo, cap at 33
 MERCH_PHOTO_CAP = 33
+
+# Current model year for competitive position calculation
+CURRENT_MODEL_YEAR = datetime.now().year
+
+# Competitive position definitions (year + tier combinations)
+COMPETITIVE_POSITIONS = {
+    ('top_premium', CURRENT_MODEL_YEAR): 'Dominant',
+    ('top_premium', CURRENT_MODEL_YEAR - 1): 'Strong',
+    ('premium', CURRENT_MODEL_YEAR): 'Strong',
+    ('premium', CURRENT_MODEL_YEAR - 1): 'Neutral',
+    ('standard', CURRENT_MODEL_YEAR): 'Competitive',
+    ('standard', CURRENT_MODEL_YEAR - 1): 'At Risk',
+}
+
+
+# =============================================================================
+# ENGAGEMENT DATA LOADING
+# =============================================================================
+
+def load_engagement_data(output_dir: Path) -> Dict[str, Dict]:
+    """
+    Load engagement data (views/saves) from the latest engagement JSON file.
+    Returns dict mapping listing_id -> {views, saves}
+    """
+    engagement_files = sorted(output_dir.glob('engagement_stats_*.json'), reverse=True)
+    if not engagement_files:
+        return {}
+
+    engagement_path = engagement_files[0]
+    print(f"Loading engagement data: {engagement_path.name}")
+
+    try:
+        with open(engagement_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+
+        engagement = {}
+
+        # Handle the results array format from engagement_scraper.py
+        if 'results' in data and isinstance(data['results'], list):
+            for item in data['results']:
+                listing_id = str(item.get('id', ''))
+                if listing_id:
+                    engagement[listing_id] = {
+                        'views': item.get('views', 0),
+                        'saves': item.get('saves', 0),
+                    }
+        # Handle direct dict format (listing_id -> stats)
+        elif isinstance(data, dict):
+            for listing_id, stats in data.items():
+                if isinstance(stats, dict):
+                    engagement[str(listing_id)] = {
+                        'views': stats.get('views', 0),
+                        'saves': stats.get('saves', 0),
+                    }
+
+        print(f"  Loaded engagement for {len(engagement)} listings")
+        return engagement
+    except Exception as e:
+        print(f"  Warning: Could not load engagement data: {e}")
+        return {}
+
+
+def get_competitive_position(tier: str, year: int) -> str:
+    """
+    Get competitive position based on tier and model year.
+
+    Positions:
+    - Dominant: Top Premium + current year
+    - Strong: Premium + current year OR Top Premium + 1yr old
+    - Competitive: Standard + current year
+    - Neutral: Premium + 1yr old
+    - At Risk: Standard + 1yr old
+    - Disadvantaged: 2+ years old
+    """
+    if not year:
+        return 'Unknown'
+
+    current_year = CURRENT_MODEL_YEAR
+
+    # Check for predefined positions
+    pos = COMPETITIVE_POSITIONS.get((tier, year))
+    if pos:
+        return pos
+
+    # Default logic for older years
+    if year <= current_year - 2:
+        return 'Disadvantaged'
+
+    return 'Unknown'
+
+
+def get_tier_abbrev(tier: str) -> str:
+    """Get tier abbreviation for display."""
+    if tier == 'top_premium':
+        return 'TP'
+    elif tier == 'premium':
+        return 'P'
+    return 'S'
+
+
+def calculate_days_listed(create_date: str) -> Optional[int]:
+    """Calculate days since listing was created."""
+    if not create_date:
+        return None
+    try:
+        # Handle various date formats
+        for fmt in ['%Y-%m-%dT%H:%M:%S', '%Y-%m-%d', '%m/%d/%Y']:
+            try:
+                created = datetime.strptime(create_date.split('.')[0], fmt)
+                return (datetime.now() - created).days
+            except ValueError:
+                continue
+        return None
+    except Exception:
+        return None
 
 
 # =============================================================================
@@ -651,12 +766,15 @@ def write_csv(rows: List[Dict], output_path: str):
 # =============================================================================
 
 def generate_manufacturer_reports(analyzed: List[Dict], all_listings: List[Dict],
-                                   output_dir: str) -> Dict[str, str]:
+                                   output_dir: str, engagement: Dict[str, Dict] = None) -> Dict[str, str]:
     """
     Generate per-manufacturer reports that can be sent to each Thor brand.
     Each report breaks down by dealer with actionable tables.
+
+    Now includes: Views, Saves, Days Listed, Tier (TP/P/S), Competitive Position
     """
     reports = {}
+    engagement = engagement or {}
 
     # Group by thor_brand
     by_brand = defaultdict(list)
@@ -692,15 +810,49 @@ def generate_manufacturer_reports(analyzed: List[Dict], all_listings: List[Dict]
         # Brand Summary
         brand_ranks = [l['rank'] for l in brand_listings if l.get('rank')]
         brand_avg_rank = sum(brand_ranks) / len(brand_ranks) if brand_ranks else 0
-        premium_count = len([l for l in brand_listings if l.get('is_premium')])
+        top_premium_count = len([l for l in brand_listings if l.get('is_top_premium')])
+        premium_count = len([l for l in brand_listings if l.get('is_premium') and not l.get('is_top_premium')])
         standard_count = len([l for l in brand_listings if not l.get('is_premium')])
 
         lines.append(f"\nBRAND SUMMARY")
         lines.append("-" * 50)
         lines.append(f"  Average Rank: {brand_avg_rank:.1f}")
-        lines.append(f"  Premium Listings: {premium_count}")
-        lines.append(f"  Standard Listings: {standard_count}")
+        lines.append(f"  Tier Breakdown: {top_premium_count} Top Premium | {premium_count} Premium | {standard_count} Standard")
         lines.append(f"  Total Improvement Potential: {sum(l.get('realistic_improvement', 0) for l in brand_listings)} positions")
+
+        # Competitive position breakdown
+        positions = defaultdict(int)
+        for l in brand_listings:
+            tier = l.get('tier', 'standard')
+            year = l.get('year')
+            pos = get_competitive_position(tier, year)
+            positions[pos] += 1
+
+        lines.append(f"\nCOMPETITIVE POSITIONS")
+        lines.append("-" * 50)
+        for pos in ['Dominant', 'Strong', 'Competitive', 'Neutral', 'At Risk', 'Disadvantaged']:
+            if positions.get(pos, 0) > 0:
+                lines.append(f"  {pos}: {positions[pos]}")
+
+        # Engagement summary if available
+        total_views = 0
+        total_saves = 0
+        listings_with_engagement = 0
+        for l in brand_listings:
+            listing_id = str(l.get('id', ''))
+            eng = engagement.get(listing_id, {})
+            if 'views' in eng:
+                total_views += eng.get('views', 0)
+                total_saves += eng.get('saves', 0)
+                listings_with_engagement += 1
+
+        if listings_with_engagement > 0:
+            lines.append(f"\nENGAGEMENT SUMMARY")
+            lines.append("-" * 50)
+            lines.append(f"  Total Views: {total_views:,}")
+            lines.append(f"  Total Saves: {total_saves:,}")
+            lines.append(f"  Avg Views/Listing: {total_views / listings_with_engagement:.1f}")
+            lines.append(f"  Avg Saves/Listing: {total_saves / listings_with_engagement:.1f}")
 
         # Quick stats
         missing_price = len([l for l in brand_listings if l.get('needs_price')])
@@ -797,38 +949,46 @@ def generate_manufacturer_reports(analyzed: List[Dict], all_listings: List[Dict]
 
             # Listing table
             lines.append(f"\n  LISTINGS:")
-            lines.append(f"  {'─' * 96}")
+            lines.append(f"  {'─' * 140}")
 
-            # Table header
-            lines.append(f"  {'Rank':<6}{'Year':<6}{'Model':<25}{'Price':<12}{'Photos':<8}{'Length':<8}{'Merch':<7}{'Status':<12}{'Top Actions':<40}")
-            lines.append(f"  {'─' * 96}")
+            # Table header - now includes Views, Saves, Days, Tier, Position
+            lines.append(f"  {'Rank':<6}{'Year':<6}{'Model':<22}{'Price':<11}{'Photos':<7}{'Views':<7}{'Saves':<6}{'Days':<6}{'Tier':<5}{'Position':<13}{'Top Actions':<50}")
+            lines.append(f"  {'─' * 140}")
 
             # Sort listings by rank
             for listing in sorted(listings, key=lambda x: x.get('rank') or 999):
                 rank = listing.get('rank', 'N/A')
                 year = listing.get('year', '')
-                model = (listing.get('model') or '')[:24]
+                model = (listing.get('model') or '')[:21]
                 price = f"${listing.get('price', 0):,.0f}" if listing.get('price') else 'NO PRICE'
                 photos = listing.get('photo_count', 0)
-                length = f"{listing.get('length', 0):.0f}ft" if listing.get('length') else 'MISSING'
-                merch = listing.get('merch_score', 0)
 
-                # Status
-                if listing.get('is_premium'):
-                    status = 'Premium'
-                elif listing.get('outperforming_tier'):
-                    status = 'Outperform'
-                elif listing.get('at_tier_ceiling'):
-                    status = 'At Ceiling'
-                else:
-                    status = 'Standard'
+                # Get engagement data
+                listing_id = str(listing.get('id', ''))
+                eng = engagement.get(listing_id, {})
+                views = eng.get('views', '-')
+                saves = eng.get('saves', '-')
 
-                # Top action
+                # Calculate days listed
+                days = calculate_days_listed(listing.get('create_date'))
+                days_str = f"{days}d" if days is not None else '-'
+
+                # Tier abbreviation
+                tier = listing.get('tier', 'standard')
+                tier_abbrev = get_tier_abbrev(tier)
+
+                # Competitive position
+                position = get_competitive_position(tier, year)
+
+                # Top action - add year-aware recommendations
                 action = listing.get('action_1', '') or 'None needed'
-                if len(action) > 38:
-                    action = action[:35] + '...'
+                if year and year < CURRENT_MODEL_YEAR and position in ('At Risk', 'Disadvantaged'):
+                    year_penalty = (CURRENT_MODEL_YEAR - year) * 24
+                    action = f"Year penalty: -{year_penalty} pts. " + (action if action != 'None needed' else 'Upgrade to Premium')
+                if len(action) > 48:
+                    action = action[:45] + '...'
 
-                lines.append(f"  {rank:<6}{year:<6}{model:<25}{price:<12}{photos:<8}{length:<8}{merch:<7.0f}{status:<12}{action:<40}")
+                lines.append(f"  {rank:<6}{year:<6}{model:<22}{price:<11}{photos:<7}{views:<7}{saves:<6}{days_str:<6}{tier_abbrev:<5}{position:<13}{action:<50}")
 
             # Detailed action items for this dealer
             actionable = [l for l in listings if l.get('total_actions_needed', 0) > 0]
@@ -839,7 +999,7 @@ def generate_manufacturer_reports(analyzed: List[Dict], all_listings: List[Dict]
                 for listing in sorted(actionable, key=lambda x: -x.get('priority_score', 0)):
                     lines.append(f"\n  • {listing.get('year')} {listing.get('model')} (Rank {listing.get('rank')})")
                     lines.append(f"    Stock#: {listing.get('stock_number', 'N/A')} | VIN: {listing.get('vin') or 'MISSING'}")
-                    lines.append(f"    Current: {listing.get('photo_count', 0)} photos | Length: {listing.get('length') or 'MISSING'} | Merch: {listing.get('merch_score', 0):.0f}")
+                    lines.append(f"    Current: {listing.get('photo_count', 0)} photos | Length: {listing.get('length') or 'MISSING'} | Merch: {listing.get('merch_score') or 0:.0f}")
 
                     if listing.get('realistic_improvement', 0) > 0:
                         lines.append(f"    Potential: Rank {listing.get('rank')} → {listing.get('realistic_new_rank')} (+{listing.get('realistic_improvement')} positions)")
@@ -862,9 +1022,29 @@ def generate_manufacturer_reports(analyzed: List[Dict], all_listings: List[Dict]
 
         # Footer
         lines.append(f"\n\n{'=' * 100}")
-        lines.append("POINT VALUES REFERENCE")
+        lines.append("REFERENCE GUIDE")
         lines.append("=" * 100)
+
         lines.append("""
+COMPETITIVE POSITIONS (Year + Tier)
+─────────────────────────────────────────────────────────────────────────────
+  Dominant       = Top Premium + Current Year (best possible position)
+  Strong         = Premium + Current Year OR Top Premium + 1yr old
+  Competitive    = Standard + Current Year (year offsets tier disadvantage)
+  Neutral        = Premium + 1yr old (year penalty cancels premium boost)
+  At Risk        = Standard + 1yr old (needs upgrade or clearance pricing)
+  Disadvantaged  = 2+ years old (significant year penalty)
+
+  Key Insight: "2026 Standard ≈ 2025 Premium" (~24 pts year bonus = ~20 pts premium)
+
+TIER ABBREVIATIONS
+─────────────────────────────────────────────────────────────────────────────
+  TP = Top Premium (best positions, highest paid tier)
+  P  = Premium (good positions, paid tier)
+  S  = Standard (free listing, limited by tier ceiling)
+
+POINT VALUES
+─────────────────────────────────────────────────────────────────────────────
   Action                  Relevance Points    Merch Points    Difficulty
   ─────────────────────────────────────────────────────────────────────
   Add price               +194                +5              Easy
@@ -874,6 +1054,7 @@ def generate_manufacturer_reports(analyzed: List[Dict], all_listings: List[Dict]
   Add length/specs        +0                  +8              Easy
 
   ~15 relevance points ≈ 1 rank position improvement
+  Each model year older ≈ -24 relevance points
   Tier ceiling: Standard listings cannot pass premium without purchasing premium
 """)
 
@@ -1098,10 +1279,6 @@ def analyze(csv_path: str, output_csv: str = None, output_report: str = None,
         with open(output_report, 'w', encoding='utf-8') as f:
             f.write(report)
         print(f"Report saved to: {output_report}")
-
-    # Generate per-manufacturer reports
-    output_dir = Path(output_csv).parent if output_csv else Path('output')
-    manufacturer_reports = generate_manufacturer_reports(analyzed_rows, listings, str(output_dir))
 
     return analyzed_rows, report
 

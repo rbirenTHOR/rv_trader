@@ -17,12 +17,21 @@ build/
 *.swp
 *.swo
 
-# Output data (large files)
+# Claude Code settings (user-specific)
+.claude/settings.local.json
+
+# Output data (large generated files)
 output/*.json
 output/*.csv
+output/*.txt
+output/archive_*/
+output/history/
 output/scorecards/*.html
+output/reports/*.html
+output/reports/*.json
 !output/.gitkeep
 !output/scorecards/.gitkeep
+!output/reports/.gitkeep
 
 # Environment
 .env
@@ -40,5 +49,3 @@ Thumbs.db
 
 # Jupyter
 .ipynb_checkpoints/
-output/reports/*.html
-!output/reports/.gitkeep

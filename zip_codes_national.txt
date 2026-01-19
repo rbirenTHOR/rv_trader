@@ -1,0 +1,97 @@
+# National RV Market Coverage - 50 Zip Codes @ 100mi Radius
+# Focused on: RV manufacturing, retirement areas, camping destinations, suburban markets
+# Avoids: Dense urban cores (NYC, Boston, etc.) where RV ownership is low
+# Usage: python src/complete/rank_listings.py --zip-file zip_codes_national.txt --radius 100
+
+# ============================================================================
+# MIDWEST - RV MANUFACTURING CORRIDOR (Elkhart region = RV Capital of World)
+# ============================================================================
+46514,Elkhart IN - RV Capital of the World
+46802,Fort Wayne IN
+43615,Toledo OH
+49503,Grand Rapids MI
+61602,Peoria IL
+53202,Milwaukee WI suburbs
+55124,Minneapolis suburbs (Lakeville)
+
+# ============================================================================
+# FLORIDA - #1 RV MARKET (Snowbirds + Retirement)
+# ============================================================================
+34470,Ocala FL - Horse/RV country
+33901,Fort Myers FL
+33801,Lakeland FL - Central FL hub
+32114,Daytona Beach FL
+32501,Pensacola FL - Panhandle
+34201,Bradenton FL
+32771,Sanford FL - Orlando suburbs
+
+# ============================================================================
+# TEXAS - HUGE MARKET
+# ============================================================================
+76101,Fort Worth TX
+78154,San Antonio suburbs (Schertz)
+77494,Katy TX - Houston suburbs
+75070,McKinney TX - Dallas suburbs
+79601,Abilene TX - West Texas
+78840,Del Rio TX - Border/Winter Texans
+76504,Killeen TX - Central TX
+
+# ============================================================================
+# ARIZONA - SNOWBIRD CENTRAL
+# ============================================================================
+85201,Mesa AZ - Massive RV retirement
+85364,Yuma AZ - Winter RV capital
+86001,Flagstaff AZ - Northern AZ
+85635,Sierra Vista AZ - Southern AZ
+86401,Kingman AZ - Route 66
+
+# ============================================================================
+# CALIFORNIA - SUBURBAN/INLAND (not coastal cities)
+# ============================================================================
+92592,Temecula CA - Inland Empire
+93301,Bakersfield CA - Central Valley
+93722,Fresno CA
+96001,Redding CA - Northern CA
+95630,Folsom CA - Sacramento suburbs
+
+# ============================================================================
+# PACIFIC NORTHWEST & MOUNTAIN
+# ============================================================================
+99201,Spokane WA
+83701,Boise ID - Fast growing RV market
+97504,Medford OR - Southern OR
+98390,Sumner WA - Seattle suburbs/Tacoma
+59101,Billings MT
+
+# ============================================================================
+# MOUNTAIN WEST & PLAINS
+# ============================================================================
+80012,Aurora CO - Denver suburbs
+80906,Colorado Springs CO
+84601,Provo UT
+82001,Cheyenne WY
+57701,Rapid City SD - Black Hills
+
+# ============================================================================
+# SOUTHEAST - CAMPING & RETIREMENT
+# ============================================================================
+29577,Myrtle Beach SC
+37863,Pigeon Forge TN - Smoky Mountains
+35801,Huntsville AL
+30533,Dahlonega GA - North GA mountains
+28732,Hendersonville NC - Blue Ridge
+
+# ============================================================================
+# MID-SOUTH & OZARKS
+# ============================================================================
+65616,Branson MO - RV destination
+72701,Fayetteville AR - Ozarks
+37067,Franklin TN - Nashville suburbs
+39503,Gulfport MS - Gulf Coast
+
+# ============================================================================
+# MIDWEST RECREATION
+# ============================================================================
+53965,Wisconsin Dells WI
+56401,Brainerd MN - Lake country
+49684,Traverse City MI - Northern MI

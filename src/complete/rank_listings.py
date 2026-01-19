@@ -2,11 +2,14 @@
 Rank RV listings by zip code and type using async HTTP.
 Extracts all listings with search position ranks (~5 seconds per zip).
 
+Supports ScraperAPI for IP rotation to avoid rate limiting on large extractions.
+
 Usage:
     python src/rank_listings.py
     python src/rank_listings.py --zip 60616
     python src/rank_listings.py --type "Class B"
     python src/rank_listings.py --zip 60616 --condition U --radius 100
+    python src/rank_listings.py --use-proxy  # Enable ScraperAPI IP rotation
 """
 
 import json
@@ -69,11 +72,25 @@ def wrap_with_scraper_api(url: str) -> str:
 
 
 def load_zip_codes(filepath: str = 'zip_codes.txt') -> list:
+    """Load zip codes from file. Supports formats:
+    - Plain: 60616
+    - With description: 60616,Chicago IL
+    - Comments start with #
+    """
     path = Path(filepath)
     if not path.exists():
         return ['60616']
+    zips = []
     with open(path, 'r') as f:
-        return [line.strip() for line in f if line.strip()]
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith('#'):
+                continue
+            # Handle "zip,description" format
+            zip_code = line.split(',')[0].strip()
+            if zip_code:
+                zips.append(zip_code)
+    return zips if zips else ['60616']
 
 
 def build_api_url(rv_type: str, page: int, zip_code: str,
@@ -120,6 +137,7 @@ def parse_json_field(val) -> dict:
 
 
 def flatten_listing(listing: dict, rank: int, zip_code: str, rv_type: str,
+                    radius: int = None, condition: str = None,
                     price_min: int = None, price_max: int = None) -> dict:
     # Parse JSON string fields
     ad_attribs = parse_json_field(listing.get('ad_attribs'))
@@ -145,6 +163,8 @@ def flatten_listing(listing: dict, rank: int, zip_code: str, rv_type: str,
         'rank': rank,
         'search_zip': zip_code,
         'search_type': rv_type,
+        'search_radius': radius,
+        'search_condition': condition,
         'price_chunk_min': price_min,
         'price_chunk_max': price_max,
 
@@ -237,12 +257,24 @@ async def fetch_page(session: aiohttp.ClientSession, url: str, semaphore: asynci
     """Fetch a single API page."""
     async with semaphore:
         try:
-            timeout = aiohttp.ClientTimeout(total=15)
-            async with session.get(url, headers=HEADERS, timeout=timeout) as resp:
+            # Wrap with ScraperAPI if enabled (longer timeout for proxy)
+            fetch_url = wrap_with_scraper_api(url)
+            timeout_secs = 60 if USE_SCRAPER_API else 15
+            timeout = aiohttp.ClientTimeout(total=timeout_secs)
+
+            async with session.get(fetch_url, headers=HEADERS, timeout=timeout) as resp:
                 if resp.status == 200:
                     return await resp.json()
                 elif resp.status == 403:
                     print(f"  [WARN] 403 Forbidden")
+                elif resp.status == 500 and USE_SCRAPER_API:
+                    print(f"  [WARN] 500 from proxy - retrying direct...")
+                    # Fallback to direct on proxy failure
+                    async with session.get(url, headers=HEADERS, timeout=aiohttp.ClientTimeout(total=15)) as resp2:
+                        if resp2.status == 200:
+                            return await resp2.json()
+        except asyncio.TimeoutError:
+            print(f"  [ERR] Timeout")
         except Exception as e:
             print(f"  [ERR] Request failed: {type(e).__name__}")
         return None
@@ -267,7 +299,7 @@ async def extract_type(session: aiohttp.ClientSession, semaphore: asyncio.Semaph
     page1_listings = []
     raw = data['data'].get('results', [])
     for i, listing in enumerate(raw):
-        page1_listings.append(flatten_listing(listing, i + 1, zip_code, rv_type))
+        page1_listings.append(flatten_listing(listing, i + 1, zip_code, rv_type, radius, condition))
 
     if total <= RESULTS_PER_PAGE:
         # Only 1 page needed, we already have it
@@ -312,7 +344,7 @@ async def fetch_remaining_pages(session: aiohttp.ClientSession, semaphore: async
             raw_listings = data['data'].get('results', [])
             base_rank = rank_offset + (page_num - 1) * RESULTS_PER_PAGE
             for i, listing in enumerate(raw_listings):
-                flat = flatten_listing(listing, base_rank + i + 1, zip_code, rv_type, price_min, price_max)
+                flat = flatten_listing(listing, base_rank + i + 1, zip_code, rv_type, radius, condition, price_min, price_max)
                 all_listings.append(flat)
 
     return all_listings
@@ -369,7 +401,7 @@ async def fetch_all_chunks_parallel(session: aiohttp.ClientSession, semaphore: a
     for price_min, price_max, total, page1_raw in chunks_data:
         # Add page 1 listings
         for i, listing in enumerate(page1_raw):
-            flat = flatten_listing(listing, rank_offset + i + 1, zip_code, rv_type, price_min, price_max)
+            flat = flatten_listing(listing, rank_offset + i + 1, zip_code, rv_type, radius, condition, price_min, price_max)
             all_listings.append(flat)
 
         # Add remaining pages for this chunk
@@ -379,7 +411,7 @@ async def fetch_all_chunks_parallel(session: aiohttp.ClientSession, semaphore: a
         for page, raw in chunk_remaining:
             base = rank_offset + (page - 1) * RESULTS_PER_PAGE
             for i, listing in enumerate(raw):
-                flat = flatten_listing(listing, base + i + 1, zip_code, rv_type, price_min, price_max)
+                flat = flatten_listing(listing, base + i + 1, zip_code, rv_type, radius, condition, price_min, price_max)
                 all_listings.append(flat)
 
         rank_offset += min(total, MAX_RESULTS)
@@ -396,14 +428,17 @@ async def run_extraction(zip_codes: list = None, rv_types: list = None,
     if rv_types is None:
         rv_types = list(RV_TYPES.keys())
 
+    # Lower concurrency for proxy (requests are slower, avoid overwhelming)
+    concurrency = 20 if USE_SCRAPER_API else MAX_CONCURRENT_REQUESTS
+
     print(f"Starting extraction (async HTTP)")
     print(f"  ScraperAPI: {'ENABLED' if USE_SCRAPER_API else 'DISABLED'}")
     print(f"  Zip codes: {zip_codes}")
     print(f"  RV types: {len(rv_types)}")
-    print(f"  Max concurrent requests: {MAX_CONCURRENT_REQUESTS}")
+    print(f"  Max concurrent requests: {concurrency}")
     print("-" * 60)
 
-    semaphore = asyncio.Semaphore(MAX_CONCURRENT_REQUESTS)
+    semaphore = asyncio.Semaphore(concurrency)
     all_listings = []
 
     async with aiohttp.ClientSession() as session:
@@ -449,15 +484,35 @@ def save_results(listings: list, output_dir: str = 'output'):
 
 
 async def main():
+    global USE_SCRAPER_API
+
     import argparse
     parser = argparse.ArgumentParser(description='Fast rank RV listings')
     parser.add_argument('--zip', type=str, help='Single zip code')
+    parser.add_argument('--zip-file', type=str, help='File with zip codes (default: zip_codes.txt)')
     parser.add_argument('--type', type=str, help='Single RV type')
     parser.add_argument('--radius', type=int, default=DEFAULT_RADIUS)
     parser.add_argument('--condition', type=str, default=DEFAULT_CONDITION, choices=['N', 'U'])
+    parser.add_argument('--use-proxy', action='store_true', help='Enable ScraperAPI for IP rotation')
     args = parser.parse_args()
 
-    zip_codes = [args.zip] if args.zip else None
+    # Enable ScraperAPI if requested
+    if args.use_proxy:
+        USE_SCRAPER_API = True
+        print("=" * 60)
+        print("ScraperAPI Mode: IP rotation enabled")
+        print("  - Requests routed through rotating IPs")
+        print("  - Slower but avoids rate limiting")
+        print("=" * 60)
+
+    # Priority: --zip (single) > --zip-file > default zip_codes.txt
+    if args.zip:
+        zip_codes = [args.zip]
+    elif args.zip_file:
+        zip_codes = load_zip_codes(args.zip_file)
+        print(f"Loaded {len(zip_codes)} zip codes from {args.zip_file}")
+    else:
+        zip_codes = None  # Will use default in run_extraction
     rv_types = [args.type] if args.type else None
 
     listings = await run_extraction(zip_codes, rv_types, args.radius, args.condition)
