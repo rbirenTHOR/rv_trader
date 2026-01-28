@@ -3,13 +3,14 @@ Fast engagement stats scraper using direct API endpoints.
 Fetches views and saves data for all listings via HTTP.
 
 Supports ScraperAPI proxy mode for static IP (browser + requests through same IP).
+Automatically tests cookies before running and refreshes if needed.
 
 Usage:
     python src/engagement_scraper.py
+    python src/engagement_scraper.py --input output/ranked_listings_merged.json
     python src/engagement_scraper.py --limit 10
     python src/engagement_scraper.py --refresh-cookies  # Force cookie refresh
     python src/engagement_scraper.py --use-proxy        # Use ScraperAPI proxy mode
-    python src/engagement_scraper.py --use-proxy --refresh-cookies  # Generate cookies via proxy
 """
 
 import json
@@ -49,9 +50,9 @@ def wrap_with_scraperapi(url: str, cookie_string: str = None) -> str:
 
     return api_url
 
-# Cookie cache file and expiry
+# Cookie cache file and expiry (extended to 14 days - cookies often work longer than expected)
 COOKIE_CACHE_FILE = Path(__file__).parent.parent / ".cookie_cache.json"
-COOKIE_EXPIRY_HOURS = 48
+COOKIE_EXPIRY_HOURS = 336  # 14 days
 
 # ScraperAPI session for sticky IP (valid for 3 min, refreshed on each request)
 import random
@@ -291,6 +292,33 @@ async def get_valid_cookies(force_refresh: bool = False, use_proxy: bool = False
     return cookie_string, None
 
 
+async def test_cookie_works(ad_id: str, cookie_string: str, proxy_url: str = None) -> bool:
+    """Test if cookies work by making a single views request.
+
+    Returns True if we get a valid JSON response, False otherwise.
+    """
+    headers = get_headers(cookie_string)
+    views_url = URL_VIEWS_RAW.format(ad_id=ad_id)
+
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(views_url, headers=headers, timeout=aiohttp.ClientTimeout(total=30), proxy=proxy_url) as resp:
+                if resp.status == 200:
+                    text = await resp.text()
+                    try:
+                        data = json.loads(text)
+                        # Check for valid response structure
+                        if 'listingViewsData' in data or 'error' in data:
+                            return True
+                    except json.JSONDecodeError:
+                        pass
+                # Non-200 or invalid response = cookies don't work
+                return False
+    except Exception as e:
+        print(f"  Cookie test error: {e}")
+        return False
+
+
 async def fetch_engagement(session: aiohttp.ClientSession, ad_id: str, listing: dict, headers: dict, use_proxy: bool = False, cookie_string: str = None, proxy_url: str = None) -> dict:
     """Fetch views and saves for a single listing.
 
@@ -399,9 +427,12 @@ async def main():
     force_refresh = '--refresh-cookies' in sys.argv
     use_proxy = '--use-proxy' in sys.argv
 
+    input_file = None
     for i, arg in enumerate(sys.argv):
         if arg == '--limit' and i + 1 < len(sys.argv):
             limit = int(sys.argv[i + 1])
+        if arg == '--input' and i + 1 < len(sys.argv):
+            input_file = sys.argv[i + 1]
 
     # Build proxy URL if enabled
     proxy_url = None
@@ -421,15 +452,23 @@ async def main():
     cookie_string, _ = await get_valid_cookies(force_refresh=force_refresh, use_proxy=use_proxy)
     headers = get_headers(cookie_string)
 
-    # Find most recent ranked_listings file
+    # Find input file (explicit or most recent)
     output_dir = Path('output')
-    json_files = list(output_dir.glob('ranked_listings_*.json'))
+    if input_file:
+        latest_file = Path(input_file)
+        if not latest_file.exists():
+            # Try in output dir
+            latest_file = output_dir / input_file
+        if not latest_file.exists():
+            print(f"ERROR: Input file not found: {input_file}")
+            sys.exit(1)
+    else:
+        json_files = list(output_dir.glob('ranked_listings_*.json'))
+        if not json_files:
+            print("ERROR: No ranked_listings JSON files found in output/")
+            sys.exit(1)
+        latest_file = max(json_files, key=lambda p: p.stat().st_mtime)
 
-    if not json_files:
-        print("ERROR: No ranked_listings JSON files found in output/")
-        sys.exit(1)
-
-    latest_file = max(json_files, key=lambda p: p.stat().st_mtime)
     print(f"Loading listings from: {latest_file}")
 
     with open(latest_file, 'r', encoding='utf-8') as f:
@@ -438,6 +477,25 @@ async def main():
     listings = data['listings']
     if limit:
         listings = listings[:limit]
+
+    # Test cookies with first listing before running full batch
+    if listings:
+        test_id = str(listings[0].get('id', listings[0].get('adId', '')))
+        print(f"Testing cookie with listing {test_id}...", end=" ", flush=True)
+        if await test_cookie_works(test_id, cookie_string, proxy_url):
+            print("OK")
+        else:
+            print("FAILED - refreshing cookies...")
+            cookie_string, _ = await get_valid_cookies(force_refresh=True, use_proxy=use_proxy)
+            headers = get_headers(cookie_string)
+            # Retry test
+            print(f"Retesting cookie with listing {test_id}...", end=" ", flush=True)
+            if await test_cookie_works(test_id, cookie_string, proxy_url):
+                print("OK")
+            else:
+                print("FAILED")
+                print("ERROR: Cookies still not working after refresh. Please check your connection.")
+                sys.exit(1)
 
     print(f"Fetching engagement data for {len(listings)} listings...")
     print("-" * 70)

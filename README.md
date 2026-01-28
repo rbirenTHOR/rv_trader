@@ -1,62 +1,75 @@
 # RVTrader Competitive Intelligence Platform
 
-A comprehensive data extraction and analysis toolkit for monitoring RV listing performance on RVTrader.com, designed to help **Thor Industries brands** (Jayco, Airstream, Thor Motor Coach, Keystone, Heartland, Tiffin, Entegra Coach, Cruiser RV, Dutchmen RV) improve their search rankings and optimize listing quality.
+A data extraction and analysis toolkit for monitoring RV listing performance on RVTrader.com, designed to help **Thor Industries brands** (Jayco, Airstream, Thor Motor Coach, Keystone, Heartland, Tiffin, Entegra Coach, Cruiser RV, Dutchmen RV) improve their search rankings and optimize listing quality.
 
 ## Overview
 
 This platform provides:
-- **Data Collection** - Automated extraction of listing data, engagement metrics, and detail page content
+- **Data Collection** - Automated extraction of listing data and engagement metrics
 - **Ranking Analysis** - Understanding of RVTrader's search ranking algorithm
 - **Competitive Benchmarking** - Thor vs competitor performance comparison
-- **Actionable Reports** - Dealer scorecards, manufacturer reports, and weekly tracking
+- **Interactive Dashboard** - Single standalone HTML file with filtering and sorting
 
-## Quick Start
+## Quick Start (3 Commands)
 
 ```bash
 # 1. Install dependencies
 pip install aiohttp playwright requests
 playwright install chromium
 
-# 2. Extract search rankings (fast, no auth needed)
-python src/complete/rank_listings.py --zip 60616
+# 2. Extract search rankings
+python src/complete/rank_listings.py --zip 60616 --type "Class B"
 
-# 3. Generate Thor brand analysis
-python src/complete/thor_brand_analysis_v2.py
+# 3. Fetch engagement data (views/saves)
+python src/complete/engagement_scraper.py
 
-# 4. Generate dealer scorecards (HTML reports)
-python src/complete/dealer_scorecard.py
+# 4. Build standalone dashboard
+python src/complete/build_dashboard.py
 
-# 5. Generate manufacturer regional reports
-python src/complete/regional_summary.py
+# Output: output/reports/rv_dashboard_standalone.html
+# Just open in any browser - works offline!
+```
+
+### Multi-Market Extraction
+
+```bash
+# National coverage (53 zip codes × all RV types)
+python src/complete/rank_listings.py --zip-file zip_codes_national.txt --radius 100
+
+# Fetch engagement and build dashboard
+python src/complete/engagement_scraper.py
+python src/complete/build_dashboard.py
 ```
 
 ## Architecture
 
 ```
-rv_trader/
-├── src/complete/              # Production scripts
-│   ├── rank_listings.py       # Search results extraction (62 fields)
-│   ├── description_scraper.py # Detail page content extraction
-│   ├── engagement_scraper.py  # Views/saves API scraper
-│   ├── thor_brand_analysis_v2.py  # Comprehensive analysis engine
-│   ├── dealer_scorecard.py    # HTML scorecard generator
-│   ├── regional_summary.py    # Manufacturer + region reports
-│   └── weekly_tracker.py      # Week-over-week tracking
-├── docs/                      # Technical documentation
-│   ├── RANKING_ALGORITHM.md   # Complete ranking formula
-│   └── MERCH_SCORE.md         # Merchandising score analysis
-├── output/                    # Generated data and reports
-│   ├── reports/               # HTML/text reports
-│   ├── scorecards/            # Dealer HTML scorecards
-│   └── history/               # Weekly tracking data
-└── zip_codes.txt              # Target markets (one per line)
+rv_trader_2/
+├── src/complete/                 # Production scripts
+│   ├── rank_listings.py          # Core: Search extraction (JSON only)
+│   ├── engagement_scraper.py     # Core: Views/saves extraction
+│   ├── build_dashboard.py        # Core: Standalone HTML dashboard
+│   ├── export_flat_file.py       # Optional: BI/data warehouse CSV
+│   ├── weekly_tracker.py         # Optional: Historical tracking
+│   ├── dealer_premium_audit.py   # Optional: Premium tier detection
+│   ├── description_scraper.py    # Optional: Full descriptions
+│   └── archive/                  # Legacy scripts (not used)
+├── docs/                         # Technical documentation
+│   ├── RANKING_ALGORITHM.md      # Complete ranking formula
+│   └── MERCH_SCORE.md            # Merchandising score analysis
+├── output/
+│   ├── ranked_listings_*.json    # Search extraction data
+│   ├── engagement_stats_*.json   # Engagement data
+│   └── reports/
+│       └── rv_dashboard_standalone.html  # THE OUTPUT
+└── zip_codes_national.txt        # 53 RV buyer markets
 ```
 
-## Data Collection Scripts
+## Core Scripts
 
 ### rank_listings.py
 
-Fast bulk extraction of search results using async HTTP. Extracts 62 fields per listing including ranking signals, pricing, photos, dealer info, and quality scores.
+Fast bulk extraction of search results using async HTTP. Extracts 64 fields per listing.
 
 ```bash
 python src/complete/rank_listings.py                     # All zips in zip_codes.txt
@@ -64,12 +77,11 @@ python src/complete/rank_listings.py --zip 60616         # Single zip code
 python src/complete/rank_listings.py --type "Class B"    # Single RV type
 python src/complete/rank_listings.py --condition U       # Used inventory (default: New)
 python src/complete/rank_listings.py --radius 100        # Custom radius (default: 50mi)
+python src/complete/rank_listings.py --use-proxy         # ScraperAPI IP rotation
+python src/complete/rank_listings.py --zip-file zip_codes_national.txt  # Multi-zip
 ```
 
-**Key Features:**
-- 50 concurrent async requests (~5 seconds per zip code)
-- Auto price-chunking for markets with >360 listings
-- Outputs CSV and JSON to `output/ranked_listings_{timestamp}.*`
+**Performance:** ~350 listings/second with 50 concurrent requests
 
 **Fields Extracted:**
 | Category | Fields |
@@ -78,133 +90,70 @@ python src/complete/rank_listings.py --radius 100        # Custom radius (defaul
 | Premium | is_premium, is_top_premium, badge_status, scheme_code |
 | Vehicle | year, make, model, trim, class, condition, length, mileage |
 | Pricing | price, msrp, rebate, price_drop_date |
-| Quality | photo_count, floorplan_id, vin, description (truncated) |
+| Quality | photo_count, floorplan_id, vin, description |
 | Dealer | dealer_name, dealer_group, dealer_phone, dealer_website |
-| Location | city, state, zip_code, latitude, longitude |
-
-### description_scraper.py
-
-Extracts full descriptions and vehicle specs from individual listing detail pages.
-
-```bash
-python src/complete/description_scraper.py               # All listings from latest extraction
-python src/complete/description_scraper.py --limit 50    # Limit to 50 listings
-python src/complete/description_scraper.py --delay 0.5   # Custom delay between requests
-```
-
-**Requires:** Cookies from `.cookie_cache.json` (run `engagement_scraper.py --refresh-cookies` first)
-
-**Extracts:**
-- Full description text (HTML stripped, typically 1000-3000+ characters)
-- Vehicle specs: sleepingCapacity, slideouts, waterCapacity, fuelType, length, etc.
+| Location | city, state, zip_code, latitude, longitude, region |
 
 ### engagement_scraper.py
 
 Fetches view and save counts from RVTrader's internal APIs.
 
 ```bash
-python src/complete/engagement_scraper.py                    # Uses cached cookies
-python src/complete/engagement_scraper.py --limit 20         # Limit listings
+python src/complete/engagement_scraper.py                    # Auto-tests cookies first
 python src/complete/engagement_scraper.py --refresh-cookies  # Force cookie refresh
+python src/complete/engagement_scraper.py --input file.json  # Specific input file
 ```
+
+**Performance:** ~111 listings/second with 30 concurrent requests
 
 **Cookie Management:**
-- Cookies cached in `.cookie_cache.json` with 48-hour expiry
-- Auto-refresh via Playwright browser when expired
-- Browser opens, user browses RVTrader, navigates to `rvtrader.com/done` to complete
+- Cookies cached in `src/.cookie_cache.json` (14-day expiry)
+- Auto-tests cookies before batch; auto-refreshes if they fail
+- Browser opens for manual refresh when needed
 
-## Analysis & Reporting
+### build_dashboard.py
 
-### thor_brand_analysis_v2.py
-
-Comprehensive Thor brand analysis with tier-constrained ranking improvements and per-manufacturer reports.
+Generates a standalone HTML dashboard with all data embedded.
 
 ```bash
-python src/complete/thor_brand_analysis_v2.py               # Analyze latest data
-python src/complete/thor_brand_analysis_v2.py -i data.csv   # Specific input file
-python src/complete/thor_brand_analysis_v2.py --print-report # Print to stdout
+python src/complete/build_dashboard.py                    # Uses latest data files
+python src/complete/build_dashboard.py --input file.json  # Specific input
+python src/complete/build_dashboard.py --keep-data        # Don't auto-clean old files
 ```
 
-**Outputs:**
-| File | Description |
-|------|-------------|
-| `thor_actions_{timestamp}.csv` | 70-column CSV with all listing data and actions |
-| `thor_report_v2_{timestamp}.txt` | Executive summary report |
-| `manufacturer_report_{brand}_{timestamp}.txt` | Per-brand reports for manufacturers |
+**Dashboard Features:**
+| Feature | Description |
+|---------|-------------|
+| **Standalone** | Works offline - just open the file |
+| **Embedded Data** | JSON data embedded in HTML |
+| **Filters** | Brand, Tier, Year, Position, Region, RV Type, Search Zip |
+| **Thor Filter** | Toggle to show only Thor brands |
+| **Sortable** | Click any column to sort |
+| **Image Preview** | Hover to see RV image |
+| **Click to Open** | Click row to open on RVTrader |
+| **Export CSV** | Export filtered data |
+| **Auto-Clean** | Removes old data files |
 
-**Key Features:**
-- **Tier Ceiling Constraint:** Standard listings can't outrank premium without purchasing premium
-- **Correlation-Weighted Priority:** Actions prioritized by actual rank correlation strength
-- **Outperforming Detection:** Identifies listings beating their tier ceiling
-- **Dealer-Level Breakdown:** Performance vs market average
+## Optional Scripts
 
-### dealer_scorecard.py
+### export_flat_file.py
 
-Generates beautiful HTML scorecards for each Thor dealer with comprehensive benchmarking.
+Generates 77-column CSV for data warehouse/BI tools.
 
 ```bash
-python src/complete/dealer_scorecard.py                    # All dealers
-python src/complete/dealer_scorecard.py --brand Jayco      # Filter by brand
-python src/complete/dealer_scorecard.py --dealer "Name"    # Single dealer
-```
-
-**Scorecard Includes:**
-- Overall grade (A-F) based on quality metrics
-- Benchmark comparisons vs market average
-- Progress bars for data completeness
-- Quick quality checks (price, VIN, photos, floorplan)
-- Listing age distribution
-- Top improvement opportunities
-- Full listing table with status indicators
-
-### regional_summary.py
-
-Generates hierarchical reports organized by manufacturer and US region.
-
-```bash
-python src/complete/regional_summary.py                    # All brands, all regions
-python src/complete/regional_summary.py --brand Jayco      # Single manufacturer
-python src/complete/regional_summary.py --region Midwest   # Single region
-```
-
-**Report Hierarchy:**
-```
-Manufacturer (Jayco, Keystone, etc.)
-└── Region (Midwest, Southeast, etc.)
-    └── Dealer
-        └── Individual Listings
+python src/complete/export_flat_file.py                   # Latest file
+python src/complete/export_flat_file.py --combine-session # Combine recent extractions
+python src/complete/export_flat_file.py --append          # Append to master file
 ```
 
 ### weekly_tracker.py
 
-Tracks listing changes over time for week-over-week performance analysis.
+Tracks listing changes over time for week-over-week analysis.
 
 ```bash
-python src/complete/weekly_tracker.py                      # Update history + generate report
-python src/complete/weekly_tracker.py --report             # Report only (no data update)
-python src/complete/weekly_tracker.py --brand Jayco        # Filter by brand
+python src/complete/weekly_tracker.py                     # Update + report
+python src/complete/weekly_tracker.py --report            # Report only
 ```
-
-**Tracks:**
-- Rank changes (improved/declined/unchanged)
-- Quality score changes
-- Actions completed (added price, VIN, photos, etc.)
-- New listings / Sold listings
-
-**Storage:** JSON history file in `output/history/listing_history.json` (keeps 52 weeks)
-
-### dealer_premium_audit.py (Monthly)
-
-Detects which dealers have Premium Tier A vs Tier B placement. Run monthly to maintain a reference file.
-
-```bash
-python src/complete/dealer_premium_audit.py                # Default: 60616, all RV types
-python src/complete/dealer_premium_audit.py --zip 90210    # Different market
-```
-
-**Output:** `output/dealer_premium_tiers.csv` - Reference file for other scripts
-
-**Status:** ⚠️ NEEDS DEBUG - API returning 0 results (URL encoding issue suspected)
 
 ## Ranking Algorithm
 
@@ -228,50 +177,34 @@ FINAL_RANK = SORT_BY(
 | Premium Tier B | 11-42 | Basic premium package ($$) |
 | Standard | 43+ | Free listing |
 
-### Key Finding: Premium Sub-Tiers (2026-01-18)
+### Ranking Factors (Standard Tier Only)
 
-Analysis revealed that **premium listings cluster into TWO distinct groups** based on relevance score:
+| Factor | Relevance Pts | Rank Correlation |
+|--------|---------------|------------------|
+| has_price | +194 | -0.840 (strong) |
+| has_vin | +165 | -0.689 (strong) |
+| 35+ photos | +195 | -0.611 (moderate) |
+| has_floorplan | +50 | -0.300 (weak) |
+| Model year | +24/year | strong |
 
-| Sub-Tier | Relevance Score | Evidence |
-|----------|-----------------|----------|
-| **Tier A** | 520-560 | Higher-paying premium package |
-| **Tier B** | 465-468 | Basic premium package |
+**~15 relevance points ≈ 1 rank position improvement**
 
-**Within premium, listing quality has ZERO correlation with rank:**
-- Price correlation: 0.000
-- Photo correlation: 0.008
-- The ONLY factor is relevance score (r = -0.913)
+### Key Finding: Model Year Impact
 
-**Critical Insight:** A Tier B premium listing cannot outrank a Tier A listing regardless of photos, price, or other quality factors. To improve, dealers must upgrade their premium package.
+**2026 Standard ≈ 2025 Premium** - The year bonus (~24-51 pts) roughly equals the premium tier boost.
 
-### Ranking Factors (Correlation Strength)
+### Competitive Positions
 
-| Factor | Rank Correlation | Relevance Points | Merch Points |
-|--------|------------------|------------------|--------------|
-| has_price | **-0.840** | +194 | +5 |
-| has_vin | **-0.689** | +165 | +6 |
-| photo_count (35+) | **-0.611** | +195 | +30 |
-| has_floorplan | **-0.300** | +50 | +12 |
-| has_length | **-0.125** | +0 | +8 |
-
-*Negative correlation = higher value = better (lower) rank number*
-
-### Improvement Calculation
-
-```
-~15 relevance points ≈ 1 rank position improvement
-
-Example: Listing at rank 40 missing price and VIN
-- Add price:  +194 points → ~13 positions
-- Add VIN:    +165 points → ~11 positions
-- Total:      ~24 positions → New rank ~16
-
-But if tier ceiling is 16, improvement stops there.
-```
+| Position | Criteria |
+|----------|----------|
+| **Dominant** | Top Premium + 2026 |
+| **Strong** | Premium + 2026 OR Top Premium + 2025 |
+| **Competitive** | Standard + 2026 |
+| **Neutral** | Premium + 2025 |
+| **At Risk** | Standard + 2025 |
+| **Disadvantaged** | 2+ years old |
 
 ## Thor Industries Brands
-
-The platform tracks these Thor Industries brands:
 
 | Brand | Make Patterns |
 |-------|---------------|
@@ -301,37 +234,21 @@ The platform tracks these Thor Industries brands:
 | Destination Trailer | 671069 |
 | Teardrop Trailer | 764498 |
 
-## Configuration
+## National Coverage (53 Zip Codes)
 
-### zip_codes.txt
+Use `zip_codes_national.txt` for comprehensive US RV market coverage:
 
-List of zip codes to analyze (one per line):
-
-```
-60616
-33139
-90210
-```
-
-### Cookie Cache
-
-Cookies are stored in `src/.cookie_cache.json`:
-
-```json
-{
-  "timestamp": "2026-01-18T10:00:00",
-  "cookie_string": "datadome=...; other=..."
-}
-```
-
-Expires after 48 hours. Refresh with:
-```bash
-python src/complete/engagement_scraper.py --refresh-cookies
-```
+| Region | Zips | Key Markets |
+|--------|------|-------------|
+| **Midwest Manufacturing** | 7 | Elkhart IN (RV Capital), Fort Wayne, Toledo |
+| **Florida** | 7 | Ocala, Fort Myers, Lakeland, Daytona |
+| **Texas** | 7 | Fort Worth, Katy, McKinney |
+| **Arizona (Snowbird)** | 5 | Mesa, Yuma, Flagstaff |
+| **California (Inland)** | 5 | Temecula, Bakersfield, Fresno |
 
 ## API Reference
 
-### Search API
+### Search API (no auth)
 
 ```
 GET https://www.rvtrader.com/ssr-api/search-results
@@ -340,23 +257,31 @@ GET https://www.rvtrader.com/ssr-api/search-results
     &zip={Zip}
     &radius={Miles}
     &condition={N|U}
-    &price={Min}:{Max}
 ```
 
 - 36 results per page, max 10 pages (360 cap)
-- No authentication required
 
 ### Engagement APIs (require cookies)
 
 ```
 # Views
 GET /gettiledata/addetail_listingstats/showadviewsstats?adId={id}
-Response: {"error":null,"listingViewsData":"138"}
 
 # Saves
 GET /gettiledata/addetail_listingstats/showsavedadsstats?adId={id}
-Response: {"error":null,"listingSavesData":1}
 ```
+
+## Performance Benchmarks
+
+| Operation | 2 zips × 11 types | Rate |
+|-----------|-------------------|------|
+| Search extraction | ~10 sec | ~350/sec |
+| Engagement scraper | ~32 sec | ~111/sec |
+| **Total** | **~42 sec** | 3,497 listings |
+
+### Scaling Estimate (National)
+
+- 53 zips × 11 types: ~10-20 minutes total
 
 ## Dependencies
 
@@ -371,62 +296,19 @@ playwright install chromium
 | playwright | Browser automation for cookie refresh |
 | requests | Sync HTTP for detail page scraping |
 
-## Output Files
-
-| File Pattern | Script | Description |
-|--------------|--------|-------------|
-| `ranked_listings_{ts}.csv/json` | rank_listings.py | Raw search data |
-| `detail_data_{ts}.json` | description_scraper.py | Full descriptions + specs |
-| `engagement_stats_{ts}.json` | engagement_scraper.py | Views and saves |
-| `thor_actions_{ts}.csv` | thor_brand_analysis_v2.py | Analysis with actions |
-| `thor_report_v2_{ts}.txt` | thor_brand_analysis_v2.py | Summary report |
-| `manufacturer_report_{brand}_{ts}.txt` | thor_brand_analysis_v2.py | Per-brand reports |
-| `scorecard_{dealer}_{ts}.html` | dealer_scorecard.py | Dealer HTML scorecards |
-| `index_{ts}.html` | dealer_scorecard.py | Scorecard dashboard |
-| `{Brand}_regional_{ts}.html` | regional_summary.py | Regional HTML reports |
-| `wow_report_{ts}.html` | weekly_tracker.py | Week-over-week report |
-| `dealer_premium_tiers.csv` | dealer_premium_audit.py | Monthly dealer tier reference |
-
-## Typical Workflow
-
-1. **Weekly Data Collection**
-   ```bash
-   python src/complete/rank_listings.py
-   ```
-
-2. **Update Weekly Tracking**
-   ```bash
-   python src/complete/weekly_tracker.py
-   ```
-
-3. **Generate Analysis**
-   ```bash
-   python src/complete/thor_brand_analysis_v2.py
-   python src/complete/dealer_scorecard.py
-   python src/complete/regional_summary.py
-   ```
-
-4. **Optional: Enrich with Detail Data**
-   ```bash
-   python src/complete/engagement_scraper.py --refresh-cookies  # if needed
-   python src/complete/description_scraper.py --limit 100
-   python src/complete/engagement_scraper.py --limit 100
-   ```
-
 ## Key Findings
 
 1. **Premium tier is dominant** - Paid placement overrides all other ranking factors
 2. **Premium has TWO sub-tiers** - Tier A (rel 520-560) vs Tier B (rel 465-468)
 3. **Within premium, quality doesn't matter** - Photos, price, age have ZERO correlation
-4. **Distance is NOT a factor** - Premium at 47mi beats standard at 5mi
-5. **For STANDARD listings only:** Price (r=-0.840), VIN (r=-0.689), Photos (r=-0.611) matter
+4. **Model year matters** - 2026 Standard ≈ 2025 Premium in ranking power
+5. **For STANDARD listings:** Price, VIN, Photos are the key improvement factors
 6. **Tier ceiling is critical** - Standard listings max out at the lowest premium position
-7. **Same dealer can have both tiers** - General RV has Tier A and Tier B listings
 
 ## Documentation
 
-- [RANKING_ALGORITHM.md](docs/RANKING_ALGORITHM.md) - Complete ranking formula with correlation matrix
-- [MERCH_SCORE.md](docs/MERCH_SCORE.md) - Deep dive on merchandising score components
+- [RANKING_ALGORITHM.md](docs/RANKING_ALGORITHM.md) - Complete ranking formula
+- [MERCH_SCORE.md](docs/MERCH_SCORE.md) - Merchandising score components
 
 ## License
 

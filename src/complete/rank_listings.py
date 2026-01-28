@@ -15,7 +15,6 @@ Usage:
 import json
 import sys
 import asyncio
-import csv
 import aiohttp
 from pathlib import Path
 from datetime import datetime
@@ -26,19 +25,19 @@ SCRAPER_API_KEY = 'ef66e965591986214ea474407eb0adc8'
 SCRAPER_API_BASE = 'http://api.scraperapi.com'
 USE_SCRAPER_API = False
 
-# RV Type mappings
+# RV Type mappings (updated 2026-01-28)
 RV_TYPES = {
-    'Class A': '198066',
+    'Class A': '198067',
     'Class B': '198068',
-    'Class C': '198067',
-    'Fifth Wheel': '198069',
-    'Toy Hauler': '198074',
+    'Class C': '198069',
+    'Fifth Wheel': '198070',
+    'Toy Hauler': '139350904',
     'Travel Trailer': '198073',
-    'Truck Camper': '198072',
+    'Truck Camper': '198074',
     'Pop-Up Camper': '198071',
-    'Park Model': '198070',
-    'Destination Trailer': '671069',
-    'Teardrop Trailer': '764498',
+    'Park Model': '198072',
+    'Destination Trailer': '2440298575',
+    'Teardrop Trailer': '2440298574',
 }
 
 # Config
@@ -465,22 +464,13 @@ def save_results(listings: list, output_dir: str = 'output'):
     Path(output_dir).mkdir(exist_ok=True)
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
 
-    csv_path = Path(output_dir) / f'ranked_listings_{timestamp}.csv'
-    if listings:
-        fieldnames = listings[0].keys()
-        with open(csv_path, 'w', newline='', encoding='utf-8') as f:
-            writer = csv.DictWriter(f, fieldnames=fieldnames)
-            writer.writeheader()
-            writer.writerows(listings)
-        print(f"\nCSV saved: {csv_path}")
-
     json_path = Path(output_dir) / f'ranked_listings_{timestamp}.json'
     with open(json_path, 'w', encoding='utf-8') as f:
         json.dump({'timestamp': datetime.now().isoformat(), 'count': len(listings), 'listings': listings},
                   f, indent=2, ensure_ascii=False)
-    print(f"JSON saved: {json_path}")
+    print(f"\nJSON saved: {json_path}")
 
-    return csv_path, json_path
+    return json_path
 
 
 async def main():
